@@ -17,6 +17,7 @@ begin
 
     gem.version = Veritas::Compiler::SQL::VERSION
 
+    gem.add_dependency             'veritas',   Veritas::Compiler::SQL::VERSION
     gem.add_development_dependency 'rake',      '~> 0.8.7'
     gem.add_development_dependency 'rspec',     '~> 1.3.1'
     gem.add_development_dependency 'jeweler',   '~> 1.4.0'
