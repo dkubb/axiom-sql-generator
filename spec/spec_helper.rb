@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'backports'
-require 'veritas/compiler/sql'
+require 'veritas/sql/compiler'
 require 'spec'
 require 'spec/autorun'
 

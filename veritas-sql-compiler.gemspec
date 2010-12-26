@@ -4,12 +4,12 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{veritas-compiler-sql}
+  s.name = %q{veritas-sql-compiler}
   s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2010-12-23}
+  s.date = %q{2010-12-26}
   s.description = %q{Generate SQL with veritas relations}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
      "config/roodi.yml",
      "config/site.reek",
      "config/yardstick.yml",
-     "lib/veritas/compiler/sql.rb",
-     "lib/veritas/compiler/sql/version.rb",
+     "lib/veritas/sql/compiler.rb",
+     "lib/veritas/sql/compiler/version.rb",
      "spec/rcov.opts",
      "spec/spec.opts",
      "spec/spec_helper.rb",
@@ -43,10 +43,10 @@ Gem::Specification.new do |s|
      "tasks/quality/yardstick.rake",
      "tasks/spec.rake",
      "tasks/yard.rake",
-     "veritas-compiler-sql.gemspec"
+     "veritas-sql-compiler.gemspec"
   ]
   s.has_rdoc = %q{yard}
-  s.homepage = %q{https://github.com/dkubb/veritas-compiler-sql}
+  s.homepage = %q{https://github.com/dkubb/veritas-sql-compiler}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}

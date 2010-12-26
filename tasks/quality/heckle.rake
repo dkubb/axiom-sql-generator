@@ -31,7 +31,7 @@ begin
     end
 
     require 'veritas-compiler-sql'
-    root_module = 'Veritas::Compiler::SQL'
+    root_module = 'Veritas::SQL::Compiler'
 
     spec_dir = Pathname('spec/unit')
 

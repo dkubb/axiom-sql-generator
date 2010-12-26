@@ -1,23 +1,23 @@
 require 'rake'
 
-require File.expand_path('../lib/veritas/compiler/sql/version', __FILE__)
+require File.expand_path('../lib/veritas/sql/compiler/version', __FILE__)
 
 begin
   gem('jeweler', '~> 1.4.0') if respond_to?(:gem, true)
   require 'jeweler'
 
   Jeweler::Tasks.new do |gem|
-    gem.name        = 'veritas-compiler-sql'
+    gem.name        = 'veritas-sql-compiler'
     gem.summary     = 'Ruby Relational Algebra to SQL'
     gem.description = 'Generate SQL with veritas relations'
     gem.email       = 'dan.kubb@gmail.com'
-    gem.homepage    = 'https://github.com/dkubb/veritas-compiler-sql'
+    gem.homepage    = 'https://github.com/dkubb/veritas-sql-compiler'
     gem.authors     = [ 'Dan Kubb' ]
     gem.has_rdoc    = 'yard'
 
-    gem.version = Veritas::Compiler::SQL::VERSION
+    gem.version = Veritas::SQL::Compiler::VERSION
 
-    gem.add_dependency             'veritas',   Veritas::Compiler::SQL::VERSION
+    gem.add_dependency             'veritas',   gem.version
     gem.add_development_dependency 'rake',      '~> 0.8.7'
     gem.add_development_dependency 'rspec',     '~> 1.3.1'
     gem.add_development_dependency 'jeweler',   '~> 1.4.0'
