@@ -5,10 +5,10 @@ module Veritas
       # Generates an SQL statement for a relation
       class Generator
 
-        # Accept an object where each node can be visited and generate SQL
+        # Accept an object where each node can be visited to generate SQL
         #
         # @example
-        #   sql = generator.accept(visitable)
+        #   generator.accept(visitable)
         #
         # @param [Object] visitable
         #   A visitable object
