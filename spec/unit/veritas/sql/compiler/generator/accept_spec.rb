@@ -7,5 +7,5 @@ describe Generator, '#accept' do
   let(:visitable) { mock('Visitable') }
   let(:object)    { klass.new         }
 
-  it { should equal(object) }
+  it_should_behave_like 'a command method'
 end
