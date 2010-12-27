@@ -8,10 +8,10 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 10
+  max_methods: 1
   exclude: []
   enabled: true
-  max_instance_variables: 3
+  max_instance_variables: 0
 UncommunicativeMethodName:
   accept: []
   exclude: []
@@ -21,7 +21,7 @@ UncommunicativeMethodName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LongParameterList:
-  max_params: 2
+  max_params: 1
   exclude: []
   enabled: true
   overrides: {}
@@ -81,7 +81,7 @@ DataClump:
   exclude: []
   enabled: true
   max_copies: 1
-  min_clump_size: 2
+  min_clump_size: 1
 ControlCouple:
   exclude: []
   enabled: true

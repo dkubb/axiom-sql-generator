@@ -28,10 +28,12 @@ Gem::Specification.new do |s|
      "config/site.reek",
      "config/yardstick.yml",
      "lib/veritas/sql/compiler.rb",
+     "lib/veritas/sql/compiler/generator.rb",
      "lib/veritas/sql/compiler/version.rb",
      "spec/rcov.opts",
      "spec/spec.opts",
      "spec/spec_helper.rb",
+     "spec/unit/veritas/sql/compiler/generator/accept_spec.rb",
      "tasks/ci.rake",
      "tasks/clean.rake",
      "tasks/quality/flay.rake",
@@ -52,7 +54,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Ruby Relational Algebra to SQL}
   s.test_files = [
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+     "spec/unit/veritas/sql/compiler/generator/accept_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
