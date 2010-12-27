@@ -2,6 +2,13 @@ source :rubygems
 
 gem 'veritas', '0.0.2', :git => 'git://github.com/dkubb/veritas.git'
 
+group :development do
+  gem 'rake',      '~> 0.8.7'
+  gem 'rspec',     '~> 1.3.1', :git => 'git://github.com/dkubb/rspec.git'
+  gem 'jeweler',   '~> 1.4.0'
+  gem 'backports', '~> 1.18.2'
+end
+
 platforms :mri_18 do
   group :quality do
     gem 'activesupport', '~> 2.3.10'
