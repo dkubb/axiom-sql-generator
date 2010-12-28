@@ -56,7 +56,9 @@ Gem::Specification.new do |s|
   s.summary = %q{Ruby Relational Algebra to SQL}
   s.test_files = [
     "spec/shared/command_method_behavior.rb",
+     "spec/shared/idempotent_method_behavior.rb",
      "spec/spec_helper.rb",
+     "spec/unit/veritas/sql/compiler/generator/to_sql_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/visit_spec.rb"
   ]
 

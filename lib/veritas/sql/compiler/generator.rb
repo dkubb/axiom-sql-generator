@@ -5,6 +5,15 @@ module Veritas
       # Generates an SQL statement for a relation
       class Generator
 
+        # Initialize a Generator
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def initialize
+          @sql = ''
+        end
+
         # Visit an object and generate SQL from each node
         #
         # @example
@@ -18,6 +27,18 @@ module Veritas
         # @api public
         def visit(visitable)
           self
+        end
+
+        # Returns the current SQL string
+        #
+        # @example
+        #   sql = generator.to_sql
+        #
+        # @return [String]
+        #
+        # @api public
+        def to_sql
+          @sql
         end
 
       end # class Generator
