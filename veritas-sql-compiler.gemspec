@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
      "spec/shared/command_method_behavior.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
-     "spec/unit/veritas/sql/compiler/generator/accept_spec.rb",
+     "spec/unit/veritas/sql/compiler/generator/visit_spec.rb",
      "tasks/ci.rake",
      "tasks/clean.rake",
      "tasks/quality/flay.rake",
@@ -57,7 +57,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/shared/command_method_behavior.rb",
      "spec/spec_helper.rb",
-     "spec/unit/veritas/sql/compiler/generator/accept_spec.rb"
+     "spec/unit/veritas/sql/compiler/generator/visit_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

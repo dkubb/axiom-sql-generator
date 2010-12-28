@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Generator, '#accept' do
-  subject { object.accept(visitable) }
+describe Generator, '#visit' do
+  subject { object.visit(visitable) }
 
   let(:klass)     { Generator         }
   let(:visitable) { mock('Visitable') }
