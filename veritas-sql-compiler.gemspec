@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2010-12-26}
+  s.date = %q{2010-12-27}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
      "lib/veritas/sql/compiler/generator.rb",
      "lib/veritas/sql/compiler/version.rb",
      "spec/rcov.opts",
+     "spec/shared/command_method_behavior.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/unit/veritas/sql/compiler/generator/accept_spec.rb",
@@ -54,7 +55,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Ruby Relational Algebra to SQL}
   s.test_files = [
-    "spec/spec_helper.rb",
+    "spec/shared/command_method_behavior.rb",
+     "spec/spec_helper.rb",
      "spec/unit/veritas/sql/compiler/generator/accept_spec.rb"
   ]
 
