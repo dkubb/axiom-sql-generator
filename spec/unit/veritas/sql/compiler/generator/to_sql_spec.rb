@@ -48,4 +48,18 @@ describe Generator, '#to_sql' do
 
     it { should == 'SELECT id, name FROM users' }
   end
+
+  context 'when a rename is visited' do
+    before do
+      object.visit(base_relation.rename(:id => :user_id))
+    end
+
+    it_should_behave_like 'an idempotent method'
+
+    it { should be_frozen }
+
+    it { should_not equal(@original) }
+
+    it { should == 'SELECT id AS user_id, name, age FROM users' }
+  end
 end

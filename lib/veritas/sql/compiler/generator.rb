@@ -124,8 +124,16 @@ module Veritas
         # @return [Array<#to_s>]
         #
         # @api private
-        def columns_for(relation)
-          relation.header.map { |attribute| dispatch attribute }
+        def columns_for(relation, aliases = {})
+          relation.header.map do |attribute|
+            column = dispatch(attribute).to_s
+
+            if alias_attribute = aliases[attribute]
+              column << " AS #{dispatch alias_attribute}"
+            end
+
+            column
+          end
         end
 
         # Return the SQL for the visitable object
@@ -159,6 +167,18 @@ module Veritas
         def visit_veritas_algebra_projection(projection)
           dispatch projection.operand
           @columns = columns_for(projection)
+        end
+
+        # Visit a Rename
+        #
+        # @param [Rename] rename
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_algebra_rename(rename)
+          dispatch(operand = rename.operand)
+          @columns = columns_for(operand, rename.aliases.to_hash)
         end
 
         # Visit an Attribute
