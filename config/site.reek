@@ -8,10 +8,10 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 3
+  max_methods: 7
   exclude: []
   enabled: true
-  max_instance_variables: 1
+  max_instance_variables: 2
 UncommunicativeMethodName:
   accept: []
   exclude: []
@@ -21,12 +21,16 @@ UncommunicativeMethodName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LongParameterList:
-  max_params: 1
+  max_params: 2
   exclude: []
   enabled: true
   overrides: {}
 FeatureEnvy:
-  exclude: []
+  exclude: [
+    # TODO: remove this once visit_* methods become class methods
+    # since (I don't think) they will require any state.
+    'Veritas::SQL::Compiler::Generator#visit_veritas_attribute'
+  ]
   enabled: true
 ClassVariable:
   exclude: []
@@ -46,7 +50,9 @@ UncommunicativeModuleName:
   - !ruby/regexp /[0-9]$/
 NestedIterators:
   ignore_iterators: []
-  exclude: []
+  exclude: [
+    'Veritas::SQL::Compiler::Generator#self.handlers'
+  ]
   enabled: true
   max_allowed_nesting: 1
 LongMethod:
@@ -81,7 +87,7 @@ DataClump:
   exclude: []
   enabled: true
   max_copies: 1
-  min_clump_size: 1
+  min_clump_size: 2
 ControlCouple:
   exclude: []
   enabled: true

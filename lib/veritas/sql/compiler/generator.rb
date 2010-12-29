@@ -5,6 +5,61 @@ module Veritas
       # Generates an SQL statement for a relation
       class Generator
 
+        # Raised when the object is not handled by the generator
+        class UnknownObject < StandardError; end
+
+        # Lookup the handler method for a visitable object
+        #
+        # @param [Visitable] visitable
+        #
+        # @return [#to_sym]
+        #
+        # @raise [UnknownObject]
+        #   raised when the visitable object has no handler
+        #
+        # @api private
+        def self.handler_for(visitable)
+          klass = visitable.class
+          handlers[klass] or raise UnknownObject, "No handler for #{klass}"
+        end
+
+        # Return the handler method for a given module
+        #
+        # @param [Module] mod
+        #
+        # @return [Symbol]
+        #
+        # @api private
+        def self.method_for(mod)
+          "visit_#{mod.name.gsub(/([a-z])([A-Z])/, '\1_\2').gsub('::', '_').downcase}".to_sym
+        end
+
+        # Return handler methods for a module's ancestors
+        #
+        # @param [Module] mod
+        #
+        # @return [Array<Symbol>]
+        #
+        # @api private
+        def self.ancestor_methods_for(mod)
+          mod.ancestors.map { |ancestor| method_for(ancestor) }
+        end
+
+        # Return the handler cache that maps modules to method names
+        #
+        # @return [Hash]
+        #
+        # @api private
+        def self.handlers
+          @handlers ||= Hash.new do |hash, key|
+            hash[key] = ancestor_methods_for(key).detect do |method|
+              private_method_defined?(method)
+            end
+          end
+        end
+
+        private_class_method :method_for, :ancestor_methods_for, :handlers
+
         # Initialize a Generator
         #
         # @return [undefined]
@@ -19,13 +74,17 @@ module Veritas
         # @example
         #   generator.visit(visitable)
         #
-        # @param [Object] visitable
+        # @param [Visitable] visitable
         #   A visitable object
         #
         # @return [self]
         #
+        # @raise [UnknownObject]
+        #   raised when the visitable object has no handler
+        #
         # @api public
         def visit(visitable)
+          @sql = dispatch(visitable)
           self
         end
 
@@ -39,6 +98,55 @@ module Veritas
         # @api public
         def to_sql
           @sql
+        end
+
+      private
+
+        # Dispatch the visitable object to a handler method
+        #
+        # @param [Visitable] visitable
+        #
+        # @return [#to_s]
+        #
+        # @raise [UnknownObject]
+        #   raised when the visitable object has no handler
+        #
+        # @api private
+        def dispatch(visitable)
+          send(self.class.handler_for(visitable), visitable)
+        end
+
+        # Return a list of columns in a relation
+        #
+        # @param [#header] relation
+        #
+        # @return [Array<#to_s>]
+        #
+        # @api private
+        def columns_for(relation)
+          relation.header.map { |attribute| dispatch attribute }
+        end
+
+        # Visit a Base Relation
+        #
+        # @param [BaseRelation] relation
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_base_relation(relation)
+          "SELECT #{columns_for(relation).join(', ')} FROM #{relation.name}"
+        end
+
+        # Visit an Attribute
+        #
+        # @param [Attribute] attribute
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_attribute(attribute)
+          attribute.name
         end
 
       end # class Generator

@@ -1,17 +1,23 @@
 require 'spec_helper'
 
-describe Generator, '#visit' do
-  subject { object.visit(visitable) }
+describe Generator, '.handler_for' do
+  subject { object.handler_for(visitable) }
 
-  let(:klass)  { Generator }
-  let(:object) { klass.new }
+  let(:object) { Generator }
+
+  after do
+    # remove the handler cache after each spec
+    Generator.module_eval { remove_instance_variable(:@handlers) }
+  end
 
   context 'with a handled object' do
     let(:header)    { [ [ :id, Integer ] ]                    }
     let(:body)      { [ [ 1 ] ].each                          }
     let(:visitable) { BaseRelation.new('users', header, body) }
 
-    it_should_behave_like 'a command method'
+    it_should_behave_like 'an idempotent method'
+
+    it { should == :visit_veritas_base_relation }
   end
 
   context 'with an unhandled object' do
