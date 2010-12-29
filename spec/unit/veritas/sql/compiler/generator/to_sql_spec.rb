@@ -32,7 +32,7 @@ describe Generator, '#to_sql' do
 
     it { should_not equal(@original) }
 
-    it { should == 'SELECT id, name, age FROM users' }
+    it { should == 'SELECT DISTINCT id, name, age FROM users' }
   end
 
   context 'when a projection is visited' do
@@ -46,7 +46,7 @@ describe Generator, '#to_sql' do
 
     it { should_not equal(@original) }
 
-    it { should == 'SELECT id, name FROM users' }
+    it { should == 'SELECT DISTINCT id, name FROM users' }
   end
 
   context 'when a rename is visited' do
@@ -60,6 +60,6 @@ describe Generator, '#to_sql' do
 
     it { should_not equal(@original) }
 
-    it { should == 'SELECT id AS user_id, name, age FROM users' }
+    it { should == 'SELECT DISTINCT id AS user_id, name, age FROM users' }
   end
 end

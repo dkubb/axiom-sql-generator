@@ -168,7 +168,7 @@ module Veritas
         #
         # @api private
         def generate_sql
-          @sql = "SELECT #{@columns.join(', ')} FROM #{@name}".freeze
+          @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{@name}".freeze
         end
 
         # Visit a Base Relation
