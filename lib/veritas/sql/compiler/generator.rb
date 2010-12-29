@@ -171,6 +171,7 @@ module Veritas
           @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{@name}"
           @sql << " ORDER BY #{@order.join(', ')}" if @order
           @sql << " LIMIT #{@limit}"               if @limit
+          @sql << " OFFSET #{@offset}"             if @offset
           @sql.freeze
         end
 
@@ -232,6 +233,18 @@ module Veritas
         def visit_veritas_relation_operation_limit(limit)
           dispatch limit.operand
           @limit = limit.limit
+        end
+
+        # Visit an Offset
+        #
+        # @param [Relation::Operation::Offset] offset
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_relation_operation_offset(offset)
+          dispatch offset.operand
+          @offset = offset.offset
         end
 
         # Visit an Attribute

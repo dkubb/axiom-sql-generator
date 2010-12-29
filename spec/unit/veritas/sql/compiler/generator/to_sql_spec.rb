@@ -80,4 +80,14 @@ describe Generator, '#to_sql' do
 
     it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age LIMIT 1' }
   end
+
+  context 'when an offset is visited' do
+    before do
+      object.visit(base_relation.order.drop(1))
+    end
+
+    it_should_behave_like 'a generated SQL query'
+
+    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age OFFSET 1' }
+  end
 end
