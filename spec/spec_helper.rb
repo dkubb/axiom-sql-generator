@@ -4,6 +4,7 @@ require 'veritas/sql/compiler'
 require 'spec'
 require 'spec/autorun'
 
+include Veritas
 include Veritas::SQL::Compiler
 
 # require spec support files and shared behavior
