@@ -139,7 +139,7 @@ module Veritas
 
         # Visit a Base Relation
         #
-        # @param [BaseRelation] relation
+        # @param [BaseRelation] base_relation
         #
         # @return [undefined]
         #
@@ -151,7 +151,7 @@ module Veritas
 
         # Visit a Projection
         #
-        # @param [Projection] relation
+        # @param [Projection] projection
         #
         # @return [undefined]
         #
