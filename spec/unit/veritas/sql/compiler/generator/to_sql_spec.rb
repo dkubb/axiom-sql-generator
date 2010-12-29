@@ -28,7 +28,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id, name, age FROM users' }
+    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users' }
   end
 
   context 'when a projection is visited' do
@@ -38,7 +38,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id, name FROM users' }
+    it { should == 'SELECT DISTINCT users.id, users.name FROM users' }
   end
 
   context 'when a rename is visited' do
@@ -48,7 +48,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id AS user_id, name, age FROM users' }
+    it { should == 'SELECT DISTINCT users.id AS user_id, users.name, users.age FROM users' }
   end
 
   context 'when an order is visited' do
@@ -58,7 +58,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age' }
+    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id, users.name, users.age' }
   end
 
   context 'when a reverse is visited' do
@@ -68,7 +68,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id DESC, name DESC, age DESC' }
+    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id DESC, users.name DESC, users.age DESC' }
   end
 
   context 'when a limit is visited' do
@@ -78,7 +78,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age LIMIT 1' }
+    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id, users.name, users.age LIMIT 1' }
   end
 
   context 'when an offset is visited' do
@@ -88,6 +88,6 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age OFFSET 1' }
+    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id, users.name, users.age OFFSET 1' }
   end
 end

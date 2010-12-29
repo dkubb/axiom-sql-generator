@@ -159,7 +159,7 @@ module Veritas
         #
         # @api private
         def alias_for(attribute, alias_attribute)
-          "#{column_for(attribute)} AS #{dispatch alias_attribute}"
+          "#{column_for(attribute)} AS #{alias_attribute.name}"
         end
 
         # Return the SQL for the visitable object
@@ -255,7 +255,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_attribute(attribute)
-          attribute.name.to_s
+          "#{@name}.#{attribute.name}"
         end
 
         # Visit an Ascending Direction
