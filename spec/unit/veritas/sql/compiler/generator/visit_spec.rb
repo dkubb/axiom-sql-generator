@@ -18,6 +18,18 @@ describe Generator, '#visit' do
     it { expect { subject }.to change { object.to_sql.frozen? }.from(false).to(true) }
   end
 
+  context 'with a handled object more than once' do
+    let(:header)    { [ [ :id, Integer ] ]                    }
+    let(:body)      { [ [ 1 ] ].each                          }
+    let(:visitable) { BaseRelation.new('users', header, body) }
+
+    before do
+      object.visit(visitable)
+    end
+
+    specify { expect { subject }.to raise_error(TypeError) }
+  end
+
   context 'with an unhandled object' do
     let(:visitable) { mock('Not Handled') }
 
