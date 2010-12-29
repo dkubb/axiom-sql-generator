@@ -18,10 +18,13 @@ describe Generator, '#to_sql' do
     let(:base_relation) { BaseRelation.new('users', header, body) }
 
     before do
+      @original = object.to_sql
       object.visit(base_relation)
     end
 
     it_should_behave_like 'an idempotent method'
+
+    it { should_not equal(@original) }
 
     it { should == 'SELECT id, name FROM users' }
   end
