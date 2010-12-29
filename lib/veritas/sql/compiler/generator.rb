@@ -84,7 +84,8 @@ module Veritas
         #
         # @api public
         def visit(visitable)
-          @sql = dispatch(visitable).freeze
+          dispatch(visitable)
+          generate_sql
           freeze
         end
 
@@ -127,15 +128,37 @@ module Veritas
           relation.header.map { |attribute| dispatch attribute }
         end
 
-        # Visit a Base Relation
-        #
-        # @param [BaseRelation] relation
+        # Return the SQL for the visitable object
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_base_relation(relation)
-          "SELECT #{columns_for(relation).join(', ')} FROM #{relation.name}"
+        def generate_sql
+          @sql = "SELECT #{@columns.join(', ')} FROM #{@name}".freeze
+        end
+
+        # Visit a Base Relation
+        #
+        # @param [BaseRelation] relation
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_base_relation(base_relation)
+          @name    = base_relation.name
+          @columns = columns_for(base_relation)
+        end
+
+        # Visit a Projection
+        #
+        # @param [Projection] relation
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_algebra_projection(projection)
+          dispatch projection.operand
+          @columns = columns_for(projection)
         end
 
         # Visit an Attribute
