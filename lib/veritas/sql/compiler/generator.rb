@@ -84,8 +84,8 @@ module Veritas
         #
         # @api public
         def visit(visitable)
-          @sql = dispatch(visitable)
-          self
+          @sql = dispatch(visitable).freeze
+          freeze
         end
 
         # Returns the current SQL string

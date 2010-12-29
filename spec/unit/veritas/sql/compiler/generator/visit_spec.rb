@@ -12,6 +12,10 @@ describe Generator, '#visit' do
     let(:visitable) { BaseRelation.new('users', header, body) }
 
     it_should_behave_like 'a command method'
+
+    it { expect { subject }.to change(object, :frozen?).from(false).to(true) }
+
+    it { expect { subject }.to change { object.to_sql.frozen? }.from(false).to(true) }
   end
 
   context 'with an unhandled object' do

@@ -9,6 +9,8 @@ describe Generator, '#to_sql' do
   context 'when no object visited' do
     it_should_behave_like 'an idempotent method'
 
+    it { should_not be_frozen }
+
     it { should == '' }
   end
 
@@ -23,6 +25,8 @@ describe Generator, '#to_sql' do
     end
 
     it_should_behave_like 'an idempotent method'
+
+    it { should be_frozen }
 
     it { should_not equal(@original) }
 
