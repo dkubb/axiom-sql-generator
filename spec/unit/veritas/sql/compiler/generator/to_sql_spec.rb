@@ -50,4 +50,14 @@ describe Generator, '#to_sql' do
 
     it { should == 'SELECT DISTINCT id AS user_id, name, age FROM users' }
   end
+
+  context 'when an order is visited' do
+    before do
+      object.visit(base_relation.order)
+    end
+
+    it_should_behave_like 'a generated SQL query'
+
+    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age' }
+  end
 end

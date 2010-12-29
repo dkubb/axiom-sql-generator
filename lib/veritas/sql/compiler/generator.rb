@@ -168,7 +168,9 @@ module Veritas
         #
         # @api private
         def generate_sql
-          @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{@name}".freeze
+          @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{@name}"
+          @sql << " ORDER BY #{@order.join(', ')}" if @order
+          @sql.freeze
         end
 
         # Visit a Base Relation
@@ -185,7 +187,7 @@ module Veritas
 
         # Visit a Projection
         #
-        # @param [Projection] projection
+        # @param [Algebra::Projection] projection
         #
         # @return [undefined]
         #
@@ -197,7 +199,7 @@ module Veritas
 
         # Visit a Rename
         #
-        # @param [Rename] rename
+        # @param [Algebra::Rename] rename
         #
         # @return [undefined]
         #
@@ -205,6 +207,18 @@ module Veritas
         def visit_veritas_algebra_rename(rename)
           dispatch(operand = rename.operand)
           @columns = columns_for(operand.header, rename.aliases.to_hash)
+        end
+
+        # Visit an Order
+        #
+        # @param [Relation::Operation::Order] order
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_relation_operation_order(order)
+          dispatch order.operand
+          @order = order.directions.map { |direction| dispatch direction }
         end
 
         # Visit an Attribute
@@ -216,6 +230,17 @@ module Veritas
         # @api private
         def visit_veritas_attribute(attribute)
           attribute.name.to_s
+        end
+
+        # Visit an Ascending Direction
+        #
+        # @param [Relation::Operation::Order::Ascending] direction
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_relation_operation_order_ascending(direction)
+          dispatch direction.attribute
         end
 
       end # class Generator
