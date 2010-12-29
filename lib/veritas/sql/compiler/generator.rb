@@ -117,15 +117,18 @@ module Veritas
           send(self.class.handler_for(visitable), visitable)
         end
 
-        # Return a list of columns in a relation
+        # Return a list of columns in a header
         #
-        # @param [#header] relation
+        # @param [Header] header
+        #
+        # @param [#[]] aliases
+        #   optional aliases for the columns
         #
         # @return [Array<#to_s>]
         #
         # @api private
-        def columns_for(relation, aliases = {})
-          relation.header.map do |attribute|
+        def columns_for(header, aliases = {})
+          header.map do |attribute|
             column = dispatch(attribute).to_s
 
             if alias_attribute = aliases[attribute]
@@ -154,7 +157,7 @@ module Veritas
         # @api private
         def visit_veritas_base_relation(base_relation)
           @name    = base_relation.name
-          @columns = columns_for(base_relation)
+          @columns = columns_for(base_relation.header)
         end
 
         # Visit a Projection
@@ -166,7 +169,7 @@ module Veritas
         # @api private
         def visit_veritas_algebra_projection(projection)
           dispatch projection.operand
-          @columns = columns_for(projection)
+          @columns = columns_for(projection.header)
         end
 
         # Visit a Rename
@@ -178,7 +181,7 @@ module Veritas
         # @api private
         def visit_veritas_algebra_rename(rename)
           dispatch(operand = rename.operand)
-          @columns = columns_for(operand, rename.aliases.to_hash)
+          @columns = columns_for(operand.header, rename.aliases.to_hash)
         end
 
         # Visit an Attribute
