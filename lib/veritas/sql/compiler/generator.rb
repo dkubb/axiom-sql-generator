@@ -117,6 +117,17 @@ module Veritas
           send(self.class.handler_for(visitable), visitable)
         end
 
+        # Quote the identifier
+        #
+        # @param [#to_s] identifier
+        #
+        # @return [String]
+        #
+        # @api private
+        def quote_identifier(identifier)
+          %'"#{identifier.to_s.gsub('"', '""')}"'
+        end
+
         # Return a list of columns in a header
         #
         # @param [Header] header
@@ -159,7 +170,7 @@ module Veritas
         #
         # @api private
         def alias_for(attribute, alias_attribute)
-          "#{column_for(attribute)} AS #{alias_attribute.name}"
+          "#{column_for(attribute)} AS #{quote_identifier alias_attribute.name}"
         end
 
         # Return the SQL for the visitable object
@@ -168,7 +179,7 @@ module Veritas
         #
         # @api private
         def generate_sql
-          @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{@name}"
+          @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{quote_identifier @name}"
           @sql << " ORDER BY #{@order.join(', ')}" if @order
           @sql << " LIMIT #{@limit}"               if @limit
           @sql << " OFFSET #{@offset}"             if @offset
@@ -255,7 +266,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_attribute(attribute)
-          "#{@name}.#{attribute.name}"
+          "#{quote_identifier @name}.#{quote_identifier attribute.name}"
         end
 
         # Visit an Ascending Direction

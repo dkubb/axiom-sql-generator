@@ -28,7 +28,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users' }
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users"' }
   end
 
   context 'when a projection is visited' do
@@ -38,7 +38,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id, users.name FROM users' }
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name" FROM "users"' }
   end
 
   context 'when a rename is visited' do
@@ -48,7 +48,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id AS user_id, users.name, users.age FROM users' }
+    it { should == 'SELECT DISTINCT "users"."id" AS "user_id", "users"."name", "users"."age" FROM "users"' }
   end
 
   context 'when an order is visited' do
@@ -58,7 +58,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id, users.name, users.age' }
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age"' }
   end
 
   context 'when a reverse is visited' do
@@ -68,7 +68,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id DESC, users.name DESC, users.age DESC' }
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id" DESC, "users"."name" DESC, "users"."age" DESC' }
   end
 
   context 'when a limit is visited' do
@@ -78,7 +78,7 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id, users.name, users.age LIMIT 1' }
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 1' }
   end
 
   context 'when an offset is visited' do
@@ -88,6 +88,18 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'a generated SQL query'
 
-    it { should == 'SELECT DISTINCT users.id, users.name, users.age FROM users ORDER BY users.id, users.name, users.age OFFSET 1' }
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" OFFSET 1' }
+  end
+
+  context 'when a base relation name has a quote' do
+    let(:base_relation) { BaseRelation.new('"users"', header, body) }
+
+    before do
+      object.visit(base_relation)
+    end
+
+    it_should_behave_like 'a generated SQL query'
+
+    it { should == 'SELECT DISTINCT """users"""."id", """users"""."name", """users"""."age" FROM """users"""' }
   end
 end
