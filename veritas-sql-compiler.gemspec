@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2010-12-27}
+  s.date = %q{2010-12-28}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -27,13 +27,18 @@ Gem::Specification.new do |s|
      "config/roodi.yml",
      "config/site.reek",
      "config/yardstick.yml",
+     "lib/veritas/base_relation.rb",
      "lib/veritas/sql/compiler.rb",
      "lib/veritas/sql/compiler/generator.rb",
      "lib/veritas/sql/compiler/version.rb",
      "spec/rcov.opts",
      "spec/shared/command_method_behavior.rb",
+     "spec/shared/idempotent_method_behavior.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
+     "spec/unit/veritas/base_relation/name_spec.rb",
+     "spec/unit/veritas/sql/compiler/generator/class_methods/handler_for_spec.rb",
+     "spec/unit/veritas/sql/compiler/generator/to_sql_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/visit_spec.rb",
      "tasks/ci.rake",
      "tasks/clean.rake",
@@ -58,6 +63,8 @@ Gem::Specification.new do |s|
     "spec/shared/command_method_behavior.rb",
      "spec/shared/idempotent_method_behavior.rb",
      "spec/spec_helper.rb",
+     "spec/unit/veritas/base_relation/name_spec.rb",
+     "spec/unit/veritas/sql/compiler/generator/class_methods/handler_for_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/to_sql_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/visit_spec.rb"
   ]
