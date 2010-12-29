@@ -26,11 +26,7 @@ describe Generator, '#to_sql' do
       object.visit(base_relation)
     end
 
-    it_should_behave_like 'an idempotent method'
-
-    it { should be_frozen }
-
-    it { should_not equal(@original) }
+    it_should_behave_like 'a generated SQL query'
 
     it { should == 'SELECT DISTINCT id, name, age FROM users' }
   end
@@ -40,11 +36,7 @@ describe Generator, '#to_sql' do
       object.visit(base_relation.project([ :id, :name ]))
     end
 
-    it_should_behave_like 'an idempotent method'
-
-    it { should be_frozen }
-
-    it { should_not equal(@original) }
+    it_should_behave_like 'a generated SQL query'
 
     it { should == 'SELECT DISTINCT id, name FROM users' }
   end
@@ -54,11 +46,7 @@ describe Generator, '#to_sql' do
       object.visit(base_relation.rename(:id => :user_id))
     end
 
-    it_should_behave_like 'an idempotent method'
-
-    it { should be_frozen }
-
-    it { should_not equal(@original) }
+    it_should_behave_like 'a generated SQL query'
 
     it { should == 'SELECT DISTINCT id AS user_id, name, age FROM users' }
   end
