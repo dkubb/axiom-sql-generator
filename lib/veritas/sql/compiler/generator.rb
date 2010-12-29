@@ -243,6 +243,17 @@ module Veritas
           dispatch direction.attribute
         end
 
+        # Visit an Descending Direction
+        #
+        # @param [Relation::Operation::Order::Descending] direction
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_relation_operation_order_descending(direction)
+          "#{dispatch direction.attribute} DESC"
+        end
+
       end # class Generator
     end # module Compiler
   end # module SQL

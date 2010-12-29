@@ -60,4 +60,14 @@ describe Generator, '#to_sql' do
 
     it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id, name, age' }
   end
+
+  context 'when a reverse is visited' do
+    before do
+      object.visit(base_relation.order.reverse)
+    end
+
+    it_should_behave_like 'a generated SQL query'
+
+    it { should == 'SELECT DISTINCT id, name, age FROM users ORDER BY id DESC, name DESC, age DESC' }
+  end
 end
