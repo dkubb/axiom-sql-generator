@@ -145,7 +145,7 @@ module Veritas
         #
         # @api private
         def column_for(attribute)
-          dispatch(attribute)
+          dispatch attribute
         end
 
         # Return the column alias for an attribute
