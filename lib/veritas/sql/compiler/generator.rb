@@ -170,6 +170,7 @@ module Veritas
         def generate_sql
           @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{@name}"
           @sql << " ORDER BY #{@order.join(', ')}" if @order
+          @sql << " LIMIT #{@limit}"               if @limit
           @sql.freeze
         end
 
@@ -219,6 +220,18 @@ module Veritas
         def visit_veritas_relation_operation_order(order)
           dispatch order.operand
           @order = order.directions.map { |direction| dispatch direction }
+        end
+
+        # Visit a Limit
+        #
+        # @param [Relation::Operation::Limit] limit
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_relation_operation_limit(limit)
+          dispatch limit.operand
+          @limit = limit.limit
         end
 
         # Visit an Attribute
