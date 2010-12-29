@@ -232,7 +232,7 @@ module Veritas
         # @api private
         def visit_veritas_relation_operation_limit(limit)
           dispatch limit.operand
-          @limit = limit.limit
+          @limit = dispatch limit.limit
         end
 
         # Visit an Offset
@@ -244,7 +244,7 @@ module Veritas
         # @api private
         def visit_veritas_relation_operation_offset(offset)
           dispatch offset.operand
-          @offset = offset.offset
+          @offset = dispatch offset.offset
         end
 
         # Visit an Attribute
@@ -278,6 +278,17 @@ module Veritas
         # @api private
         def visit_veritas_relation_operation_order_descending(direction)
           "#{dispatch direction.attribute} DESC"
+        end
+
+        # Visit a Numeric
+        #
+        # @param [Numeric] numeric
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_numeric(numeric)
+          numeric.to_s
         end
 
       end # class Generator

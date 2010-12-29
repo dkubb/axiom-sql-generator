@@ -8,7 +8,7 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 17
+  max_methods: 18
   exclude: []
   enabled: true
   max_instance_variables: 7
@@ -29,7 +29,8 @@ FeatureEnvy:
   exclude: [
     # TODO: remove this once visit_* methods become class methods
     # since (I don't think) they will require any state.
-    'Veritas::SQL::Compiler::Generator#visit_veritas_attribute'
+    'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
+    'Veritas::SQL::Compiler::Generator#visit_numeric'
   ]
   enabled: true
 ClassVariable:
