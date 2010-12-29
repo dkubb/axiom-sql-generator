@@ -129,14 +129,37 @@ module Veritas
         # @api private
         def columns_for(header, aliases = {})
           header.map do |attribute|
-            column = dispatch(attribute).to_s
-
-            if alias_attribute = aliases[attribute]
-              column << " AS #{dispatch alias_attribute}"
+            if aliases.key?(attribute)
+              alias_for(attribute, aliases[attribute])
+            else
+              column_for(attribute)
             end
-
-            column
           end
+        end
+
+        # Return the column for an attribute
+        #
+        # @param [Attribute] attribute
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def column_for(attribute)
+          dispatch(attribute)
+        end
+
+        # Return the column alias for an attribute
+        #
+        # @param [Attribute] attribute
+        #
+        # @param [Attribute, nil] alias_attribute
+        #   attribute to use for the alias
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def alias_for(attribute, alias_attribute)
+          "#{column_for(attribute)} AS #{dispatch alias_attribute}"
         end
 
         # Return the SQL for the visitable object
@@ -192,7 +215,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_attribute(attribute)
-          attribute.name
+          attribute.name.to_s
         end
 
       end # class Generator
