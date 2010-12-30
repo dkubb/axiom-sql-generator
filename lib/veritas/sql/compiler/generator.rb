@@ -356,7 +356,14 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inclusion(inclusion)
-          "#{dispatch inclusion.left} IN (#{dispatch inclusion.right})"
+          left  = inclusion.left
+          right = inclusion.right
+
+          if right.kind_of?(Range)
+            "#{dispatch left} BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+          else
+            "#{dispatch left} IN (#{dispatch right})"
+          end
         end
 
         # Visit an Ascending Direction
