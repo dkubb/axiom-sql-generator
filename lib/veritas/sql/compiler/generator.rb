@@ -356,9 +356,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inclusion(inclusion)
-          left  = inclusion.left
-          right = inclusion.right
-
+          left, right = inclusion.left, inclusion.right
           if right.kind_of?(Range)
             range_inclusion_sql(left, right)
           else
@@ -432,9 +430,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_exclusion(exclusion)
-          left  = exclusion.left
-          right = exclusion.right
-
+          left, right = exclusion.left, exclusion.right
           if right.kind_of?(Range)
             range_exclusion_sql(left, right)
           else
