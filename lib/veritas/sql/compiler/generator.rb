@@ -304,6 +304,17 @@ module Veritas
           "#{dispatch inequality.left} <> #{dispatch inequality.right}"
         end
 
+        # Visit an GreaterThan predicate
+        #
+        # @param [Logic::Predicate::GreaterThan] greater_than
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_greater_than(greater_than)
+          "#{dispatch greater_than.left} > #{dispatch greater_than.right}"
+        end
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction
