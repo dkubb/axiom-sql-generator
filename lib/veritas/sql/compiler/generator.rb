@@ -348,39 +348,6 @@ module Veritas
           "#{dispatch less_than_or_equal_to.left} <= #{dispatch less_than_or_equal_to.right}"
         end
 
-        # Visit an Conjunction connective
-        #
-        # @param [Logic::Connective::Conjunction] conjunction
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def visit_veritas_logic_connective_conjunction(conjunction)
-          "(#{dispatch conjunction.left} AND #{dispatch conjunction.right})"
-        end
-
-        # Visit an Disjunction connective
-        #
-        # @param [Logic::Connective::Disjunction] disjunction
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def visit_veritas_logic_connective_disjunction(disjunction)
-          "(#{dispatch disjunction.left} OR #{dispatch disjunction.right})"
-        end
-
-        # Visit an Negation connective
-        #
-        # @param [Logic::Connective::Negation] negation
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def visit_veritas_logic_connective_negation(negation)
-          "NOT #{dispatch negation.operand}"
-        end
-
         # Visit an Inclusion predicate
         #
         # @param [Logic::Predicate::Inclusion] inclusion
@@ -427,6 +394,39 @@ module Veritas
           else
             "#{dispatch left} NOT IN (#{dispatch right})"
           end
+        end
+
+        # Visit an Conjunction connective
+        #
+        # @param [Logic::Connective::Conjunction] conjunction
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_connective_conjunction(conjunction)
+          "(#{dispatch conjunction.left} AND #{dispatch conjunction.right})"
+        end
+
+        # Visit an Disjunction connective
+        #
+        # @param [Logic::Connective::Disjunction] disjunction
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_connective_disjunction(disjunction)
+          "(#{dispatch disjunction.left} OR #{dispatch disjunction.right})"
+        end
+
+        # Visit an Negation connective
+        #
+        # @param [Logic::Connective::Negation] negation
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_connective_negation(negation)
+          "NOT #{dispatch negation.operand}"
         end
 
         # Visit an Ascending Direction
