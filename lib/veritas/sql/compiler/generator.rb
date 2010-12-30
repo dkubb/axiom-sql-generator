@@ -405,15 +405,15 @@ module Veritas
           "#{dispatch direction.attribute} DESC"
         end
 
-        # Visit an Array
+        # Visit an Enumerable
         #
-        # @param [Array] array
+        # @param [Enumerable] enumerable
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_array(array)
-          "#{array.map { |entry| dispatch entry }.join(', ')}"
+        def visit_enumerable(enumerable)
+          "#{enumerable.map { |entry| dispatch entry }.join(', ')}"
         end
 
         # Visit a Numeric

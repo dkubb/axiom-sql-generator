@@ -113,7 +113,7 @@ describe Generator, '#to_sql' do
     end
 
     context 'and the predicate is inclusion' do
-      context 'using an Array' do
+      context 'using an Enumerable' do
         before do
           object.visit(base_relation.restrict { |r| r[:id].include([ 1 ]) })
         end
