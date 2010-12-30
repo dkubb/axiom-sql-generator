@@ -81,6 +81,16 @@ describe Generator, '#to_sql' do
 
       it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" > 1' }
     end
+
+    context 'and the predicate is greater than or equal to' do
+      before do
+        object.visit(base_relation.restrict { |r| r[:id].gte(1) })
+      end
+
+      it_should_behave_like 'a generated SQL query'
+
+      it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" >= 1' }
+    end
   end
 
   context 'when an order is visited' do

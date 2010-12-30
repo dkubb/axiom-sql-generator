@@ -315,6 +315,17 @@ module Veritas
           "#{dispatch greater_than.left} > #{dispatch greater_than.right}"
         end
 
+        # Visit an GreaterThanOrEqualTo predicate
+        #
+        # @param [Logic::Predicate::GreaterThanOrEqualTo] greater_than_or_equal_to
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_greater_than_or_equal_to(greater_than_or_equal_to)
+          "#{dispatch greater_than_or_equal_to.left} >= #{dispatch greater_than_or_equal_to.right}"
+        end
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction
