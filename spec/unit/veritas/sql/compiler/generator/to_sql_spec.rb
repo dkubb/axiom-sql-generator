@@ -195,6 +195,16 @@ describe Generator, '#to_sql' do
 
       it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."id" >= 1 OR "users"."id" < 10)' }
     end
+
+    context 'and the predicate is a negation' do
+      before do
+        object.visit(base_relation.restrict { |r| Logic::Connective::Negation.new(r[:id].eq(1)) })
+      end
+
+      it_should_behave_like 'a generated SQL query'
+
+      it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE NOT "users"."id" = 1' }
+    end
   end
 
   context 'when an order is visited' do
