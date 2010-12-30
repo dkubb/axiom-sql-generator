@@ -180,6 +180,7 @@ module Veritas
         # @api private
         def generate_sql
           @sql = "SELECT DISTINCT #{@columns.join(', ')} FROM #{quote_identifier @name}"
+          @sql << " WHERE #{@where}"               if @where
           @sql << " ORDER BY #{@order.join(', ')}" if @order
           @sql << " LIMIT #{@limit}"               if @limit
           @sql << " OFFSET #{@offset}"             if @offset
@@ -220,6 +221,18 @@ module Veritas
         def visit_veritas_algebra_rename(rename)
           dispatch(operand = rename.operand)
           @columns = columns_for(operand.header, rename.aliases.to_hash)
+        end
+
+        # Visit a Restriction
+        #
+        # @param [Algebra::Restriction] restriction
+        #
+        # @return [undefined]
+        #
+        # @api private
+        def visit_veritas_algebra_restriction(restriction)
+          dispatch restriction.operand
+          @where = dispatch restriction.predicate
         end
 
         # Visit an Order
@@ -267,6 +280,17 @@ module Veritas
         # @api private
         def visit_veritas_attribute(attribute)
           "#{quote_identifier @name}.#{quote_identifier attribute.name}"
+        end
+
+        # Visit an Equality predicate
+        #
+        # @param [Logic::Predicate::Equality] equality
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_equality(equality)
+          "#{dispatch equality.left} = #{dispatch equality.right}"
         end
 
         # Visit an Ascending Direction

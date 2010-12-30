@@ -51,6 +51,16 @@ describe Generator, '#to_sql' do
     it { should == 'SELECT DISTINCT "users"."id" AS "user_id", "users"."name", "users"."age" FROM "users"' }
   end
 
+  context 'when a restriction is visited' do
+    before do
+      object.visit(base_relation.restrict { |r| r[:id].eq(1) })
+    end
+
+    it_should_behave_like 'a generated SQL query'
+
+    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" = 1' }
+  end
+
   context 'when an order is visited' do
     before do
       object.visit(base_relation.order)

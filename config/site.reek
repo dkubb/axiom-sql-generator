@@ -8,10 +8,10 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 19
+  max_methods: 21
   exclude: []
   enabled: true
-  max_instance_variables: 7
+  max_instance_variables: 8
 UncommunicativeMethodName:
   accept: []
   exclude: []
@@ -57,7 +57,7 @@ NestedIterators:
   enabled: true
   max_allowed_nesting: 1
 LongMethod:
-  max_statements: 5
+  max_statements: 6
   exclude: []
   enabled: true
 Duplication:
