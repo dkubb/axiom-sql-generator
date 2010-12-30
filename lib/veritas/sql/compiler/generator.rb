@@ -360,16 +360,68 @@ module Veritas
           right = inclusion.right
 
           if right.kind_of?(Range)
-            if right.exclude_end?
-              dispatch Logic::Predicate::GreaterThanOrEqualTo.new(left, right.first).and(
-                Logic::Predicate::LessThan.new(left, right.last)
-              )
-            else
-              "#{dispatch left} BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
-            end
+            range_inclusion_sql(left, right)
           else
-            "#{dispatch left} IN (#{dispatch right})"
+            enumerable_inclusion_sql(left, right)
           end
+        end
+
+        # Return the SQL for an Inclusion using a Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def range_inclusion_sql(left, right)
+          if right.exclude_end?
+            exclusive_range_inclusion_sql(left, right)
+          else
+            inclusive_range_inclusion_sql(left, right)
+          end
+        end
+
+        # Return the SQL for an Inclusion using an exclusive Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def exclusive_range_inclusion_sql(left, right)
+          dispatch Logic::Predicate::GreaterThanOrEqualTo.new(left, right.first).and(
+            Logic::Predicate::LessThan.new(left, right.last)
+          )
+        end
+
+        # Return the SQL for an Inclusion using an inclusive Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def inclusive_range_inclusion_sql(left, right)
+          "#{dispatch left} BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+        end
+
+        # Return the SQL for an Inclusion using an Enumerable
+        #
+        # @param [Object] left
+        #
+        # @param [Enumerable] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def enumerable_inclusion_sql(left, right)
+          "#{dispatch left} IN (#{dispatch right})"
         end
 
         # Visit an Exclusion predicate
@@ -384,16 +436,68 @@ module Veritas
           right = exclusion.right
 
           if right.kind_of?(Range)
-            if right.exclude_end?
-              dispatch Logic::Predicate::LessThan.new(left, right.first).or(
-                Logic::Predicate::GreaterThanOrEqualTo.new(left, right.last)
-              )
-            else
-              "#{dispatch left} NOT BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
-            end
+            range_exclusion_sql(left, right)
           else
-            "#{dispatch left} NOT IN (#{dispatch right})"
+            enumerable_exclusion_sql(left, right)
           end
+        end
+
+        # Return the SQL for an Exclusion using a Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def range_exclusion_sql(left, right)
+          if right.exclude_end?
+            exclusive_range_exclusion_sql(left, right)
+          else
+            inclusive_range_exclusion_sql(left, right)
+          end
+        end
+
+        # Return the SQL for an Exclusion using an exclusive Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def exclusive_range_exclusion_sql(left, right)
+          dispatch Logic::Predicate::LessThan.new(left, right.first).or(
+            Logic::Predicate::GreaterThanOrEqualTo.new(left, right.last)
+          )
+        end
+
+        # Return the SQL for an Exclusion using an inclusive Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def inclusive_range_exclusion_sql(left, right)
+          "#{dispatch left} NOT BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+        end
+
+        # Return the SQL for a Inclusion using an Enumerable
+        #
+        # @param [Object] left
+        #
+        # @param [Enumerable] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def enumerable_exclusion_sql(left, right)
+          "#{dispatch left} NOT IN (#{dispatch right})"
         end
 
         # Visit an Conjunction connective
