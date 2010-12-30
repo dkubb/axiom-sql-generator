@@ -185,6 +185,16 @@ describe Generator, '#to_sql' do
 
       it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."id" >= 1 AND "users"."id" < 10)' }
     end
+
+    context 'and the predicate is a disjunction' do
+      before do
+        object.visit(base_relation.restrict { |r| r[:id].gte(1).or(r[:id].lt(10)) })
+      end
+
+      it_should_behave_like 'a generated SQL query'
+
+      it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."id" >= 1 OR "users"."id" < 10)' }
+    end
   end
 
   context 'when an order is visited' do

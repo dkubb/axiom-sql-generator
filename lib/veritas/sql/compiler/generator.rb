@@ -359,6 +359,17 @@ module Veritas
           "(#{dispatch conjunction.left} AND #{dispatch conjunction.right})"
         end
 
+        # Visit an Disjunction connective
+        #
+        # @param [Logic::Connective::Disjunction] disjunction
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_connective_disjunction(disjunction)
+          "(#{dispatch disjunction.left} OR #{dispatch disjunction.right})"
+        end
+
         # Visit an Inclusion predicate
         #
         # @param [Logic::Predicate::Inclusion] inclusion
