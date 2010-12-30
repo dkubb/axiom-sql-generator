@@ -1,0 +1,13 @@
+* Add one spec for each Attribute type
+  * Add a handler for each primitive
+
+* Add specs for binary relations
+
+* Split handlers for primitives, attribute, expression and direction
+  into a separate class.
+  * Define class methods for each handler
+  * In addition to object, pass in the qualified name to use
+  * Update Generator.handler so the value is a reference to the
+    method object for each handler rather than a symbol name.
+
+* Adjust reek and roodi scores down to lower thresholds
