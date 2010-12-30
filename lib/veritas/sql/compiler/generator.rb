@@ -383,6 +383,30 @@ module Veritas
           end
         end
 
+        # Visit an Exclusion predicate
+        #
+        # @param [Logic::Predicate::Exclusion] exclusion
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_exclusion(exclusion)
+          left  = exclusion.left
+          right = exclusion.right
+
+          if right.kind_of?(Range)
+            if right.exclude_end?
+              dispatch Logic::Predicate::LessThan.new(left, right.first).and(
+                Logic::Predicate::GreaterThanOrEqualTo.new(left, right.last)
+              )
+            else
+              "#{dispatch left} NOT BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+            end
+          else
+            "#{dispatch left} NOT IN (#{dispatch right})"
+          end
+        end
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction

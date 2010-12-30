@@ -144,6 +144,38 @@ describe Generator, '#to_sql' do
       end
     end
 
+    context 'and the predicate is exclusion' do
+      context 'using an Enumerable' do
+        before do
+          object.visit(base_relation.restrict { |r| r[:id].exclude([ 1 ]) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" NOT IN (1)' }
+      end
+
+      context 'using an inclusive Range' do
+        before do
+          object.visit(base_relation.restrict { |r| r[:id].exclude(1..10) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" NOT BETWEEN 1 AND 10' }
+      end
+
+      context 'using an exclusive Range' do
+        before do
+          object.visit(base_relation.restrict { |r| r[:id].exclude(1...10) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."id" < 1 AND "users"."id" >= 10)' }
+      end
+    end
+
     context 'and the predicate is a conjunction' do
       before do
         object.visit(base_relation.restrict { |r| r[:id].gte(1).and(r[:id].lt(10)) })
