@@ -337,6 +337,17 @@ module Veritas
           "#{dispatch less_than.left} < #{dispatch less_than.right}"
         end
 
+        # Visit an LessThanOrEqualTo predicate
+        #
+        # @param [Logic::Predicate::LessThanOrEqualTo] less_than_or_equal_to
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_less_than_or_equal_to(less_than_or_equal_to)
+          "#{dispatch less_than_or_equal_to.left} <= #{dispatch less_than_or_equal_to.right}"
+        end
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction
