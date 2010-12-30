@@ -115,12 +115,12 @@ describe Generator, '#to_sql' do
     context 'and the predicate is inclusion' do
       context 'using an Enumerable' do
         before do
-          object.visit(base_relation.restrict { |r| r[:id].include([ 1 ]) })
+          object.visit(base_relation.restrict { |r| r[:id].include([ 1, 2 ]) })
         end
 
         it_should_behave_like 'a generated SQL query'
 
-        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" IN (1)' }
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" IN (1, 2)' }
       end
 
       context 'using an inclusive Range' do
@@ -147,12 +147,12 @@ describe Generator, '#to_sql' do
     context 'and the predicate is exclusion' do
       context 'using an Enumerable' do
         before do
-          object.visit(base_relation.restrict { |r| r[:id].exclude([ 1 ]) })
+          object.visit(base_relation.restrict { |r| r[:id].exclude([ 1, 2 ]) })
         end
 
         it_should_behave_like 'a generated SQL query'
 
-        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" NOT IN (1)' }
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" NOT IN (1, 2)' }
       end
 
       context 'using an inclusive Range' do
