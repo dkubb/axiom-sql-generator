@@ -371,7 +371,13 @@ module Veritas
           right = inclusion.right
 
           if right.kind_of?(Range)
-            "#{dispatch left} BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+            if right.exclude_end?
+              dispatch Logic::Predicate::GreaterThanOrEqualTo.new(left, right.first).and(
+                Logic::Predicate::LessThan.new(left, right.last)
+              )
+            else
+              "#{dispatch left} BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+            end
           else
             "#{dispatch left} IN (#{dispatch right})"
           end
