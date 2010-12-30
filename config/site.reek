@@ -8,7 +8,7 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 21
+  max_methods: 40
   exclude: []
   enabled: true
   max_instance_variables: 8
@@ -30,7 +30,9 @@ FeatureEnvy:
     # TODO: change these methods to be class methods
     'Veritas::SQL::Compiler::Generator#quote_identifier',
     'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
-    'Veritas::SQL::Compiler::Generator#visit_numeric'
+    'Veritas::SQL::Compiler::Generator#visit_numeric',
+    'Veritas::SQL::Compiler::Generator#exclusive_range_exclusion_sql',
+    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql'
   ]
   enabled: true
 ClassVariable:
@@ -71,7 +73,9 @@ UtilityFunction:
     # TODO: change these methods to be class methods
     'Veritas::SQL::Compiler::Generator#quote_identifier',
     'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
-    'Veritas::SQL::Compiler::Generator#visit_numeric'
+    'Veritas::SQL::Compiler::Generator#visit_numeric',
+    'Veritas::SQL::Compiler::Generator#exclusive_range_exclusion_sql',
+    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql'
   ]
   enabled: true
 Attribute:
@@ -86,11 +90,17 @@ UncommunicativeVariableName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 SimulatedPolymorphism:
-  exclude: []
+  exclude: [
+    # TODO: split Range handling methods into separate class/module
+    'Veritas::SQL::Compiler::Generator'
+  ]
   enabled: true
   max_ifs: 1
 DataClump:
-  exclude: []
+  exclude: [
+    # TODO: split Range handling methods into separate class/module
+    'Veritas::SQL::Compiler::Generator'
+  ]
   enabled: true
   max_copies: 1
   min_clump_size: 2
