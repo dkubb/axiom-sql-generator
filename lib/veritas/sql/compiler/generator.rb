@@ -348,6 +348,17 @@ module Veritas
           "#{dispatch less_than_or_equal_to.left} <= #{dispatch less_than_or_equal_to.right}"
         end
 
+        # Visit an Conjunction connective
+        #
+        # @param [Logic::Connective::Conjunction] conjunction
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_connective_conjunction(conjunction)
+          "(#{dispatch conjunction.left} AND #{dispatch conjunction.right})"
+        end
+
         # Visit an Inclusion predicate
         #
         # @param [Logic::Predicate::Inclusion] inclusion
