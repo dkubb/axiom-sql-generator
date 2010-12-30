@@ -172,7 +172,7 @@ describe Generator, '#to_sql' do
 
         it_should_behave_like 'a generated SQL query'
 
-        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."id" < 1 AND "users"."id" >= 10)' }
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."id" < 1 OR "users"."id" >= 10)' }
       end
     end
 

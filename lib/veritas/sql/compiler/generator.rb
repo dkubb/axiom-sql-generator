@@ -385,7 +385,7 @@ module Veritas
 
           if right.kind_of?(Range)
             if right.exclude_end?
-              dispatch Logic::Predicate::LessThan.new(left, right.first).and(
+              dispatch Logic::Predicate::LessThan.new(left, right.first).or(
                 Logic::Predicate::GreaterThanOrEqualTo.new(left, right.last)
               )
             else
