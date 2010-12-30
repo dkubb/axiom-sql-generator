@@ -52,13 +52,25 @@ describe Generator, '#to_sql' do
   end
 
   context 'when a restriction is visited' do
-    before do
-      object.visit(base_relation.restrict { |r| r[:id].eq(1) })
+    context 'and the predicate is equality' do
+      before do
+        object.visit(base_relation.restrict { |r| r[:id].eq(1) })
+      end
+
+      it_should_behave_like 'a generated SQL query'
+
+      it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" = 1' }
     end
 
-    it_should_behave_like 'a generated SQL query'
+    context 'and the predicate is inequality' do
+      before do
+        object.visit(base_relation.restrict { |r| r[:id].ne(1) })
+      end
 
-    it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" = 1' }
+      it_should_behave_like 'a generated SQL query'
+
+      it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" <> 1' }
+    end
   end
 
   context 'when an order is visited' do

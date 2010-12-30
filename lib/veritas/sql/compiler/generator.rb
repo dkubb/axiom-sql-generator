@@ -293,6 +293,17 @@ module Veritas
           "#{dispatch equality.left} = #{dispatch equality.right}"
         end
 
+        # Visit an Inequality predicate
+        #
+        # @param [Logic::Predicate::Inequality] inequality
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_inequality(inequality)
+          "#{dispatch inequality.left} <> #{dispatch inequality.right}"
+        end
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction
