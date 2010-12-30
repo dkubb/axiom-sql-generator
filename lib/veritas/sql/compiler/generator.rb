@@ -348,6 +348,17 @@ module Veritas
           "#{dispatch less_than_or_equal_to.left} <= #{dispatch less_than_or_equal_to.right}"
         end
 
+        # Visit an Inclusion predicate
+        #
+        # @param [Logic::Predicate::Inclusion] inclusion
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_veritas_logic_predicate_inclusion(inclusion)
+          "#{dispatch inclusion.left} IN (#{dispatch inclusion.right})"
+        end
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction
@@ -368,6 +379,17 @@ module Veritas
         # @api private
         def visit_veritas_relation_operation_order_descending(direction)
           "#{dispatch direction.attribute} DESC"
+        end
+
+        # Visit an Array
+        #
+        # @param [Array] array
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_array(array)
+          "#{array.map { |entry| dispatch entry }.join(', ')}"
         end
 
         # Visit a Numeric
