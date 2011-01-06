@@ -11,3 +11,5 @@
     method object for each handler rather than a symbol name.
 
 * Adjust reek and roodi scores down to lower thresholds
+
+* Handle cases where nil is used in Equality and Inequality predicates
