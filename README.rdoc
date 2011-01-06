@@ -1,3 +1,7 @@
 == Veritas SQL Compiler
 
 Generate SQL from a veritas relation
+
+== Copyright
+
+Copyright (c) 2010-2011 Dan Kubb. See LICENSE for details.
