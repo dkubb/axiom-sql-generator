@@ -27,7 +27,11 @@ describe Generator, '#visit' do
       object.visit(visitable)
     end
 
-    specify { expect { subject }.to raise_error(TypeError) }
+    if RUBY_VERSION >= '1.9'
+      specify { expect { subject }.to raise_error(RuntimeError) }
+    else
+      specify { expect { subject }.to raise_error(TypeError) }
+    end
   end
 
   context 'with an unhandled object' do
