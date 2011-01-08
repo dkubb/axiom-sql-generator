@@ -502,10 +502,9 @@ module Veritas
         #
         # @api private
         def exclusive_range_inclusion_sql(inclusion)
-          left, right = inclusion.left, inclusion.right
-          dispatch Logic::Predicate::GreaterThanOrEqualTo.new(left, right.first).and(
-            Logic::Predicate::LessThan.new(left, right.last)
-          )
+          left  = new_from_enumerable_predicate(Logic::Predicate::GreaterThanOrEqualTo, inclusion, :first)
+          right = new_from_enumerable_predicate(Logic::Predicate::LessThan,             inclusion, :last)
+          dispatch left.and(right)
         end
 
         # Return the SQL for an Exclusion using an exclusive Range
@@ -516,10 +515,24 @@ module Veritas
         #
         # @api private
         def exclusive_range_exclusion_sql(exclusion)
-          left, right = exclusion.left, exclusion.right
-          dispatch Logic::Predicate::LessThan.new(left, right.first).or(
-            Logic::Predicate::GreaterThanOrEqualTo.new(left, right.last)
-          )
+          left  = new_from_enumerable_predicate(Logic::Predicate::LessThan,             exclusion, :first)
+          right = new_from_enumerable_predicate(Logic::Predicate::GreaterThanOrEqualTo, exclusion, :last)
+          dispatch left.or(right)
+        end
+
+        # Instantiate a new Predicate object from an Enumerable Predicate
+        #
+        # @param [Class<Logic::Predicate>] klass
+        #   the type of predicate to create
+        # @param [Logic::Predicate::Enumerable] predicate
+        #   the enumerable predicate
+        # @param [Symbol] method
+        #   the method to call on the right operand of the predicate
+        # @return [Logic::Predicate]
+        #
+        # @api private
+        def new_from_enumerable_predicate(klass, predicate, method)
+          klass.new(predicate.left, predicate.right.send(method))
         end
 
         # Return the SQL for a predicate
