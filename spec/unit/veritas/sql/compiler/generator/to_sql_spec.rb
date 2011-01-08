@@ -75,13 +75,25 @@ describe Generator, '#to_sql' do
     end
 
     context 'and the predicate is inequality' do
-      before do
-        object.visit(base_relation.restrict { |r| r[:id].ne(1) })
+      context 'and the value is not nil' do
+        before do
+          object.visit(base_relation.restrict { |r| r[:id].ne(1) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" <> 1' }
       end
 
-      it_should_behave_like 'a generated SQL query'
+      context 'and the value is nil' do
+        before do
+          object.visit(base_relation.restrict { |r| r[:id].ne(nil) })
+        end
 
-      it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" <> 1' }
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" IS NOT NULL' }
+      end
     end
 
     context 'and the predicate is greater than' do
