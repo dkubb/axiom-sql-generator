@@ -8,6 +8,24 @@ module Veritas
         # Raised when the object is not handled by the generator
         class UnknownObject < StandardError; end
 
+        QUOTE                    = '"'.freeze
+        ESCAPED_QUOTE            = '""'.freeze
+        NULL                     = 'NULL'.freeze
+        EQUAL_TO                 = '='.freeze
+        EQUAL_TO_NULL            = 'IS'.freeze
+        NOT_EQUAL_TO             = '<>'.freeze
+        NOT_EQUAL_TO_NULL        = 'IS NOT'.freeze
+        GREATER_THAN             = '>'.freeze
+        GREATER_THAN_OR_EQUAL_TO = '>='.freeze
+        LESS_THAN                = '<'.freeze
+        LESS_THAN_OR_EQUAL_TO    = '<='.freeze
+        IN                       = 'IN'.freeze
+        NOT_IN                   = 'NOT IN'.freeze
+        AND                      = 'AND'.freeze
+        OR                       = 'OR'.freeze
+        BETWEEN                  = 'BETWEEN'.freeze
+        NOT_BETWEEN              = 'NOT BETWEEN'.freeze
+
         # Lookup the handler method for a visitable object
         #
         # @param [Visitable] visitable
@@ -125,7 +143,7 @@ module Veritas
         #
         # @api private
         def quote_identifier(identifier)
-          %'"#{identifier.to_s.gsub('"', '""')}"'
+          %'"#{identifier.to_s.gsub(QUOTE, ESCAPED_QUOTE)}"'
         end
 
         # Return a list of columns in a header
@@ -290,7 +308,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_equality(equality)
-          predicate_sql(equality.right.nil? ? 'IS' : '=', equality)
+          predicate_sql(equality.right.nil? ? EQUAL_TO_NULL : EQUAL_TO, equality)
         end
 
         # Visit an Inequality predicate
@@ -301,7 +319,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inequality(inequality)
-          predicate_sql(inequality.right.nil? ? 'IS NOT' : '<>', inequality)
+          predicate_sql(inequality.right.nil? ? NOT_EQUAL_TO_NULL : NOT_EQUAL_TO, inequality)
         end
 
         # Visit an GreaterThan predicate
@@ -312,7 +330,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_greater_than(greater_than)
-          predicate_sql('>', greater_than)
+          predicate_sql(GREATER_THAN, greater_than)
         end
 
         # Visit an GreaterThanOrEqualTo predicate
@@ -323,7 +341,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_greater_than_or_equal_to(greater_than_or_equal_to)
-          predicate_sql('>=', greater_than_or_equal_to)
+          predicate_sql(GREATER_THAN_OR_EQUAL_TO, greater_than_or_equal_to)
         end
 
         # Visit an LessThan predicate
@@ -334,7 +352,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_less_than(less_than)
-          predicate_sql('<', less_than)
+          predicate_sql(LESS_THAN, less_than)
         end
 
         # Visit an LessThanOrEqualTo predicate
@@ -345,7 +363,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_less_than_or_equal_to(less_than_or_equal_to)
-          predicate_sql('<=', less_than_or_equal_to)
+          predicate_sql(LESS_THAN_OR_EQUAL_TO, less_than_or_equal_to)
         end
 
         # Visit an Inclusion predicate
@@ -359,7 +377,7 @@ module Veritas
           if inclusion.right.kind_of?(Range)
             range_inclusion_sql(inclusion)
           else
-            enumerable_sql('IN', inclusion)
+            enumerable_sql(IN, inclusion)
           end
         end
 
@@ -374,7 +392,7 @@ module Veritas
           if exclusion.right.kind_of?(Range)
             range_exclusion_sql(exclusion)
           else
-            enumerable_sql('NOT IN', exclusion)
+            enumerable_sql(NOT_IN, exclusion)
           end
         end
 
@@ -386,7 +404,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_connective_conjunction(conjunction)
-          binary_connective_sql('AND', conjunction)
+          binary_connective_sql(AND, conjunction)
         end
 
         # Visit an Disjunction connective
@@ -397,7 +415,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_connective_disjunction(disjunction)
-          binary_connective_sql('OR', disjunction)
+          binary_connective_sql(OR, disjunction)
         end
 
         # Visit an Negation connective
@@ -461,7 +479,7 @@ module Veritas
         #
         # @api private
         def visit_nil_class(*)
-          'NULL'
+          NULL
         end
 
         # Return the SQL for an Inclusion using a Range
@@ -475,7 +493,7 @@ module Veritas
           if inclusion.right.exclude_end?
             exclusive_range_inclusion_sql(inclusion)
           else
-            inclusive_range_sql('BETWEEN', inclusion)
+            inclusive_range_sql(BETWEEN, inclusion)
           end
         end
 
@@ -490,7 +508,7 @@ module Veritas
           if exclusion.right.exclude_end?
             exclusive_range_exclusion_sql(exclusion)
           else
-            inclusive_range_sql('NOT BETWEEN', exclusion)
+            inclusive_range_sql(NOT_BETWEEN, exclusion)
           end
         end
 
