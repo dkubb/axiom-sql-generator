@@ -386,7 +386,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_connective_conjunction(conjunction)
-          "(#{dispatch conjunction.left} AND #{dispatch conjunction.right})"
+          binary_connective_sql('AND', conjunction)
         end
 
         # Visit an Disjunction connective
@@ -397,7 +397,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_connective_disjunction(disjunction)
-          "(#{dispatch disjunction.left} OR #{dispatch disjunction.right})"
+          binary_connective_sql('OR', disjunction)
         end
 
         # Visit an Negation connective
@@ -560,6 +560,17 @@ module Veritas
         # @api private
         def enumerable_sql(operator, predicate)
           "#{dispatch predicate.left} #{operator} (#{dispatch predicate.right})"
+        end
+
+        # Return the SQL for a Binary Connective
+        #
+        # @param [Logic::Connective::Binary] binary_connective
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def binary_connective_sql(operator, binary_connective)
+          "(#{dispatch binary_connective.left} #{operator} #{dispatch binary_connective.right})"
         end
 
       end # class Generator
