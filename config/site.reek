@@ -8,7 +8,7 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 40
+  max_methods: 42
   exclude: []
   enabled: true
   max_instance_variables: 8
@@ -21,7 +21,7 @@ UncommunicativeMethodName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LongParameterList:
-  max_params: 2
+  max_params: 3
   exclude: []
   enabled: true
   overrides: {}
@@ -32,7 +32,8 @@ FeatureEnvy:
     'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
     'Veritas::SQL::Compiler::Generator#visit_numeric',
     'Veritas::SQL::Compiler::Generator#exclusive_range_exclusion_sql',
-    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql'
+    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql',
+    'Veritas::SQL::Compiler::Generator#new_from_enumerable_predicate'
   ]
   enabled: true
 ClassVariable:
@@ -75,7 +76,8 @@ UtilityFunction:
     'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
     'Veritas::SQL::Compiler::Generator#visit_numeric',
     'Veritas::SQL::Compiler::Generator#exclusive_range_exclusion_sql',
-    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql'
+    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql',
+    'Veritas::SQL::Compiler::Generator#new_from_enumerable_predicate'
   ]
   enabled: true
 Attribute:
