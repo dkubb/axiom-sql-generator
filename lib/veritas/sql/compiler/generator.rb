@@ -290,11 +290,10 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_equality(equality)
-          left, right  = equality.left, equality.right
-          if right.nil?
-            nil_right_sql('IS', left, right)
+          if equality.right.nil?
+            predicate_sql('IS', equality)
           else
-            not_nil_right_sql('=', left, right)
+            predicate_sql('=', equality)
           end
         end
 
@@ -306,11 +305,10 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inequality(inequality)
-          left, right  = inequality.left, inequality.right
-          if right.nil?
-            nil_right_sql('IS NOT', left, right)
+          if inequality.right.nil?
+            predicate_sql('IS NOT', inequality)
           else
-            not_nil_right_sql('<>', left, right)
+            predicate_sql('<>', inequality)
           end
         end
 
@@ -322,7 +320,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_greater_than(greater_than)
-          "#{dispatch greater_than.left} > #{dispatch greater_than.right}"
+          predicate_sql('>', greater_than)
         end
 
         # Visit an GreaterThanOrEqualTo predicate
@@ -333,7 +331,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_greater_than_or_equal_to(greater_than_or_equal_to)
-          "#{dispatch greater_than_or_equal_to.left} >= #{dispatch greater_than_or_equal_to.right}"
+          predicate_sql('>=', greater_than_or_equal_to)
         end
 
         # Visit an LessThan predicate
@@ -344,7 +342,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_less_than(less_than)
-          "#{dispatch less_than.left} < #{dispatch less_than.right}"
+          predicate_sql('<', less_than)
         end
 
         # Visit an LessThanOrEqualTo predicate
@@ -355,7 +353,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_less_than_or_equal_to(less_than_or_equal_to)
-          "#{dispatch less_than_or_equal_to.left} <= #{dispatch less_than_or_equal_to.right}"
+          predicate_sql('<=', less_than_or_equal_to)
         end
 
         # Visit an Inclusion predicate
@@ -540,34 +538,17 @@ module Veritas
           )
         end
 
-        # Return the SQL for an operation on a nil right value
+        # Return the SQL for a predicate
         #
         # @param [#to_s] operator
         #
-        # @param [Object] left
-        #
-        # @param [NilClass] right
+        # @param [Logic::Predicate] predicate
         #
         # @return [#to_s]
         #
         # @api private
-        def nil_right_sql(operator, left, right)
-          "#{dispatch left} #{operator} #{dispatch right}"
-        end
-
-        # Return the SQL for an operation on a not nil right value
-        #
-        # @param [#to_s] operator
-        #
-        # @param [Object] left
-        #
-        # @param [NilClass] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def not_nil_right_sql(operator, left, right)
-          "#{dispatch left} #{operator} #{dispatch right}"
+        def predicate_sql(operator, predicate)
+          "#{dispatch predicate.left} #{operator} #{dispatch predicate.right}"
         end
 
         # Return the SQL for an operation using an inclusive Range
