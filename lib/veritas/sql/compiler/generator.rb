@@ -356,11 +356,10 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inclusion(inclusion)
-          left, right = inclusion.left, inclusion.right
-          if right.kind_of?(Range)
-            range_inclusion_sql(left, right)
+          if inclusion.right.kind_of?(Range)
+            range_inclusion_sql(inclusion)
           else
-            enumerable_sql('IN', left, right)
+            enumerable_sql('IN', inclusion)
           end
         end
 
@@ -372,11 +371,10 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_exclusion(exclusion)
-          left, right = exclusion.left, exclusion.right
-          if right.kind_of?(Range)
-            range_exclusion_sql(left, right)
+          if exclusion.right.kind_of?(Range)
+            range_exclusion_sql(exclusion)
           else
-            enumerable_sql('NOT IN', left, right)
+            enumerable_sql('NOT IN', exclusion)
           end
         end
 
@@ -468,48 +466,43 @@ module Veritas
 
         # Return the SQL for an Inclusion using a Range
         #
-        # @param [Object] left
-        #
-        # @param [Range] right
+        # @param [Logic::Predicate::Inclusion] predicate
         #
         # @return [#to_s]
         #
         # @api private
-        def range_inclusion_sql(left, right)
-          if right.exclude_end?
-            exclusive_range_inclusion_sql(left, right)
+        def range_inclusion_sql(inclusion)
+          if inclusion.right.exclude_end?
+            exclusive_range_inclusion_sql(inclusion)
           else
-            inclusive_range_sql('BETWEEN', left, right)
+            inclusive_range_sql('BETWEEN', inclusion)
           end
         end
 
         # Return the SQL for an Exclusion using a Range
         #
-        # @param [Object] left
-        #
-        # @param [Range] right
+        # @param [Logic::Predicate::Exclusion] exclusion
         #
         # @return [#to_s]
         #
         # @api private
-        def range_exclusion_sql(left, right)
-          if right.exclude_end?
-            exclusive_range_exclusion_sql(left, right)
+        def range_exclusion_sql(exclusion)
+          if exclusion.right.exclude_end?
+            exclusive_range_exclusion_sql(exclusion)
           else
-            inclusive_range_sql('NOT BETWEEN', left, right)
+            inclusive_range_sql('NOT BETWEEN', exclusion)
           end
         end
 
         # Return the SQL for an Inclusion using an exclusive Range
         #
-        # @param [Object] left
-        #
-        # @param [Range] right
+        # @param [Logic::Predicate::Inclusion] inclusion
         #
         # @return [#to_s]
         #
         # @api private
-        def exclusive_range_inclusion_sql(left, right)
+        def exclusive_range_inclusion_sql(inclusion)
+          left, right = inclusion.left, inclusion.right
           dispatch Logic::Predicate::GreaterThanOrEqualTo.new(left, right.first).and(
             Logic::Predicate::LessThan.new(left, right.last)
           )
@@ -517,14 +510,13 @@ module Veritas
 
         # Return the SQL for an Exclusion using an exclusive Range
         #
-        # @param [Object] left
-        #
-        # @param [Range] right
+        # @param [Logic::Predicate::Exclusion] exclusion
         #
         # @return [#to_s]
         #
         # @api private
-        def exclusive_range_exclusion_sql(left, right)
+        def exclusive_range_exclusion_sql(exclusion)
+          left, right = exclusion.left, exclusion.right
           dispatch Logic::Predicate::LessThan.new(left, right.first).or(
             Logic::Predicate::GreaterThanOrEqualTo.new(left, right.last)
           )
@@ -547,30 +539,27 @@ module Veritas
         #
         # @param [#to_s] operator
         #
-        # @param [Object] left
-        #
-        # @param [Range] right
+        # @param [Logic::Predicate::Enumerable] predicate
         #
         # @return [#to_s]
         #
         # @api private
-        def inclusive_range_sql(operator, left, right)
-          "#{dispatch left} #{operator} #{dispatch right.first} AND #{dispatch right.last}"
+        def inclusive_range_sql(operator, predicate)
+          right = predicate.right
+          "#{dispatch predicate.left} #{operator} #{dispatch right.first} AND #{dispatch right.last}"
         end
 
-        # Return the SQL for an operation using an Enumerable
+        # Return the SQL for a predicate using an Enumerable
         #
         # @param [#to_s] operator
         #
-        # @param [Object] left
-        #
-        # @param [Enumerable] right
+        # @param [Logic::Predicate] predicate
         #
         # @return [#to_s]
         #
         # @api private
-        def enumerable_sql(operator, left, right)
-          "#{dispatch left} #{operator} (#{dispatch right})"
+        def enumerable_sql(operator, predicate)
+          "#{dispatch predicate.left} #{operator} (#{dispatch predicate.right})"
         end
 
       end # class Generator
