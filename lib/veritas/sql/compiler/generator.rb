@@ -370,7 +370,7 @@ module Veritas
           if right.kind_of?(Range)
             range_inclusion_sql(left, right)
           else
-            enumerable_inclusion_sql(left, right)
+            enumerable_sql('IN', left, right)
           end
         end
 
@@ -386,7 +386,7 @@ module Veritas
           if right.kind_of?(Range)
             range_exclusion_sql(left, right)
           else
-            enumerable_exclusion_sql(left, right)
+            enumerable_sql('NOT IN', left, right)
           end
         end
 
@@ -478,7 +478,7 @@ module Veritas
 
         # Return statement for a nil right value
         #
-        # @param [String] operator
+        # @param [#to_s] operator
         #
         # @param [Object] left
         #
@@ -493,7 +493,7 @@ module Veritas
 
         # Return statement for a not nil right value
         #
-        # @param [String] operator
+        # @param [#to_s] operator
         #
         # @param [Object] left
         #
@@ -553,6 +553,8 @@ module Veritas
 
         # Return the SQL for an Inclusion using an Enumerable
         #
+        # @param [#to_s] operator
+        #
         # @param [Object] left
         #
         # @param [Enumerable] right
@@ -560,8 +562,8 @@ module Veritas
         # @return [#to_s]
         #
         # @api private
-        def enumerable_inclusion_sql(left, right)
-          "#{dispatch left} IN (#{dispatch right})"
+        def enumerable_sql(operator, left, right)
+          "#{dispatch left} #{operator} (#{dispatch right})"
         end
 
         # Return the SQL for an Exclusion using a Range
@@ -607,19 +609,6 @@ module Veritas
         # @api private
         def inclusive_range_exclusion_sql(left, right)
           "#{dispatch left} NOT BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
-        end
-
-        # Return the SQL for a Inclusion using an Enumerable
-        #
-        # @param [Object] left
-        #
-        # @param [Enumerable] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def enumerable_exclusion_sql(left, right)
-          "#{dispatch left} NOT IN (#{dispatch right})"
         end
 
       end # class Generator
