@@ -290,11 +290,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_equality(equality)
-          if equality.right.nil?
-            predicate_sql('IS', equality)
-          else
-            predicate_sql('=', equality)
-          end
+          predicate_sql(equality.right.nil? ? 'IS' : '=', equality)
         end
 
         # Visit an Inequality predicate
@@ -305,11 +301,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inequality(inequality)
-          if inequality.right.nil?
-            predicate_sql('IS NOT', inequality)
-          else
-            predicate_sql('<>', inequality)
-          end
+          predicate_sql(inequality.right.nil? ? 'IS NOT' : '<>', inequality)
         end
 
         # Visit an GreaterThan predicate
