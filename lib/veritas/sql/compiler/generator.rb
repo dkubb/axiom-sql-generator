@@ -290,7 +290,38 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_equality(equality)
-          "#{dispatch equality.left} = #{dispatch equality.right}"
+          left, right  = equality.left, equality.right
+          if right.nil?
+            nil_equality(left, right)
+          else
+            not_nil_equality(left, right)
+          end
+        end
+
+        # Return Equality statement for a nil right value
+        #
+        # @param [Object] left
+        #
+        # @param [NilClass] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def nil_equality(left, right)
+          "#{dispatch left} IS #{dispatch right}"
+        end
+
+        # Return Equality statement for not nil values
+        #
+        # @param [Object] left
+        #
+        # @param [Object] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def not_nil_equality(left, right)
+          "#{dispatch left} = #{dispatch right}"
         end
 
         # Visit an Inequality predicate
@@ -571,6 +602,15 @@ module Veritas
         # @api private
         def visit_numeric(numeric)
           numeric.to_s
+        end
+
+        # Visit a nil
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def visit_nil_class(*)
+          'NULL'
         end
 
       end # class Generator
