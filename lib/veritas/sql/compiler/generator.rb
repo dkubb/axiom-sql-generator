@@ -292,9 +292,9 @@ module Veritas
         def visit_veritas_logic_predicate_equality(equality)
           left, right  = equality.left, equality.right
           if right.nil?
-            nil_right_statement('IS', left, right)
+            nil_right_sql('IS', left, right)
           else
-            not_nil_right_statement('=', left, right)
+            not_nil_right_sql('=', left, right)
           end
         end
 
@@ -308,9 +308,9 @@ module Veritas
         def visit_veritas_logic_predicate_inequality(inequality)
           left, right  = inequality.left, inequality.right
           if right.nil?
-            nil_right_statement('IS NOT', left, right)
+            nil_right_sql('IS NOT', left, right)
           else
-            not_nil_right_statement('<>', left, right)
+            not_nil_right_sql('<>', left, right)
           end
         end
 
@@ -476,36 +476,6 @@ module Veritas
           'NULL'
         end
 
-        # Return statement for a nil right value
-        #
-        # @param [#to_s] operator
-        #
-        # @param [Object] left
-        #
-        # @param [NilClass] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def nil_right_statement(operator, left, right)
-          "#{dispatch left} #{operator} #{dispatch right}"
-        end
-
-        # Return statement for a not nil right value
-        #
-        # @param [#to_s] operator
-        #
-        # @param [Object] left
-        #
-        # @param [NilClass] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def not_nil_right_statement(operator, left, right)
-          "#{dispatch left} #{operator} #{dispatch right}"
-        end
-
         # Return the SQL for an Inclusion using a Range
         #
         # @param [Object] left
@@ -519,7 +489,24 @@ module Veritas
           if right.exclude_end?
             exclusive_range_inclusion_sql(left, right)
           else
-            inclusive_range_inclusion_sql(left, right)
+            inclusive_range_sql('BETWEEN', left, right)
+          end
+        end
+
+        # Return the SQL for an Exclusion using a Range
+        #
+        # @param [Object] left
+        #
+        # @param [Range] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def range_exclusion_sql(left, right)
+          if right.exclude_end?
+            exclusive_range_exclusion_sql(left, right)
+          else
+            inclusive_range_sql('NOT BETWEEN', left, right)
           end
         end
 
@@ -538,51 +525,6 @@ module Veritas
           )
         end
 
-        # Return the SQL for an Inclusion using an inclusive Range
-        #
-        # @param [Object] left
-        #
-        # @param [Range] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def inclusive_range_inclusion_sql(left, right)
-          "#{dispatch left} BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
-        end
-
-        # Return the SQL for an Inclusion using an Enumerable
-        #
-        # @param [#to_s] operator
-        #
-        # @param [Object] left
-        #
-        # @param [Enumerable] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def enumerable_sql(operator, left, right)
-          "#{dispatch left} #{operator} (#{dispatch right})"
-        end
-
-        # Return the SQL for an Exclusion using a Range
-        #
-        # @param [Object] left
-        #
-        # @param [Range] right
-        #
-        # @return [#to_s]
-        #
-        # @api private
-        def range_exclusion_sql(left, right)
-          if right.exclude_end?
-            exclusive_range_exclusion_sql(left, right)
-          else
-            inclusive_range_exclusion_sql(left, right)
-          end
-        end
-
         # Return the SQL for an Exclusion using an exclusive Range
         #
         # @param [Object] left
@@ -598,7 +540,39 @@ module Veritas
           )
         end
 
-        # Return the SQL for an Exclusion using an inclusive Range
+        # Return the SQL for an operation on a nil right value
+        #
+        # @param [#to_s] operator
+        #
+        # @param [Object] left
+        #
+        # @param [NilClass] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def nil_right_sql(operator, left, right)
+          "#{dispatch left} #{operator} #{dispatch right}"
+        end
+
+        # Return the SQL for an operation on a not nil right value
+        #
+        # @param [#to_s] operator
+        #
+        # @param [Object] left
+        #
+        # @param [NilClass] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def not_nil_right_sql(operator, left, right)
+          "#{dispatch left} #{operator} #{dispatch right}"
+        end
+
+        # Return the SQL for an operation using an inclusive Range
+        #
+        # @param [#to_s] operator
         #
         # @param [Object] left
         #
@@ -607,8 +581,23 @@ module Veritas
         # @return [#to_s]
         #
         # @api private
-        def inclusive_range_exclusion_sql(left, right)
-          "#{dispatch left} NOT BETWEEN #{dispatch right.first} AND #{dispatch right.last}"
+        def inclusive_range_sql(operator, left, right)
+          "#{dispatch left} #{operator} #{dispatch right.first} AND #{dispatch right.last}"
+        end
+
+        # Return the SQL for an operation using an Enumerable
+        #
+        # @param [#to_s] operator
+        #
+        # @param [Object] left
+        #
+        # @param [Enumerable] right
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def enumerable_sql(operator, left, right)
+          "#{dispatch left} #{operator} (#{dispatch right})"
         end
 
       end # class Generator
