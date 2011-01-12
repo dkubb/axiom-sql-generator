@@ -319,7 +319,19 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inequality(inequality)
-          predicate_sql(inequality.right.nil? ? NOT_EQUAL_TO_NULL : NOT_EQUAL_TO, inequality)
+          left, right = inequality.left, inequality.right
+
+          expressions = [ inequality_sql(inequality) ]
+
+          [ left, right ].each do |operand|
+            expressions << dispatch(operand.eq(nil)) if operand.respond_to?(:required?) && !operand.required?
+          end
+
+          if expressions.one?
+            expressions.first
+          else
+            "(#{expressions.join(' OR ')})"
+          end
         end
 
         # Visit an GreaterThan predicate
@@ -551,6 +563,17 @@ module Veritas
         # @api private
         def new_from_enumerable_predicate(klass, predicate, method)
           klass.new(predicate.left, predicate.right.send(method))
+        end
+
+        # Return the SQL for an inequality predicate
+        #
+        # @param [Logic::Predicate::Inequality] inequality
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        def inequality_sql(inequality)
+          predicate_sql(inequality.right.nil? ? NOT_EQUAL_TO_NULL : NOT_EQUAL_TO, inequality)
         end
 
         # Return the SQL for a predicate

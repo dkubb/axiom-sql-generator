@@ -3,11 +3,14 @@ require 'spec_helper'
 describe Generator, '#to_sql' do
   subject { object.to_sql }
 
-  let(:klass)         { Generator                                                  }
-  let(:header)        { [ [ :id, Integer ], [ :name, String ], [ :age, Integer ] ] }
-  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                             }
-  let(:base_relation) { BaseRelation.new('users', header, body)                    }
-  let(:object)        { klass.new                                                  }
+  let(:klass)         { Generator                                        }
+  let(:id)            { Attribute::Integer.new(:id)                      }
+  let(:name)          { Attribute::String.new(:name)                     }
+  let(:age)           { Attribute::Integer.new(:age, :required => false) }
+  let(:header)        { [ id, name, age ]                                }
+  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
+  let(:base_relation) { BaseRelation.new('users', header, body)          }
+  let(:object)        { klass.new                                        }
 
   before do
     @original = object.to_sql
@@ -75,7 +78,37 @@ describe Generator, '#to_sql' do
     end
 
     context 'and the predicate is inequality' do
-      context 'and the value is not nil' do
+      context 'and the left attribute is optional' do
+        before do
+          object.visit(base_relation.restrict { |r| r[:age].ne(1) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE ("users"."age" <> 1 OR "users"."age" IS NULL)' }
+      end
+
+      context 'and the right attribute is optional' do
+        before do
+          object.visit(base_relation.restrict { |r| Logic::Predicate::Inequality.new(1, r[:age]) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE (1 <> "users"."age" OR "users"."age" IS NULL)' }
+      end
+
+      context 'and the left is a value' do
+        before do
+          object.visit(base_relation.restrict { |r| Logic::Predicate::Inequality.new(1, r[:id]) })
+        end
+
+        it_should_behave_like 'a generated SQL query'
+
+        it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE 1 <> "users"."id"' }
+      end
+
+      context 'and the right is a value' do
         before do
           object.visit(base_relation.restrict { |r| r[:id].ne(1) })
         end
@@ -85,7 +118,7 @@ describe Generator, '#to_sql' do
         it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" WHERE "users"."id" <> 1' }
       end
 
-      context 'and the value is nil' do
+      context 'and the right is a nil value' do
         before do
           object.visit(base_relation.restrict { |r| r[:id].ne(nil) })
         end
