@@ -319,13 +319,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_logic_predicate_inequality(inequality)
-          left, right = inequality.left, inequality.right
-
-          expressions = [ inequality_sql(inequality) ]
-
-          [ left, right ].each do |operand|
-            expressions << dispatch(operand.eq(nil)) if operand.respond_to?(:required?) && !operand.required?
-          end
+          expressions = inequality_expressions(inequality)
 
           if expressions.one?
             expressions.first
@@ -565,6 +559,23 @@ module Veritas
           klass.new(predicate.left, predicate.right.send(method))
         end
 
+        # Return the expressions for an inequality
+        #
+        # @param [Logic::Predicate::Inequality] inequality
+        #
+        # @return [Array<#to_s>]
+        #
+        # @api private
+        def inequality_expressions(inequality)
+          expressions = [
+            inequality_sql(inequality),
+            optional_is_null_sql(inequality.left),
+            optional_is_null_sql(inequality.right),
+          ]
+          expressions.compact!
+          expressions
+        end
+
         # Return the SQL for an inequality predicate
         #
         # @param [Logic::Predicate::Inequality] inequality
@@ -625,6 +636,28 @@ module Veritas
         # @api private
         def binary_connective_sql(operator, binary_connective)
           "(#{dispatch binary_connective.left} #{operator} #{dispatch binary_connective.right})"
+        end
+
+        # Return SQL for an Equality with a nil value for optional attributes
+        #
+        # @param [Attribute] attribute
+        #
+        # @return [#to_sql, nil]
+        #
+        # @api private
+        def optional_is_null_sql(attribute)
+          dispatch(attribute.eq(nil)) if optional?(attribute)
+        end
+
+        # Test if the object is not required
+        #
+        # @param [Object] operand
+        #
+        # @return [Boolean]
+        #
+        # @api private
+        def optional?(operand)
+          operand.respond_to?(:required?) && !operand.required?
         end
 
       end # class Generator
