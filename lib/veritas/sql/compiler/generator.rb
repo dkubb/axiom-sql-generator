@@ -41,28 +41,6 @@ module Veritas
           handlers[klass] or raise UnknownObject, "No handler for #{klass}"
         end
 
-        # Return the handler method for a given module
-        #
-        # @param [Module] mod
-        #
-        # @return [Symbol]
-        #
-        # @api private
-        def self.method_for(mod)
-          "visit_#{mod.name.gsub(/([a-z])([A-Z])/, '\1_\2').gsub('::', '_').downcase}".to_sym
-        end
-
-        # Return handler methods for a module's ancestors
-        #
-        # @param [Module] mod
-        #
-        # @return [Array<Symbol>]
-        #
-        # @api private
-        def self.ancestor_methods_for(mod)
-          mod.ancestors.map { |ancestor| method_for(ancestor) }
-        end
-
         # Return the handler cache that maps modules to method names
         #
         # @return [Hash]
@@ -76,7 +54,29 @@ module Veritas
           end
         end
 
-        private_class_method :method_for, :ancestor_methods_for, :handlers
+        # Return handler methods for a module's ancestors
+        #
+        # @param [Module] mod
+        #
+        # @return [Array<Symbol>]
+        #
+        # @api private
+        def self.ancestor_methods_for(mod)
+          mod.ancestors.map { |ancestor| method_for(ancestor) }
+        end
+
+        # Return the handler method for a given module
+        #
+        # @param [Module] mod
+        #
+        # @return [Symbol]
+        #
+        # @api private
+        def self.method_for(mod)
+          "visit_#{mod.name.gsub(/([a-z])([A-Z])/, '\1_\2').gsub('::', '_').downcase}".to_sym
+        end
+
+        private_class_method :handlers, :ancestor_methods_for, :method_for
 
         # Initialize a Generator
         #
