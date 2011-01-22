@@ -1,7 +1,3 @@
-shared_examples_for 'a generated SQL query' do
-  it_should_behave_like 'an idempotent method'
-
-  it { should be_frozen }
-
-  it { should_not equal(@original) }
+shared_examples_for 'a generated SQL expression' do
+  it { should respond_to(:to_s) }
 end

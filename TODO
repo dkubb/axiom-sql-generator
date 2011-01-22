@@ -1,14 +1,6 @@
-* Add one spec for each Attribute type
-  * Add a handler for each primitive
+* Add one spec for each literal corresponding to an Attribute type
 
 * Add specs for binary relations
-
-* Split handlers for primitives, attribute, expression and direction
-  into a separate class.
-  * Define class methods for each handler
-  * In addition to object, pass in the qualified name to use
-  * Update Generator.handler so the value is a reference to the
-    method object for each handler rather than a symbol name.
 
 * Adjust reek and roodi scores down to lower thresholds
 
@@ -16,3 +8,6 @@
   Negation wrapping an Equality/Inclusion) on an *optional* attribute.
   * Add "OR attribute IS NULL" to the statement to ensure cases when
     the value is NULL still matches.
+
+* Make sure SQL generation specs track String object creation to ensure
+  no needless Strings are created for any specific operation.

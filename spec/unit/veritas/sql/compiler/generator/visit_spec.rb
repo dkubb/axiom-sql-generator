@@ -14,8 +14,6 @@ describe Generator, '#visit' do
     it_should_behave_like 'a command method'
 
     it { expect { subject }.to change(object, :frozen?).from(false).to(true) }
-
-    it { expect { subject }.to change { object.to_sql.frozen? }.from(false).to(true) }
   end
 
   context 'with a handled object more than once' do
@@ -37,6 +35,6 @@ describe Generator, '#visit' do
   context 'with an unhandled object' do
     let(:visitable) { mock('Not Handled') }
 
-    specify { expect { subject }.to raise_error(Generator::UnknownObject, "No handler for #{visitable.class}") }
+    specify { expect { subject }.to raise_error(Visitor::UnknownObject, "No handler for #{visitable.class}") }
   end
 end

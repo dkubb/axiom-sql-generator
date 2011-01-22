@@ -8,10 +8,10 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 46
+  max_methods: 5
   exclude: []
   enabled: true
-  max_instance_variables: 8
+  max_instance_variables: 2
 UncommunicativeMethodName:
   accept: []
   exclude: []
@@ -28,14 +28,15 @@ LongParameterList:
 FeatureEnvy:
   exclude: [
     # TODO: change these methods to be class methods
-    'Veritas::SQL::Compiler::Generator#quote_identifier',
-    'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
-    'Veritas::SQL::Compiler::Generator#visit_veritas_logic_predicate_inequality',
-    'Veritas::SQL::Compiler::Generator#visit_numeric',
-    'Veritas::SQL::Compiler::Generator#exclusive_range_exclusion_sql',
-    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql',
-    'Veritas::SQL::Compiler::Generator#new_from_enumerable_predicate',
-    'Veritas::SQL::Compiler::Generator#optional?'
+    'Veritas::SQL::Compiler::Generator::Attribute#visit_veritas_attribute',
+    'Veritas::SQL::Compiler::Generator::Identifier#visit_identifier',
+    'Veritas::SQL::Compiler::Generator::Literal#visit_numeric',
+    'Veritas::SQL::Compiler::Generator::Literal#visit_string',
+    'Veritas::SQL::Compiler::Generator::Logic#visit_veritas_logic_predicate_inequality',
+    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
+    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
+    'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
+    'Veritas::SQL::Compiler::Generator::Logic#optional?'
   ]
   enabled: true
 ClassVariable:
@@ -57,13 +58,15 @@ UncommunicativeModuleName:
 NestedIterators:
   ignore_iterators: []
   exclude: [
-    'Veritas::SQL::Compiler::Generator#self.handlers'
+    'Veritas::SQL::Compiler::Visitor#self.handlers'
   ]
   enabled: true
   max_allowed_nesting: 1
 LongMethod:
   max_statements: 6
-  exclude: []
+  exclude: [
+    'Veritas::SQL::Compiler::Generator::UnaryRelation#to_s'
+  ]
   enabled: true
 Duplication:
   allow_calls: []
@@ -74,14 +77,15 @@ UtilityFunction:
   max_helper_calls: 1
   exclude: [
     # TODO: change these methods to be class methods
-    'Veritas::SQL::Compiler::Generator#quote_identifier',
-    'Veritas::SQL::Compiler::Generator#visit_veritas_attribute',
-    'Veritas::SQL::Compiler::Generator#visit_veritas_logic_predicate_inequality',
-    'Veritas::SQL::Compiler::Generator#visit_numeric',
-    'Veritas::SQL::Compiler::Generator#exclusive_range_exclusion_sql',
-    'Veritas::SQL::Compiler::Generator#exclusive_range_inclusion_sql',
-    'Veritas::SQL::Compiler::Generator#new_from_enumerable_predicate',
-    'Veritas::SQL::Compiler::Generator#optional?'
+    'Veritas::SQL::Compiler::Generator::Attribute#visit_veritas_attribute',
+    'Veritas::SQL::Compiler::Generator::Identifier#visit_identifier',
+    'Veritas::SQL::Compiler::Generator::Literal#visit_numeric',
+    'Veritas::SQL::Compiler::Generator::Literal#visit_string',
+    'Veritas::SQL::Compiler::Generator::Logic#visit_veritas_logic_predicate_inequality',
+    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
+    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
+    'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
+    'Veritas::SQL::Compiler::Generator::Logic#optional?'
   ]
   enabled: true
 Attribute:
@@ -96,16 +100,13 @@ UncommunicativeVariableName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 SimulatedPolymorphism:
-  exclude: [
-    # TODO: split Range handling methods into separate class/module
-    'Veritas::SQL::Compiler::Generator'
-  ]
+  exclude: []
   enabled: true
   max_ifs: 1
 DataClump:
   exclude: [
     # TODO: split Range handling methods into separate class/module
-    'Veritas::SQL::Compiler::Generator'
+    'Veritas::SQL::Compiler::Generator::Logic'
   ]
   enabled: true
   max_copies: 1
