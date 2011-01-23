@@ -7,8 +7,6 @@ module Veritas
         module Attribute
           include Identifier
 
-          DOT = '.'.freeze
-
           # Visit an Attribute
           #
           # @param [Attribute] attribute
@@ -17,7 +15,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_attribute(attribute)
-            visit_identifier(@base_relation) << DOT << visit_identifier(attribute.name)
+            "#{visit_identifier(@base_relation)}.#{visit_identifier(attribute.name)}"
           end
 
         end # module Attribute
