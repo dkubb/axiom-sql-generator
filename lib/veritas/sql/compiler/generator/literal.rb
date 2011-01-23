@@ -6,12 +6,14 @@ module Veritas
         # Generates an SQL statement for a literal
         module Literal
 
-          TRUE          = 'TRUE'.freeze
-          FALSE         = 'FALSE'.freeze
-          NULL          = 'NULL'.freeze
-          QUOTE         = "'".freeze
-          ESCAPED_QUOTE = "''".freeze
-          SEPARATOR     = ', '.freeze
+          TRUE             = 'TRUE'.freeze
+          FALSE            = 'FALSE'.freeze
+          NULL             = 'NULL'.freeze
+          QUOTE            = "'".freeze
+          ESCAPED_QUOTE    = "''".freeze
+          SEPARATOR        = ', '.freeze
+          DATE_FORMAT      = '%Y-%m-%d'.freeze
+          DATE_TIME_FORMAT = '%Y-%m-%dT%H:%M:%S%Z'.freeze
 
           # Visit an Enumerable
           #
@@ -66,7 +68,7 @@ module Veritas
           #
           # @api private
           def visit_date(date)
-            dispatch date.strftime('%Y-%m-%d')
+            dispatch date.strftime(DATE_FORMAT)
           end
 
           # Visit a DateTime
@@ -77,7 +79,7 @@ module Veritas
           #
           # @api private
           def visit_date_time(date_time)
-            dispatch date_time.strftime('%Y-%m-%dT%H:%M:%S%Z')
+            dispatch date_time.strftime(DATE_TIME_FORMAT)
           end
 
           # Visit a true value
