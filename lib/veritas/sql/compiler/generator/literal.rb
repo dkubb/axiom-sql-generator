@@ -69,6 +69,17 @@ module Veritas
             dispatch date.strftime('%Y-%m-%d')
           end
 
+          # Visit a DateTime
+          #
+          # @param [DateTime] date_time
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def visit_date_time(date_time)
+            dispatch date_time.strftime('%Y-%m-%dT%H:%M:%S%Z')
+          end
+
           # Visit a true value
           #
           # @param [true]
