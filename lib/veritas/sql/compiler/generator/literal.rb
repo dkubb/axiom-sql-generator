@@ -58,6 +58,17 @@ module Veritas
             name.empty? ? NULL : visit_string(name)
           end
 
+          # Visit a Date
+          #
+          # @param [Date] date
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def visit_date(date)
+            dispatch date.strftime('%Y-%m-%d')
+          end
+
           # Visit a true value
           #
           # @param [true]
