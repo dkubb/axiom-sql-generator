@@ -17,6 +17,22 @@ module Veritas
           USEC_FORMAT          = '.%06d'.freeze
           UTC_OFFSET           = '+00:00'.freeze
 
+          # Format the time, appending microseconds and the UTC offset
+          #
+          # @param [#strftime] time
+          #   the DateTime or Time object to format
+          # @param [Integer] usec
+          #   the number of microseconds in the time
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def self.format_time(time, usec)
+            formatted = time.strftime(TIME_FORMAT)
+            formatted << USEC_FORMAT % usec unless usec.zero?
+            formatted << UTC_OFFSET
+          end
+
           # Visit an Enumerable
           #
           # @param [Enumerable] enumerable
@@ -84,7 +100,7 @@ module Veritas
           # @api private
           def visit_date_time(date_time)
             usec = date_time.sec_fraction * MICROSECONDS_PER_DAY
-            dispatch format_time(date_time.new_offset(0), usec.to_i)
+            dispatch Literal.format_time(date_time.new_offset(0), usec.to_i)
           end
 
           # Visit a Time
@@ -97,7 +113,7 @@ module Veritas
           #
           # @api private
           def visit_time(time)
-            dispatch format_time(time.utc, time.usec)
+            dispatch Literal.format_time(time.utc, time.usec)
           end
 
           # Visit a true value
@@ -131,24 +147,6 @@ module Veritas
           # @api private
           def visit_nil_class(_nil)
             NULL
-          end
-
-        private
-
-          # Format the time, appending microseconds and the offset
-          #
-          # @param [#strftime] time
-          #   the DateTime/Time object to format
-          # @param [Integer] usec
-          #   the number of microseconds in the time
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def format_time(time, usec)
-            formatted = time.strftime(TIME_FORMAT)
-            formatted << USEC_FORMAT % usec unless usec.zero?
-            formatted << UTC_OFFSET
           end
 
         end # module Literal
