@@ -30,8 +30,10 @@ FeatureEnvy:
     # TODO: change these methods to be class methods
     'Veritas::SQL::Compiler::Generator::Attribute#visit_veritas_attribute',
     'Veritas::SQL::Compiler::Generator::Identifier#visit_identifier',
+    'Veritas::SQL::Compiler::Generator::Literal#visit_date_time',
     'Veritas::SQL::Compiler::Generator::Literal#visit_numeric',
     'Veritas::SQL::Compiler::Generator::Literal#visit_string',
+    'Veritas::SQL::Compiler::Generator::Literal#visit_time',
     'Veritas::SQL::Compiler::Generator::Logic#visit_veritas_logic_predicate_inequality',
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
