@@ -8,9 +8,11 @@ describe Generator::Literal, '#visit_date_time' do
   let(:object)          { klass.new                                         }
 
   context 'when the DateTime is UTC' do
+    let(:offset) { 0 }
+
     context 'and the microseconds are equal to 0' do
-      let(:usec)      { 0                                                        }
-      let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds) }
+      let(:usec)      { 0                                                                }
+      let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds, offset) }
 
       it_should_behave_like 'a generated SQL expression'
 
@@ -18,8 +20,8 @@ describe Generator::Literal, '#visit_date_time' do
     end
 
     context 'and the microseconds are greater than 0' do
-      let(:usec)      { 1                                                        }
-      let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds) }
+      let(:usec)      { 1                                                                }
+      let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds, offset) }
 
       it_should_behave_like 'a generated SQL expression'
 
