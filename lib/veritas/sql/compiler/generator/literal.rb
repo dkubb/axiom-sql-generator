@@ -6,14 +6,16 @@ module Veritas
         # Generates an SQL statement for a literal
         module Literal
 
-          TRUE             = 'TRUE'.freeze
-          FALSE            = 'FALSE'.freeze
-          NULL             = 'NULL'.freeze
-          QUOTE            = "'".freeze
-          ESCAPED_QUOTE    = "''".freeze
-          SEPARATOR        = ', '.freeze
-          DATE_FORMAT      = '%Y-%m-%d'.freeze
-          DATE_TIME_FORMAT = '%Y-%m-%dT%H:%M:%S%Z'.freeze
+          TRUE                 = 'TRUE'.freeze
+          FALSE                = 'FALSE'.freeze
+          NULL                 = 'NULL'.freeze
+          QUOTE                = "'".freeze
+          ESCAPED_QUOTE        = "''".freeze
+          SEPARATOR            = ', '.freeze
+          MICROSECONDS_PER_DAY = 60 * 60 * 24 * 10**6;
+          TIME_FORMAT          = '%Y-%m-%dT%H:%M:%S'.freeze
+          USEC_FORMAT          = '.%06d'.freeze
+          UTC_OFFSET           = '+00:00'.freeze
 
           # Visit an Enumerable
           #
@@ -68,10 +70,12 @@ module Veritas
           #
           # @api private
           def visit_date(date)
-            dispatch date.strftime(DATE_FORMAT)
+            dispatch date.to_s
           end
 
           # Visit a DateTime
+          #
+          # Converts the DateTime to UTC format.
           #
           # @param [DateTime] date_time
           #
@@ -79,7 +83,21 @@ module Veritas
           #
           # @api private
           def visit_date_time(date_time)
-            dispatch date_time.strftime(DATE_TIME_FORMAT)
+            usec = date_time.sec_fraction * MICROSECONDS_PER_DAY
+            dispatch format_time(date_time.new_offset(0), usec.to_i)
+          end
+
+          # Visit a Time
+          #
+          # Converts the Time to UTC format.
+          #
+          # @param [Time] time
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def visit_time(time)
+            dispatch format_time(time.utc, time.usec)
           end
 
           # Visit a true value
@@ -113,6 +131,24 @@ module Veritas
           # @api private
           def visit_nil_class(_nil)
             NULL
+          end
+
+        private
+
+          # Format the time, appending microseconds and the offset
+          #
+          # @param [#strftime] time
+          #   the DateTime/Time object to format
+          # @param [Integer] usec
+          #   the number of microseconds in the time
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def format_time(time, usec)
+            formatted = time.strftime(TIME_FORMAT)
+            formatted << USEC_FORMAT % usec unless usec.zero?
+            formatted << UTC_OFFSET
           end
 
         end # module Literal
