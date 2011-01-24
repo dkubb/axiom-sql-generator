@@ -6,9 +6,11 @@ describe Generator::Literal, '.format_time' do
   let(:object) { Generator::Literal }
 
   context 'when time is a DateTime object' do
+    let(:usec_in_seconds) { Rational(usec, 10**6) }
+
     context 'and the microseconds are equal to 0' do
-      let(:usec) { 0                                                              }
-      let(:time) { DateTime.new(2010, 12, 31, 23, 59, 59 + Rational(usec, 10**6)) }
+      let(:usec) { 0                                                        }
+      let(:time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds) }
 
       it { should respond_to(:to_s) }
 
@@ -16,8 +18,8 @@ describe Generator::Literal, '.format_time' do
     end
 
     context 'and the microseconds are greater than 0' do
-      let(:usec) { 1                                                              }
-      let(:time) { DateTime.new(2010, 12, 31, 23, 59, 59 + Rational(usec, 10**6)) }
+      let(:usec) { 1                                                        }
+      let(:time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds) }
 
       it { should respond_to(:to_s) }
 
