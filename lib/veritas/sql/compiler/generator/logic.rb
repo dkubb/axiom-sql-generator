@@ -46,12 +46,7 @@ module Veritas
           # @api private
           def visit_veritas_logic_predicate_inequality(inequality)
             expressions = inequality_expressions(inequality)
-
-            if expressions.one?
-              expressions.first
-            else
-              "(#{expressions.join(OR)})"
-            end
+            expressions.one? ? expressions.first : "(#{expressions.join(OR)})"
           end
 
           # Visit an GreaterThan predicate
