@@ -1,5 +1,3 @@
-* Add one spec for each literal corresponding to an Attribute type
-
 * Add one spec for each freeze-able literal object, where it generates
   SQL from a frozen instance (String, Date, DateTime, Class, etc)
   * Some objects, like DateTime, cache data in local ivars so they will
