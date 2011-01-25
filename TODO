@@ -1,12 +1,3 @@
-* Add one spec for each freeze-able literal object, where it generates
-  SQL from a frozen instance (String, Date, DateTime, Class, etc)
-  * Some objects, like DateTime, cache data in local ivars so they will
-    explode when SQL is generated from them.
-    * Generally the approach to fix this, when it does happen, is to dup
-      the value prior to generating the SQL from it. However we only want
-      to perform this dup on a frozen object, since it's generally
-      wasteful in the common-case.
-
 * Add integration specs that compose unary operations out of others
   * Try to do things like visit:
 
