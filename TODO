@@ -1,3 +1,5 @@
+* Add specs for binary relations
+
 * Add integration specs that compose unary operations out of others
   * Try to do things like visit:
 
@@ -9,8 +11,6 @@
 
     NOTE: also check to see if the inner order is respected by the outer order in SQL or if it needs to be copied
       - i.e. does the order of the relation we are selecting FROM affect the order of the query results
-
-* Add specs for binary relations
 
 * Adjust reek and roodi scores down to lower thresholds
 
