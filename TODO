@@ -18,6 +18,3 @@
   Negation wrapping an Equality/Inclusion) on an *optional* attribute.
   * Add "OR attribute IS NULL" to the statement to ensure cases when
     the value is NULL still matches.
-
-* Make sure SQL generation specs track String object creation to ensure
-  no needless Strings are created for any specific operation.
