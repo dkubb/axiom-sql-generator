@@ -6,12 +6,17 @@ describe Generator::Literal, '#visit_class' do
   let(:klass)  { Class.new(Visitor) { include Generator::Literal } }
   let(:object) { klass.new                                         }
 
+  before do
+    Object.class_eval { remove_const(:NamedClass) if const_defined?(:NamedClass)  }
+    class ::NamedClass; end
+  end
+
   context 'with a named class' do
-    let(:klass_arg) { Visitor }
+    let(:klass_arg) { NamedClass.freeze }
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == "'Veritas::SQL::Compiler::Visitor'" }
+    it { should == "'NamedClass'" }
   end
 
   context 'with an anonymous class' do

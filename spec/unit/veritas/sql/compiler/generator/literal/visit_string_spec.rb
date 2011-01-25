@@ -7,7 +7,7 @@ describe Generator::Literal, '#visit_string' do
   let(:object) { klass.new                                         }
 
   context 'with a string containing no quotes' do
-    let(:string) { 'string' }
+    let(:string) { 'string'.freeze }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -15,7 +15,7 @@ describe Generator::Literal, '#visit_string' do
   end
 
   context 'with a string containing quotes' do
-    let(:string) { "string'name" }
+    let(:string) { "string'name".freeze }
 
     it_should_behave_like 'a generated SQL expression'
 

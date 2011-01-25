@@ -33,6 +33,22 @@ module Veritas
             formatted << UTC_OFFSET
           end
 
+          # Returns an unfrozen object
+          #
+          # Some objects, like Date, DateTime and Time memoize values
+          # when serialized to a String, so when they are frozen this will
+          # dup them and then return the unfrozen copy.
+          #
+          # @param [Object] object
+          #
+          # @return [Object]
+          #   non-frozen object
+          #
+          # @api private
+          def self.dup_frozen(object)
+            object.frozen? ? object.dup : object
+          end
+
           # Visit an Enumerable
           #
           # @param [Enumerable] enumerable
@@ -86,7 +102,7 @@ module Veritas
           #
           # @api private
           def visit_date(date)
-            dispatch date.to_s
+            dispatch Literal.dup_frozen(date).to_s
           end
 
           # Visit a DateTime
@@ -99,7 +115,7 @@ module Veritas
           #
           # @api private
           def visit_date_time(date_time)
-            usec = date_time.sec_fraction * MICROSECONDS_PER_DAY
+            usec = Literal.dup_frozen(date_time).sec_fraction * MICROSECONDS_PER_DAY
             dispatch Literal.format_time(date_time.new_offset(0), usec.to_i)
           end
 
@@ -113,7 +129,7 @@ module Veritas
           #
           # @api private
           def visit_time(time)
-            dispatch Literal.format_time(time.utc, time.usec)
+            dispatch Literal.format_time(Literal.dup_frozen(time).utc, time.usec)
           end
 
           # Visit a true value

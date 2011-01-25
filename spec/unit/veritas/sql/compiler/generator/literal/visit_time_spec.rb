@@ -16,8 +16,8 @@ describe Generator::Literal, '#visit_time' do
 
   context 'when the Time is UTC' do
     context 'and the microseconds are equal to 0' do
-      let(:usec) { 0                                        }
-      let(:time) { Time.utc(2010, 12, 31, 23, 59, 59, usec) }
+      let(:usec) { 0                                               }
+      let(:time) { Time.utc(2010, 12, 31, 23, 59, 59, usec).freeze }
 
       it_should_behave_like 'a generated SQL expression'
 
@@ -25,8 +25,8 @@ describe Generator::Literal, '#visit_time' do
     end
 
     context 'and the microseconds are greater than 0' do
-      let(:usec) { 1                                        }
-      let(:time) { Time.utc(2010, 12, 31, 23, 59, 59, usec) }
+      let(:usec) { 1                                               }
+      let(:time) { Time.utc(2010, 12, 31, 23, 59, 59, usec).freeze }
 
       it_should_behave_like 'a generated SQL expression'
 
@@ -40,8 +40,8 @@ describe Generator::Literal, '#visit_time' do
     end
 
     context 'and the microseconds are equal to 0' do
-      let(:usec) { 0                                          }
-      let(:time) { Time.local(2010, 12, 31, 23, 59, 59, usec) }
+      let(:usec) { 0                                                 }
+      let(:time) { Time.local(2010, 12, 31, 23, 59, 59, usec).freeze }
 
       it_should_behave_like 'a generated SQL expression'
 
@@ -49,8 +49,8 @@ describe Generator::Literal, '#visit_time' do
     end
 
     context 'and the microseconds are greater than 0' do
-      let(:usec) { 1                                          }
-      let(:time) { Time.local(2010, 12, 31, 23, 59, 59, usec) }
+      let(:usec) { 1                                                 }
+      let(:time) { Time.local(2010, 12, 31, 23, 59, 59, usec).freeze }
 
       it_should_behave_like 'a generated SQL expression'
 
@@ -64,8 +64,8 @@ describe Generator::Literal, '#visit_time' do
     end
 
     context 'and the microseconds are equal to 0' do
-      let(:usec) { 0                                          }
-      let(:time) { Time.local(2010, 12, 31, 15, 59, 59, usec) }
+      let(:usec) { 0                                                 }
+      let(:time) { Time.local(2010, 12, 31, 15, 59, 59, usec).freeze }
 
       it_should_behave_like 'a generated SQL expression'
 
@@ -73,8 +73,8 @@ describe Generator::Literal, '#visit_time' do
     end
 
     context 'and the microseconds are greater than 0' do
-      let(:usec) { 1                                          }
-      let(:time) { Time.local(2010, 12, 31, 15, 59, 59, usec) }
+      let(:usec) { 1                                                 }
+      let(:time) { Time.local(2010, 12, 31, 15, 59, 59, usec).freeze }
 
       it_should_behave_like 'a generated SQL expression'
 
