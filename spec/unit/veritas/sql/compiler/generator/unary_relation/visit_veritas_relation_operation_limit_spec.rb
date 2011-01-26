@@ -15,5 +15,5 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == 'SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 1' }
+  its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 1') }
 end

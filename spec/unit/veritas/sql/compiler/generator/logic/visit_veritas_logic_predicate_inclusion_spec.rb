@@ -16,7 +16,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"."id" BETWEEN 1 AND 10' }
+    its(:to_s) { should eql('"users"."id" BETWEEN 1 AND 10') }
   end
 
   context 'when right operand is an exclusive Range' do
@@ -24,7 +24,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '("users"."id" >= 1 AND "users"."id" < 10)' }
+    its(:to_s) { should eql('("users"."id" >= 1 AND "users"."id" < 10)') }
   end
 
   context 'when right operand is an Array' do
@@ -32,7 +32,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"."id" IN (1, 2)' }
+    its(:to_s) { should eql('"users"."id" IN (1, 2)') }
   end
 
   context 'when right operand is an empty Array' do
@@ -40,6 +40,6 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '1 = 0' }
+    its(:to_s) { should eql('1 = 0') }
   end
 end

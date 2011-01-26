@@ -11,7 +11,7 @@ describe Generator::Literal, '#visit_string' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == "'string'" }
+    its(:to_s) { should eql("'string'") }
   end
 
   context 'with a string containing quotes' do
@@ -19,6 +19,6 @@ describe Generator::Literal, '#visit_string' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == "'string''name'" }
+    its(:to_s) { should eql("'string''name'") }
   end
 end

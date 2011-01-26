@@ -13,5 +13,5 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_less_than_or_equal_to
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == '"users"."id" <= 1' }
+  its(:to_s) { should eql('"users"."id" <= 1') }
 end

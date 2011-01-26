@@ -9,5 +9,5 @@ describe Generator::Literal, '#visit_date' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == "'2010-12-31'" }
+  its(:to_s) { should eql("'2010-12-31'") }
 end

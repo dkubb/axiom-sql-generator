@@ -16,7 +16,7 @@ describe Generator::Literal, '#visit_date_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      it { should == "'2010-12-31T23:59:59+00:00'" }
+      its(:to_s) { should eql("'2010-12-31T23:59:59+00:00'") }
     end
 
     context 'and the microseconds are greater than 0' do
@@ -25,7 +25,7 @@ describe Generator::Literal, '#visit_date_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      it { should == "'2010-12-31T23:59:59.000001+00:00'" }
+      its(:to_s) { should eql("'2010-12-31T23:59:59.000001+00:00'") }
     end
   end
 
@@ -38,7 +38,7 @@ describe Generator::Literal, '#visit_date_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      it { should == "'2010-12-31T23:59:59+00:00'" }
+      its(:to_s) { should eql("'2010-12-31T23:59:59+00:00'") }
     end
 
     context 'and the microseconds are greater than 0' do
@@ -47,7 +47,7 @@ describe Generator::Literal, '#visit_date_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      it { should == "'2010-12-31T23:59:59.000001+00:00'" }
+      its(:to_s) { should eql("'2010-12-31T23:59:59.000001+00:00'") }
     end
   end
 end

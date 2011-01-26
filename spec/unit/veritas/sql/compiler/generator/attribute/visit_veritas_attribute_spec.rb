@@ -13,5 +13,5 @@ describe Generator::Attribute, '#visit_veritas_attribute' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == '"users"."id"' }
+  its(:to_s) { should eql('"users"."id"') }
 end

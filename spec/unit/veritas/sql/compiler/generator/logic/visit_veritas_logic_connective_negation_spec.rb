@@ -14,5 +14,5 @@ describe Generator::Logic, '#visit_veritas_logic_connective_negation' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == 'NOT "users"."id" = 1' }
+  its(:to_s) { should eql('NOT "users"."id" = 1') }
 end

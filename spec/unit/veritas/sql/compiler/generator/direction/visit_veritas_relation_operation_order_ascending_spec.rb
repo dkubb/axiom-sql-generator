@@ -13,5 +13,5 @@ describe Generator::Direction, '#visit_veritas_relation_operation_order_ascendin
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == '"users"."id"' }
+  its(:to_s) { should eql('"users"."id"') }
 end

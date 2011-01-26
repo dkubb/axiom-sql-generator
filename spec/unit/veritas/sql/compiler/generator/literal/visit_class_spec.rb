@@ -16,7 +16,7 @@ describe Generator::Literal, '#visit_class' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == "'NamedClass'" }
+    its(:to_s) { should eql("'NamedClass'") }
   end
 
   context 'with an anonymous class' do
@@ -24,6 +24,6 @@ describe Generator::Literal, '#visit_class' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == 'NULL' }
+    its(:to_s) { should eql('NULL') }
   end
 end

@@ -16,7 +16,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_equality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"."id" = 1' }
+    its(:to_s) { should eql('"users"."id" = 1') }
   end
 
   context 'when the right operand is nil' do
@@ -24,6 +24,6 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_equality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"."id" IS NULL' }
+    its(:to_s) { should eql('"users"."id" IS NULL') }
   end
 end

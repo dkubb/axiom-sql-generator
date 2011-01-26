@@ -14,5 +14,5 @@ describe Generator::Logic, '#visit_veritas_logic_connective_disjunction' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == '("users"."id" = 1 OR "users"."id" = 2)' }
+  its(:to_s) { should eql('("users"."id" = 1 OR "users"."id" = 2)') }
 end

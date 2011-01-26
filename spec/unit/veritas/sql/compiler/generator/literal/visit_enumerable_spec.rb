@@ -9,5 +9,5 @@ describe Generator::Literal, '#visit_enumerable' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == '(1, 2)' }
+  its(:to_s) { should eql('(1, 2)') }
 end

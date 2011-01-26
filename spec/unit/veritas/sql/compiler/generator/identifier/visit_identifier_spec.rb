@@ -11,7 +11,7 @@ describe Generator::Identifier, '#visit_identifier' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"' }
+    its(:to_s) { should eql('"users"') }
   end
 
   context 'with an identifier containing quotes' do
@@ -19,6 +19,6 @@ describe Generator::Identifier, '#visit_identifier' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users""name"' }
+    its(:to_s) { should eql('"users""name"') }
   end
 end

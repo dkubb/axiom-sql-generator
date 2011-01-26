@@ -16,7 +16,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '("users"."age" <> 1 OR "users"."age" IS NULL)' }
+    its(:to_s) { should eql('("users"."age" <> 1 OR "users"."age" IS NULL)') }
   end
 
   context 'and the right attribute is optional' do
@@ -25,7 +25,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '(1 <> "users"."age" OR "users"."age" IS NULL)' }
+    its(:to_s) { should eql('(1 <> "users"."age" OR "users"."age" IS NULL)') }
   end
 
   context 'and the left is a value' do
@@ -34,7 +34,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '1 <> "users"."id"' }
+    its(:to_s) { should eql('1 <> "users"."id"') }
   end
 
   context 'and the right is a value' do
@@ -43,7 +43,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"."id" <> 1' }
+    its(:to_s) { should eql('"users"."id" <> 1') }
   end
 
   context 'and the right is a nil value' do
@@ -52,6 +52,6 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '"users"."id" IS NOT NULL' }
+    its(:to_s) { should eql('"users"."id" IS NOT NULL') }
   end
 end

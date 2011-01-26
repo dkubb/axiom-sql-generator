@@ -15,7 +15,7 @@ describe Generator::Literal, '.format_time' do
 
       it { should respond_to(:to_s) }
 
-      it { should == '2010-12-31T23:59:59+00:00' }
+      its(:to_s) { should eql('2010-12-31T23:59:59+00:00') }
     end
 
     context 'and the microseconds are greater than 0' do
@@ -24,7 +24,7 @@ describe Generator::Literal, '.format_time' do
 
       it { should respond_to(:to_s) }
 
-      it { should == '2010-12-31T23:59:59.000001+00:00' }
+      its(:to_s) { should eql('2010-12-31T23:59:59.000001+00:00') }
     end
   end
 
@@ -35,7 +35,7 @@ describe Generator::Literal, '.format_time' do
 
       it { should respond_to(:to_s) }
 
-      it { should == '2010-12-31T23:59:59+00:00' }
+      its(:to_s) { should eql('2010-12-31T23:59:59+00:00') }
     end
 
     context 'and the microseconds are greater than 0' do
@@ -44,7 +44,7 @@ describe Generator::Literal, '.format_time' do
 
       it { should respond_to(:to_s) }
 
-      it { should == '2010-12-31T23:59:59.000001+00:00' }
+      its(:to_s) { should eql('2010-12-31T23:59:59.000001+00:00') }
     end
   end
 end

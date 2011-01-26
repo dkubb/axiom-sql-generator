@@ -11,7 +11,7 @@ describe Generator::Literal, '#visit_numeric' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '1' }
+    its(:to_s) { should eql('1') }
   end
 
   context 'with a Float' do
@@ -19,7 +19,7 @@ describe Generator::Literal, '#visit_numeric' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '1.0' }
+    its(:to_s) { should eql('1.0') }
   end
 
   context 'with a BigDecimal' do
@@ -27,6 +27,6 @@ describe Generator::Literal, '#visit_numeric' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    it { should == '0.1E1' }
+    its(:to_s) { should eql('0.1E1') }
   end
 end

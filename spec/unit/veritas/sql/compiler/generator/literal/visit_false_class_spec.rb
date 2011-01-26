@@ -8,5 +8,5 @@ describe Generator::Literal, '#visit_false_class' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  it { should == 'FALSE' }
+  its(:to_s) { should eql('FALSE') }
 end

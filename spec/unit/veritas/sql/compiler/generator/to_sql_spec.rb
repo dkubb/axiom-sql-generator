@@ -15,9 +15,11 @@ describe Generator, '#to_sql' do
   context 'when no object visited' do
     it_should_behave_like 'an idempotent method'
 
+    it { should be_kind_of(String) }
+
     it { should be_frozen }
 
-    it { should == object.to_s }
+    it { should eql(object.to_s) }
   end
 
   context 'when an object is visited' do
@@ -28,10 +30,12 @@ describe Generator, '#to_sql' do
 
     it_should_behave_like 'an idempotent method'
 
+    it { should be_kind_of(String) }
+
     it { should be_frozen }
 
     it { should_not equal(@original) }
 
-    it { should == object.to_s }
+    it { should eql(object.to_s) }
   end
 end
