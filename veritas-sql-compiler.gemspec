@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-01-25}
+  s.date = %q{2011-01-26}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -75,7 +75,6 @@ Gem::Specification.new do |s|
      "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_predicate_less_than_or_equal_to_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_predicate_less_than_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/to_sql_spec.rb",
-     "spec/unit/veritas/sql/compiler/generator/unary_relation/equal_value_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/to_s_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_projection_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_rename_spec.rb",
@@ -142,7 +141,6 @@ Gem::Specification.new do |s|
      "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_predicate_less_than_or_equal_to_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_predicate_less_than_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/to_sql_spec.rb",
-     "spec/unit/veritas/sql/compiler/generator/unary_relation/equal_value_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/to_s_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_projection_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_rename_spec.rb",
