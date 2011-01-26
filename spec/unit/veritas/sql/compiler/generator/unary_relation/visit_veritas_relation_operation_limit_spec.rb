@@ -21,6 +21,15 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
     its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name" FROM (SELECT * FROM (SELECT "users"."id", "users"."name" FROM (SELECT * FROM "users") AS "users") AS "users" ORDER BY "users"."id", "users"."name") AS "users" LIMIT 1') }
   end
 
+  context 'when the relation is a rename' do
+    let(:relation) { base_relation.rename(:id => :user_id) }
+    let(:limit)    { relation.order.take(1)                }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT DISTINCT "users"."user_id", "users"."name", "users"."age" FROM (SELECT * FROM (SELECT "users"."id" AS "user_id", "users"."name", "users"."age" FROM (SELECT * FROM "users") AS "users") AS "users" ORDER BY "users"."user_id", "users"."name", "users"."age") AS "users" LIMIT 1') }
+  end
+
   context 'when the relation is ordered' do
     let(:relation) { base_relation.order }
     let(:limit)    { relation.take(1)    }

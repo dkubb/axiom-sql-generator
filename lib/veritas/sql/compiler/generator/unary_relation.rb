@@ -69,8 +69,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_restriction(restriction)
-            @from  = inner_query_for(restriction.operand)
-            @where = dispatch restriction.predicate
+            @from    = inner_query_for(restriction.operand)
+            @columns = columns_for(restriction.header)
+            @where   = dispatch restriction.predicate
             self
           end
 
@@ -82,8 +83,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_order(order)
-            @from  = inner_query_for(order.operand)
-            @order = order.directions.map { |direction| dispatch direction }
+            @from    = inner_query_for(order.operand)
+            @columns = columns_for(order.header)
+            @order   = order.directions.map { |direction| dispatch direction }
             self
           end
 
@@ -95,8 +97,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_limit(limit)
-            @from  = inner_query_for(limit.operand)
-            @limit = dispatch limit.limit
+            @from    = inner_query_for(limit.operand)
+            @columns = columns_for(limit.header)
+            @limit   = dispatch limit.limit
             self
           end
 
@@ -108,8 +111,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_offset(offset)
-            @from   = inner_query_for(offset.operand)
-            @offset = dispatch offset.offset
+            @from    = inner_query_for(offset.operand)
+            @columns = columns_for(offset.header)
+            @offset  = dispatch offset.offset
             self
           end
 
@@ -202,13 +206,15 @@ module Veritas
           #
           # @api private
           def inner_query_for(relation)
-            inner            = dispatch(relation)
-            @distinct        = EMPTY_STRING
-            original_columns = @columns
-            @columns         = '*' unless relation.kind_of?(Algebra::Projection)
+            inner     = dispatch(relation)
+            @distinct = EMPTY_STRING
+
+            unless relation.kind_of?(Algebra::Projection) || relation.kind_of?(Algebra::Rename)
+              @columns = '*'
+            end
+
             "(#{inner}) AS #{visit_identifier(@name)}"
           ensure
-            @columns  = original_columns
             @distinct = DISTINCT
             @from = @where = @order = @limit = @offset = nil
           end
