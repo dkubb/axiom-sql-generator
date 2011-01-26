@@ -12,13 +12,22 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
   let(:base_relation) { BaseRelation.new('users', header, body)                 }
   let(:object)        { klass.new                                               }
 
-  context 'when the relation is not limited' do
+  context 'when the relation is a projection' do
+    let(:relation) { base_relation.project([ :id, :name ]) }
+    let(:offset)   { relation.order.drop(1)                }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name" FROM (SELECT * FROM (SELECT "users"."id", "users"."name" FROM (SELECT * FROM "users") AS "users") AS "users" ORDER BY "users"."id", "users"."name") AS "users" OFFSET 1') }
+  end
+
+  context 'when the relation is ordered' do
     let(:relation) { base_relation.order }
     let(:offset)   { relation.drop(1)    }
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM (SELECT * FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1') }
   end
 
   context 'when the relation is limited' do
@@ -27,7 +36,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" LIMIT 2) AS "users" OFFSET 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" LIMIT 2) AS "users" OFFSET 1') }
   end
 
   context 'when the relation is offset' do
@@ -36,6 +45,6 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1) AS "users" OFFSET 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM (SELECT * FROM (SELECT * FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1) AS "users" OFFSET 1') }
   end
 end

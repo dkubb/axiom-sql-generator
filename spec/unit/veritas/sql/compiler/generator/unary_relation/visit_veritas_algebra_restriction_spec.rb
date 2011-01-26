@@ -15,5 +15,5 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" WHERE "users"."id" = 1') }
+  its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM "users") AS "users" WHERE "users"."id" = 1') }
 end

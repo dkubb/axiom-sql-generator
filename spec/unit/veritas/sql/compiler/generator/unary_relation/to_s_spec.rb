@@ -29,7 +29,7 @@ describe Generator::UnaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" WHERE "users"."id" = 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM "users") AS "users" WHERE "users"."id" = 1') }
   end
 
   context 'when a limit is visited' do
@@ -39,7 +39,7 @@ describe Generator::UnaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" LIMIT 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM (SELECT * FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" LIMIT 1') }
   end
 
   context 'when an offset is visited' do
@@ -49,6 +49,6 @@ describe Generator::UnaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM (SELECT * FROM "users") AS "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1') }
   end
 end

@@ -8,8 +8,18 @@ module Veritas
           include Logic
           include Direction
 
-          SEPARATOR    = ', '.freeze
+          DISTINCT     = ' DISTINCT'.freeze
           EMPTY_STRING = ''.freeze
+          SEPARATOR    = ', '.freeze
+
+          # Initialize a unary relation visitor
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def initialize
+            @distinct = DISTINCT
+          end
 
           # Visit a Base Relation
           #
@@ -113,7 +123,9 @@ module Veritas
           # @api public
           def to_s
             return EMPTY_STRING unless visited?
-            sql = "SELECT DISTINCT #{@columns.join(SEPARATOR)} FROM #{@from}"
+            sql = 'SELECT'
+            sql << @distinct
+            sql << " #{@columns} FROM #{@from}"
             sql << " WHERE #{@where}"                    if @where
             sql << " ORDER BY #{@order.join(SEPARATOR)}" if @order
             sql << " LIMIT #{@limit}"                    if @limit
@@ -146,7 +158,7 @@ module Veritas
           #
           # @api private
           def columns_for(header, aliases = {})
-            header.map { |attribute| column_for(attribute, aliases) }
+            header.map { |attribute| column_for(attribute, aliases) }.join(SEPARATOR)
           end
 
           # Return the column for an attribute
@@ -190,8 +202,14 @@ module Veritas
           #
           # @api private
           def inner_query_for(relation)
-            "(#{dispatch(relation)}) AS #{visit_identifier(@name)}"
+            inner            = dispatch(relation)
+            @distinct        = EMPTY_STRING
+            original_columns = @columns
+            @columns         = '*' unless relation.kind_of?(Algebra::Projection)
+            "(#{inner}) AS #{visit_identifier(@name)}"
           ensure
+            @columns  = original_columns
+            @distinct = DISTINCT
             @from = @where = @order = @limit = @offset = nil
           end
 
