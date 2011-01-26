@@ -8,7 +8,7 @@ module Veritas
           include Logic
           include Direction
 
-          DISTINCT     = ' DISTINCT'.freeze
+          DISTINCT     = 'DISTINCT '.freeze
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
 
@@ -18,7 +18,7 @@ module Veritas
           #
           # @api private
           def initialize
-            @distinct = DISTINCT
+            reset_query_state
           end
 
           # Visit a Base Relation
@@ -71,7 +71,7 @@ module Veritas
           def visit_veritas_algebra_restriction(restriction)
             @from    = inner_query_for(restriction.operand)
             @columns = columns_for(restriction.header)
-            @where   = dispatch restriction.predicate
+            @where   = dispatch(restriction.predicate)
             self
           end
 
@@ -85,7 +85,7 @@ module Veritas
           def visit_veritas_relation_operation_order(order)
             @from    = inner_query_for(order.operand)
             @columns = columns_for(order.header)
-            @order   = order.directions.map { |direction| dispatch direction }
+            @order   = order_for(order.directions)
             self
           end
 
@@ -99,7 +99,7 @@ module Veritas
           def visit_veritas_relation_operation_limit(limit)
             @from    = inner_query_for(limit.operand)
             @columns = columns_for(limit.header)
-            @limit   = dispatch limit.limit
+            @limit   = limit.limit
             self
           end
 
@@ -113,7 +113,7 @@ module Veritas
           def visit_veritas_relation_operation_offset(offset)
             @from    = inner_query_for(offset.operand)
             @columns = columns_for(offset.header)
-            @offset  = dispatch offset.offset
+            @offset  = offset.offset
             self
           end
 
@@ -127,13 +127,11 @@ module Veritas
           # @api public
           def to_s
             return EMPTY_STRING unless visited?
-            sql = 'SELECT'
-            sql << @distinct
-            sql << " #{@columns} FROM #{@from}"
-            sql << " WHERE #{@where}"                    if @where
-            sql << " ORDER BY #{@order.join(SEPARATOR)}" if @order
-            sql << " LIMIT #{@limit}"                    if @limit
-            sql << " OFFSET #{@offset}"                  if @offset
+            sql = "SELECT #{@distinct}#{@columns} FROM #{@from}"
+            sql << " WHERE #{@where}"    if @where
+            sql << " ORDER BY #{@order}" if @order
+            sql << " LIMIT #{@limit}"    if @limit
+            sql << " OFFSET #{@offset}"  if @offset
             sql
           end
 
@@ -176,7 +174,7 @@ module Veritas
           #
           # @api private
           def column_for(attribute, aliases)
-            column = dispatch attribute
+            column = dispatch(attribute)
             if aliases.key?(attribute)
               alias_for(column, aliases[attribute])
             else
@@ -198,6 +196,17 @@ module Veritas
             "#{column} AS #{visit_identifier alias_attribute.name}"
           end
 
+          # Return a list of columns for ordering
+          #
+          # @param [DirectionSet] directions
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def order_for(directions)
+            directions.map { |direction| dispatch(direction) }.join(SEPARATOR)
+          end
+
           # Return an expression that can be used for the FROM
           #
           # @param [Relation] relation
@@ -207,16 +216,37 @@ module Veritas
           # @api private
           def inner_query_for(relation)
             inner     = dispatch(relation)
-            @distinct = EMPTY_STRING
-
-            unless relation.kind_of?(Algebra::Projection) || relation.kind_of?(Algebra::Rename)
-              @columns = '*'
-            end
-
+            @distinct = nil
+            @columns  = inner_query_columns_for(relation)
             "(#{inner}) AS #{visit_identifier(@name)}"
           ensure
+            reset_query_state
+          end
+
+          # Return the columns for an inner query
+          #
+          # @param [Relation] relation
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def inner_query_columns_for(relation)
+            case relation
+              when Algebra::Projection, Algebra::Rename
+                @columns
+              else
+                '*'
+            end
+          end
+
+          # Reset the query state
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def reset_query_state
             @distinct = DISTINCT
-            @from = @where = @order = @limit = @offset = nil
+            @where = @order = @limit = @offset = nil
           end
 
         end # class UnaryRelation
