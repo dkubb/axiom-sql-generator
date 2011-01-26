@@ -8,7 +8,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_exclusion' do
   let(:object)    { klass.new                                       }
 
   before do
-    object.instance_variable_set(:@base_relation, 'users')
+    object.instance_variable_set(:@name, 'users')
   end
 
   context 'when right operand is an inclusive Range' do

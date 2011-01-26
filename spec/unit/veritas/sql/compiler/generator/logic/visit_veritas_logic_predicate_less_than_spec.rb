@@ -8,7 +8,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_less_than' do
   let(:object)    { klass.new                                       }
 
   before do
-    object.instance_variable_set(:@base_relation, 'users')
+    object.instance_variable_set(:@name, 'users')
   end
 
   it_should_behave_like 'a generated SQL expression'

@@ -8,7 +8,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_equality' do
   let(:object)    { klass.new                                       }
 
   before do
-    object.instance_variable_set(:@base_relation, 'users')
+    object.instance_variable_set(:@name, 'users')
   end
 
   context 'when the right operand is not nil' do

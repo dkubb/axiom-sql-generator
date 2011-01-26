@@ -19,8 +19,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_base_relation(base_relation)
-            @base_relation = base_relation.name
-            @columns       = columns_for(base_relation.header)
+            @name    = base_relation.name
+            @from    = visit_identifier(@name)
+            @columns = columns_for(base_relation.header)
             self
           end
 
@@ -112,7 +113,7 @@ module Veritas
           # @api public
           def to_s
             return EMPTY_STRING unless visited?
-            sql = "SELECT DISTINCT #{@columns.join(SEPARATOR)} FROM #{visit_identifier @base_relation}"
+            sql = "SELECT DISTINCT #{@columns.join(SEPARATOR)} FROM #{@from}"
             sql << " WHERE #{@where}"                    if @where
             sql << " ORDER BY #{@order.join(SEPARATOR)}" if @order
             sql << " LIMIT #{@limit}"                    if @limit
@@ -129,7 +130,7 @@ module Veritas
           #
           # @api public
           def visited?
-            !@base_relation.nil?
+            !@from.nil?
           end
 
           # Test if the other object is an equivalent SQL string
