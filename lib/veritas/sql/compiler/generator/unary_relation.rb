@@ -25,7 +25,7 @@ module Veritas
           #
           # @param [BaseRelation] base_relation
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_base_relation(base_relation)
@@ -39,7 +39,7 @@ module Veritas
           #
           # @param [Algebra::Projection] projection
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_algebra_projection(projection)
@@ -52,7 +52,7 @@ module Veritas
           #
           # @param [Algebra::Rename] rename
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_algebra_rename(rename)
@@ -65,7 +65,7 @@ module Veritas
           #
           # @param [Algebra::Restriction] restriction
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_algebra_restriction(restriction)
@@ -79,7 +79,7 @@ module Veritas
           #
           # @param [Relation::Operation::Order] order
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_relation_operation_order(order)
@@ -93,7 +93,7 @@ module Veritas
           #
           # @param [Relation::Operation::Limit] limit
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_relation_operation_limit(limit)
@@ -107,7 +107,7 @@ module Veritas
           #
           # @param [Relation::Operation::Offset] offset
           #
-          # @return [undefined]
+          # @return [self]
           #
           # @api private
           def visit_veritas_relation_operation_offset(offset)
@@ -158,7 +158,7 @@ module Veritas
           # @param [#[]] aliases
           #   optional aliases for the columns
           #
-          # @return [Array<#to_s>]
+          # @return [#to_s]
           #
           # @api private
           def columns_for(header, aliases = {})
