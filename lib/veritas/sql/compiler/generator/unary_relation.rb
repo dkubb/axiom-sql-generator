@@ -146,18 +146,31 @@ module Veritas
           #
           # @api private
           def columns_for(header, aliases = {})
-            header.map do |attribute|
-              if aliases.key?(attribute)
-                alias_for(attribute, aliases[attribute])
-              else
-                column_for(attribute)
-              end
+            header.map { |attribute| column_for(attribute, aliases) }
+          end
+
+          # Return the column for an attribute
+          #
+          # @param [Attribute] attribute
+          #
+          # @param [#[]] aliases
+          #   aliases for the columns
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def column_for(attribute, aliases)
+            column = dispatch attribute
+            if aliases.key?(attribute)
+              alias_for(column, aliases[attribute])
+            else
+              column
             end
           end
 
           # Return the column alias for an attribute
           #
-          # @param [Attribute] attribute
+          # @param [#to_s] column
           #
           # @param [Attribute, nil] alias_attribute
           #   attribute to use for the alias
@@ -165,19 +178,8 @@ module Veritas
           # @return [#to_s]
           #
           # @api private
-          def alias_for(attribute, alias_attribute)
-            "#{column_for(attribute)} AS #{visit_identifier alias_attribute.name}"
-          end
-
-          # Return the column for an attribute
-          #
-          # @param [Attribute] attribute
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def column_for(attribute)
-            dispatch attribute
+          def alias_for(column, alias_attribute)
+            "#{column} AS #{visit_identifier alias_attribute.name}"
           end
 
           # Return an expression that can be used for the FROM
