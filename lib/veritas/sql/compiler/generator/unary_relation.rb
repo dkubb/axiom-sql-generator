@@ -133,18 +133,6 @@ module Veritas
             !@from.nil?
           end
 
-          # Test if the other object is an equivalent SQL string
-          #
-          # @example
-          #   unary_relation == other  # true or false
-          #
-          # @return [Boolean]
-          #
-          # @api public
-          def ==(other)
-            to_s == other.to_s
-          end
-
         private
 
           # Return a list of columns in a header
