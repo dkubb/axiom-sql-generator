@@ -3,7 +3,7 @@ module Veritas
     module Compiler
       class Generator < Visitor
 
-        # Generates an SQL statement for an identifer
+        # Generates an SQL statement for an identifier
         module Identifier
 
           QUOTE         = '"'.freeze

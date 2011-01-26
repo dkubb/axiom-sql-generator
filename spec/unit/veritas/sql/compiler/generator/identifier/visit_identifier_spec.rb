@@ -6,7 +6,7 @@ describe Generator::Identifier, '#visit_identifier' do
   let(:klass)  { Class.new(Visitor) { include Generator::Identifier } }
   let(:object) { klass.new                                            }
 
-  context 'with an identifer containing no quotes' do
+  context 'with an identifier containing no quotes' do
     let(:identifier) { 'users' }
 
     it_should_behave_like 'a generated SQL expression'
@@ -14,7 +14,7 @@ describe Generator::Identifier, '#visit_identifier' do
     it { should == '"users"' }
   end
 
-  context 'with an identifer containing quotes' do
+  context 'with an identifier containing quotes' do
     let(:identifier) { 'users"name' }
 
     it_should_behave_like 'a generated SQL expression'
