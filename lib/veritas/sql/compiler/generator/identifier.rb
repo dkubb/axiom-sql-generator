@@ -13,7 +13,7 @@ module Veritas
           #
           # @param [#to_s] identifier
           #
-          # @return [String]
+          # @return [#to_s]
           #
           # @api private
           def visit_identifier(identifier)

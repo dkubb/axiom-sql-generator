@@ -8,7 +8,7 @@ module Veritas
     # @example
     #   name = base_relation.name
     #
-    # @return [String]
+    # @return [#to_s]
     #
     # @api public
     attr_reader :name
