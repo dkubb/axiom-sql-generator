@@ -33,7 +33,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_projection(projection)
-            dispatch projection.operand
+            @from    = inner_query_for(projection.operand)
             @columns = columns_for(projection.header)
             self
           end
@@ -46,7 +46,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_rename(rename)
-            dispatch(operand = rename.operand)
+            @from    = inner_query_for(operand = rename.operand)
             @columns = columns_for(operand.header, rename.aliases.to_hash)
             self
           end
@@ -59,7 +59,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_restriction(restriction)
-            dispatch restriction.operand
+            @from  = inner_query_for(restriction.operand)
             @where = dispatch restriction.predicate
             self
           end
@@ -72,7 +72,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_order(order)
-            dispatch order.operand
+            @from  = inner_query_for(order.operand)
             @order = order.directions.map { |direction| dispatch direction }
             self
           end
@@ -85,7 +85,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_limit(limit)
-            dispatch limit.operand
+            @from  = inner_query_for(limit.operand)
             @limit = dispatch limit.limit
             self
           end
@@ -98,7 +98,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_offset(offset)
-            dispatch offset.operand
+            @from   = inner_query_for(offset.operand)
             @offset = dispatch offset.offset
             self
           end
@@ -178,6 +178,19 @@ module Veritas
           # @api private
           def column_for(attribute)
             dispatch attribute
+          end
+
+          # Return an expression that can be used for the FROM
+          #
+          # @param [Relation] relation
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def inner_query_for(relation)
+            "(#{dispatch(relation)}) AS #{visit_identifier(@name)}"
+          ensure
+            @from = @where = @order = @limit = @offset = nil
           end
 
         end # class UnaryRelation
