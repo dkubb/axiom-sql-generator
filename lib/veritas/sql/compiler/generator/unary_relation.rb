@@ -12,15 +12,6 @@ module Veritas
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
 
-          # Initialize a unary relation visitor
-          #
-          # @return [undefined]
-          #
-          # @api private
-          def initialize
-            reset_query_state
-          end
-
           # Visit a Base Relation
           #
           # @param [BaseRelation] base_relation
