@@ -215,27 +215,27 @@ module Veritas
           #
           # @api private
           def inner_query_for(relation)
-            inner     = dispatch(relation)
-            @distinct = nil
-            @columns  = inner_query_columns_for(relation)
+            inner = dispatch(relation)
+            set_query_state_for(relation)
             "(#{inner}) AS #{visit_identifier(@name)}"
           ensure
             reset_query_state
           end
 
-          # Return the columns for an inner query
+          # Set the query state for each specific type of relation
           #
           # @param [Relation] relation
           #
-          # @return [#to_s]
+          # @return [undefined]
           #
           # @api private
-          def inner_query_columns_for(relation)
+          def set_query_state_for(relation)
             case relation
               when Algebra::Projection, Algebra::Rename
-                @columns
+                @distinct = nil
               else
-                '*'
+                @distinct = nil
+                @columns = '*'
             end
           end
 
