@@ -209,7 +209,11 @@ module Veritas
           def inner_query_for(relation)
             inner = dispatch(relation)
             set_query_state_for(relation)
-            "(#{inner}) AS #{visit_identifier(@name)}"
+            if relation.kind_of?(BaseRelation)
+              @from
+            else
+              "(#{inner}) AS #{visit_identifier(@name)}"
+            end
           ensure
             reset_query_state
           end
