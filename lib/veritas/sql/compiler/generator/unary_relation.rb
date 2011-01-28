@@ -43,8 +43,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_projection(projection)
-            @from    = inner_query_for(projection.operand)
-            @columns = columns_for(projection.header)
+            @from     = inner_query_for(projection.operand)
+            @columns  = columns_for(projection.header)
+            @distinct = DISTINCT
             self
           end
 
@@ -232,9 +233,8 @@ module Veritas
           def set_query_state_for(relation)
             case relation
               when Algebra::Projection, Algebra::Rename
-                @distinct = nil
+                # use @columns
               else
-                @distinct = nil
                 @columns = '*'
             end
           end
@@ -245,8 +245,7 @@ module Veritas
           #
           # @api private
           def reset_query_state
-            @distinct = DISTINCT
-            @where = @order = @limit = @offset = nil
+            @distinct = @where = @order = @limit = @offset = nil
           end
 
         end # class UnaryRelation

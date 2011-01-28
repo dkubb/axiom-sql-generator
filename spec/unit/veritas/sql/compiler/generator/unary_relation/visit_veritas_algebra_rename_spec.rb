@@ -15,5 +15,5 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_rename' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('SELECT DISTINCT "users"."id" AS "user_id", "users"."name", "users"."age" FROM (SELECT * FROM "users") AS "users"') }
+  its(:to_s) { should eql('SELECT "users"."id" AS "user_id", "users"."name", "users"."age" FROM (SELECT * FROM "users") AS "users"') }
 end
