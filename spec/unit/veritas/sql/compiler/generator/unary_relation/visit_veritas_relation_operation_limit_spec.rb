@@ -12,45 +12,63 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
   let(:base_relation) { BaseRelation.new('users', header, body)                 }
   let(:object)        { klass.new                                               }
 
-  context 'when the relation is a projection' do
-    let(:relation) { base_relation.project([ :id, :name ]) }
-    let(:limit)    { relation.order.take(1)                }
-
-    it_should_behave_like 'a generated SQL expression'
-
-    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
-  end
-
-  context 'when the relation is a rename' do
-    let(:relation) { base_relation.rename(:id => :user_id) }
-    let(:limit)    { relation.order.take(1)                }
-
-    it_should_behave_like 'a generated SQL expression'
-
-    its(:to_s) { should eql('SELECT "user_id", "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users" ORDER BY "user_id", "name", "age" LIMIT 1') }
-  end
-
-  context 'when the relation is ordered' do
-    let(:relation) { base_relation.order }
-    let(:limit)    { relation.take(1)    }
+  context 'when the operand is a base relation' do
+    let(:operand) { base_relation         }
+    let(:limit)   { operand.order.take(1) }
 
     it_should_behave_like 'a generated SQL expression'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
-  context 'when the relation is limited' do
-    let(:relation) { base_relation.order.take(2) }
-    let(:limit)    { relation.take(1)            }
+  context 'when the operand is a projection' do
+    let(:operand) { base_relation.project([ :id, :name ]) }
+    let(:limit)   { operand.order.take(1)                 }
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 2) AS "users" LIMIT 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
   end
 
-  context 'when the relation is offset' do
-    let(:relation) { base_relation.order.drop(1) }
-    let(:limit)    { relation.take(1)            }
+  context 'when the operand is a rename' do
+    let(:operand) { base_relation.rename(:id => :user_id) }
+    let(:limit)   { operand.order.take(1)                 }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "user_id", "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users" ORDER BY "user_id", "name", "age" LIMIT 1') }
+  end
+
+  context 'when the operand is a restriction' do
+    let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
+    let(:limit)   { operand.order.take(1)                       }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age" LIMIT 1') }
+  end
+
+  context 'when the operand is ordered' do
+    let(:operand) { base_relation.order }
+    let(:limit)   { operand.take(1)     }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+  end
+
+  context 'when the operand is limited' do
+    let(:operand) { base_relation.order.take(1) }
+    let(:limit)   { operand.take(1)             }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
+  end
+
+  context 'when the operand is offset' do
+    let(:operand) { base_relation.order.drop(1) }
+    let(:limit)   { operand.take(1)             }
 
     it_should_behave_like 'a generated SQL expression'
 
