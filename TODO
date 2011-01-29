@@ -1,7 +1,3 @@
-* Make sure that SELECT/ORDER columns are not qualified for unary
-  operations. There is no need to qualify when there are no other
-  tables/aliases in that context.
-
 * Make sure that all queries are generated with each other type nested
   inside it at least once. Use the limit and offset specs as a model.
 
