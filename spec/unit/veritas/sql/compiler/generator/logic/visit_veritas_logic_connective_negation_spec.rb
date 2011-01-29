@@ -8,11 +8,7 @@ describe Generator::Logic, '#visit_veritas_logic_connective_negation' do
   let(:negation)  { Logic::Connective::Negation.new(attribute.eq(1)) }
   let(:object)    { klass.new                                        }
 
-  before do
-    object.instance_variable_set(:@name, 'users')
-  end
-
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('NOT "users"."id" = 1') }
+  its(:to_s) { should eql('NOT "id" = 1') }
 end

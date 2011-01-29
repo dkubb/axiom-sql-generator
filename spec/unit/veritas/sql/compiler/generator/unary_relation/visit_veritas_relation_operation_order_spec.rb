@@ -15,5 +15,5 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age"') }
+  its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
 end

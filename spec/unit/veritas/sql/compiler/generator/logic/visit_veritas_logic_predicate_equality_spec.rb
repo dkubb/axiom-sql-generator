@@ -7,16 +7,12 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_equality' do
   let(:attribute) { Attribute::Integer.new(:id)                     }
   let(:object)    { klass.new                                       }
 
-  before do
-    object.instance_variable_set(:@name, 'users')
-  end
-
   context 'when the right operand is not nil' do
     let(:equality) { attribute.eq(1) }
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('"users"."id" = 1') }
+    its(:to_s) { should eql('"id" = 1') }
   end
 
   context 'when the right operand is nil' do
@@ -24,6 +20,6 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_equality' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('"users"."id" IS NULL') }
+    its(:to_s) { should eql('"id" IS NULL') }
   end
 end

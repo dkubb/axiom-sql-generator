@@ -15,5 +15,5 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_rename' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('SELECT "users"."id" AS "user_id", "users"."name", "users"."age" FROM "users"') }
+  its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users"') }
 end

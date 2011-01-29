@@ -18,7 +18,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "users"."id", "users"."name" FROM "users" ORDER BY "users"."id", "users"."name" LIMIT 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
   end
 
   context 'when the relation is a rename' do
@@ -27,7 +27,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "users"."user_id", "users"."name", "users"."age" FROM (SELECT "users"."id" AS "user_id", "users"."name", "users"."age" FROM "users") AS "users" ORDER BY "users"."user_id", "users"."name", "users"."age" LIMIT 1') }
+    its(:to_s) { should eql('SELECT "user_id", "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users" ORDER BY "user_id", "name", "age" LIMIT 1') }
   end
 
   context 'when the relation is ordered' do
@@ -36,7 +36,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the relation is limited' do
@@ -45,7 +45,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 2) AS "users" LIMIT 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 2) AS "users" LIMIT 1') }
   end
 
   context 'when the relation is offset' do
@@ -54,6 +54,6 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 1 OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
   end
 end
