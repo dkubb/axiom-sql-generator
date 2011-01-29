@@ -11,6 +11,16 @@ module Veritas
           DISTINCT     = 'DISTINCT '.freeze
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
+          PRECEDENCE   = [
+            BaseRelation,                  # FROM
+            Algebra::Projection,           # DISTINCT
+            Algebra::Restriction,          # WHERE
+            Relation::Operation::Order,    # ORDER BY
+            Relation::Operation::Reverse,  # ORDER BY
+            Relation::Operation::Offset,   # OFFSET
+            Relation::Operation::Limit,    # LIMIT
+            Algebra::Rename,               # SELECT
+          ].freeze
 
           # Visit a Base Relation
           #
@@ -34,9 +44,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_projection(projection)
-            @from     = inner_query_for(projection.operand)
-            @columns  = columns_for(projection.header)
+            @from     = inner_query_for(projection)
             @distinct = DISTINCT
+            @columns  = columns_for(projection.header)
             self
           end
 
@@ -48,8 +58,8 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_rename(rename)
-            @from    = inner_query_for(operand = rename.operand)
-            @columns = columns_for(operand.header, rename.aliases.to_hash)
+            @from    = inner_query_for(rename)
+            @columns = columns_for(rename.operand.header, rename.aliases.to_hash)
             self
           end
 
@@ -61,9 +71,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_restriction(restriction)
-            @from    = inner_query_for(restriction.operand)
-            @columns = columns_for(restriction.header)
-            @where   = dispatch(restriction.predicate)
+            @from      = inner_query_for(restriction)
+            @where     = dispatch(restriction.predicate)
+            @columns ||= columns_for(restriction.header)
             self
           end
 
@@ -75,9 +85,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_order(order)
-            @from    = inner_query_for(order.operand)
-            @columns = columns_for(order.header)
-            @order   = order_for(order.directions)
+            @from      = inner_query_for(order)
+            @order     = order_for(order.directions)
+            @columns ||= columns_for(order.header)
             self
           end
 
@@ -89,9 +99,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_limit(limit)
-            @from    = inner_query_for(limit.operand)
-            @columns = columns_for(limit.header)
-            @limit   = limit.limit
+            @from      = inner_query_for(limit)
+            @limit     = limit.limit
+            @columns ||= columns_for(limit.header)
             self
           end
 
@@ -103,9 +113,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_offset(offset)
-            @from    = inner_query_for(offset.operand)
-            @columns = columns_for(offset.header)
-            @offset  = offset.offset
+            @from      = inner_query_for(offset)
+            @offset    = offset.offset
+            @columns ||= columns_for(offset.header)
             self
           end
 
@@ -207,31 +217,50 @@ module Veritas
           #
           # @api private
           def inner_query_for(relation)
-            inner = dispatch(relation)
-            set_query_state_for(relation)
-            if relation.kind_of?(BaseRelation)
+            inner_query = dispatch(relation.operand)
+            if collapse_inner_query_for?(relation)
               @from
             else
-              "(#{inner}) AS #{visit_identifier(@name)}"
+              set_columns_for(relation.operand)
+              aliased_inner_query(inner_query)
             end
-          ensure
-            reset_query_state
           end
 
-          # Set the query state for each specific type of relation
+          # Set the columns to "*" if they are not significant
           #
           # @param [Relation] relation
           #
           # @return [undefined]
           #
           # @api private
-          def set_query_state_for(relation)
-            case relation
-              when Algebra::Projection, Algebra::Rename
-                # use @columns
-              else
-                @columns = '*'
+          def set_columns_for(relation)
+            unless @distinct || relation.kind_of?(Algebra::Rename)
+              @columns = '*'
             end
+          end
+
+          # Test if the relation should be collapsed
+          #
+          # @param [Relation] relation
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def collapse_inner_query_for?(relation)
+            PRECEDENCE.index(relation.class) > PRECEDENCE.index(relation.operand.class)
+          end
+
+          # Returns an aliased inner query
+          #
+          # @param [#to_s] inner_query
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def aliased_inner_query(inner_query)
+            "(#{inner_query}) AS #{visit_identifier(@name)}"
+          ensure
+            reset_query_state
           end
 
           # Reset the query state
@@ -240,7 +269,7 @@ module Veritas
           #
           # @api private
           def reset_query_state
-            @distinct = @where = @order = @limit = @offset = nil
+            @distinct = @columns = @where = @order = @limit = @offset = nil
           end
 
         end # class UnaryRelation

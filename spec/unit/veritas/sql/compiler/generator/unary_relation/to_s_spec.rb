@@ -39,7 +39,7 @@ describe Generator::UnaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" LIMIT 1') }
+    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" LIMIT 1') }
   end
 
   context 'when an offset is visited' do
@@ -49,6 +49,6 @@ describe Generator::UnaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM (SELECT * FROM "users" ORDER BY "users"."id", "users"."name", "users"."age") AS "users" OFFSET 1') }
+    its(:to_s) { should eql('SELECT "users"."id", "users"."name", "users"."age" FROM "users" ORDER BY "users"."id", "users"."name", "users"."age" OFFSET 1') }
   end
 end
