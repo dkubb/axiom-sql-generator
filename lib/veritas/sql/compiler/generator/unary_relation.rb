@@ -217,11 +217,12 @@ module Veritas
           #
           # @api private
           def inner_query_for(relation)
-            inner_query = dispatch(relation.operand)
+            operand     = relation.operand
+            inner_query = dispatch(operand)
             if collapse_inner_query_for?(relation)
               @from
             else
-              set_columns_for(relation.operand)
+              set_columns_for(operand)
               aliased_inner_query(inner_query)
             end
           end

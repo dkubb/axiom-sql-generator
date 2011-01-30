@@ -38,7 +38,8 @@ FeatureEnvy:
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
-    'Veritas::SQL::Compiler::Generator::Logic#optional?'
+    'Veritas::SQL::Compiler::Generator::Logic#optional?',
+    'Veritas::SQL::Compiler::Generator::UnaryRelation#collapse_inner_query_for?'
   ]
   enabled: true
 ClassVariable:
@@ -87,7 +88,8 @@ UtilityFunction:
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
-    'Veritas::SQL::Compiler::Generator::Logic#optional?'
+    'Veritas::SQL::Compiler::Generator::Logic#optional?',
+    'Veritas::SQL::Compiler::Generator::UnaryRelation#collapse_inner_query_for?'
   ]
   enabled: true
 Attribute:
