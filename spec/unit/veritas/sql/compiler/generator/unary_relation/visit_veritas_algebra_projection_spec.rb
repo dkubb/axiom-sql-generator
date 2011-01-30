@@ -30,12 +30,12 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_projection' do
   end
 
   context 'when the operand is a rename' do
-    let(:operand)    { base_relation.rename(:id => :user_id)      }
-    let(:projection) { operand.project([ :user_id, :name ]) }
+    let(:operand)    { base_relation.rename(:id => :user_id) }
+    let(:projection) { operand.project([ :user_id, :name ])  }
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "user_id", "name" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
+    its(:to_s) { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
   end
 
   context 'when the operand is a restriction' do
@@ -51,7 +51,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name"') } }
+    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users"') }
   end
 
   context 'when the operand is limited' do
