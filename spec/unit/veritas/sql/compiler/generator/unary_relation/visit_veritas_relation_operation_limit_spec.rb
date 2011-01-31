@@ -63,7 +63,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the operand is offset' do

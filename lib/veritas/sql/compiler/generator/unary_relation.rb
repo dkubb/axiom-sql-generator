@@ -101,6 +101,7 @@ module Veritas
           def visit_veritas_relation_operation_limit(limit)
             @from      = inner_query_for(limit)
             @limit     = limit.limit
+            @order     = order_for(limit.directions)
             @columns ||= columns_for(limit.header)
             self
           end
@@ -115,6 +116,7 @@ module Veritas
           def visit_veritas_relation_operation_offset(offset)
             @from      = inner_query_for(offset)
             @offset    = offset.offset
+            @order     = order_for(offset.directions)
             @columns ||= columns_for(offset.header)
             self
           end
