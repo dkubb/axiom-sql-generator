@@ -13,7 +13,7 @@ describe Generator, '#visit' do
 
     it_should_behave_like 'a command method'
 
-    it { expect { subject }.to change(object, :frozen?).from(false).to(true) }
+    specify { expect { subject }.to change(object, :frozen?).from(false).to(true) }
   end
 
   context 'with a handled object more than once' do

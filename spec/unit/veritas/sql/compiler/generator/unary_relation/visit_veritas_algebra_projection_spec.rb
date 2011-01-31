@@ -35,7 +35,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
+    its(:to_s) { should eql('SELECT DISTINCT "user_id", "name" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
   end
 
   context 'when the operand is a restriction' do
@@ -52,6 +52,14 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_projection' do
     it_should_behave_like 'a generated SQL expression'
 
     its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users"') }
+  end
+
+  context 'when the operand is reversed' do
+    let(:operand) { base_relation.order.reverse }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "users"') }
   end
 
   context 'when the operand is limited' do

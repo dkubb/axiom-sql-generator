@@ -53,6 +53,14 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_rename' do
     its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
   end
 
+  context 'when the operand is reversed' do
+    let(:operand) { base_relation.order.reverse }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+  end
+
   context 'when the operand is limited' do
     let(:operand) { base_relation.order.take(1) }
 

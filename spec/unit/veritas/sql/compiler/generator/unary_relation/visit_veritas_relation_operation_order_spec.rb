@@ -34,7 +34,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "user_id", "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users" ORDER BY "user_id", "name", "age"') }
+    its(:to_s) { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id", "name", "age"') } }
   end
 
   context 'when the operand is a restriction' do
@@ -51,6 +51,14 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
     it_should_behave_like 'a generated SQL expression'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id", "name", "age"') }
+  end
+
+  context 'when the operand is reversed' do
+    let(:operand) { base_relation.order.reverse }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') } }
   end
 
   context 'when the operand is limited' do
