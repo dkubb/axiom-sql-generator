@@ -169,6 +169,17 @@ module Veritas
             MATCH_ALL
           end
 
+          # Visit a False proposition
+          #
+          # @param [Logic::Proposition::False] _false
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def visit_veritas_logic_proposition_false(_false)
+            MATCH_NONE
+          end
+
         private
 
           # Return the SQL for an Inclusion using a Range
