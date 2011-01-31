@@ -158,6 +158,17 @@ module Veritas
             "NOT #{dispatch negation.operand}"
           end
 
+          # Visit a True proposition
+          #
+          # @param [Logic::Proposition::True] _true
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def visit_veritas_logic_proposition_true(_true)
+            MATCH_ALL
+          end
+
         private
 
           # Return the SQL for an Inclusion using a Range
