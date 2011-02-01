@@ -134,8 +134,8 @@ module Veritas
             sql = "SELECT #{@distinct}#{@columns} FROM #{@from}"
             sql << " WHERE #{@where}"    if @where
             sql << " ORDER BY #{@order}" if @order
-            sql << " OFFSET #{@offset}"  if @offset
             sql << " LIMIT #{@limit}"    if @limit
+            sql << " OFFSET #{@offset}"  if @offset
             sql
           end
 

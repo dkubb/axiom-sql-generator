@@ -72,6 +72,6 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1 LIMIT 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
   end
 end
