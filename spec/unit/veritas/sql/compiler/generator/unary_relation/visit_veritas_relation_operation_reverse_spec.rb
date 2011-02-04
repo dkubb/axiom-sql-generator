@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
-  subject { object.visit_veritas_relation_operation_offset(offset) }
+describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' do
+  subject { object.visit_veritas_relation_operation_reverse(order) }
 
   let(:klass)         { Class.new(Visitor) { include Generator::UnaryRelation } }
   let(:id)            { Attribute::Integer.new(:id)                             }
@@ -10,7 +10,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
   let(:header)        { [ id, name, age ]                                       }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                          }
   let(:base_relation) { BaseRelation.new('users', header, body)                 }
-  let(:offset)        { operand.drop(1)                                         }
+  let(:order)         { operand.reverse                                         }
   let(:object)        { klass.new                                               }
 
   context 'when the operand is a base relation' do
@@ -18,7 +18,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is a projection' do
@@ -26,7 +26,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" OFFSET 1') }
+    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id" DESC, "name" DESC') }
   end
 
   context 'when the operand is a rename' do
@@ -34,7 +34,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is a restriction' do
@@ -42,7 +42,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is ordered' do
@@ -50,7 +50,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is reversed' do
@@ -58,7 +58,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is limited' do
@@ -66,24 +66,14 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_offset' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" OFFSET 1') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is offset' do
     let(:operand) { base_relation.order.drop(1) }
 
-    context 'when the relation is not optimized' do
-      it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL expression'
 
-      its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" OFFSET 1') }
-    end
-
-    context 'when the relation is optimized' do
-      subject { object.visit_veritas_relation_operation_offset(offset.optimize) }
-
-      it_should_behave_like 'a generated SQL expression'
-
-      its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 2') }
-    end
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 end

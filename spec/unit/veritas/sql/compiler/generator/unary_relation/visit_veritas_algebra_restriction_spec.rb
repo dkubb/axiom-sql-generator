@@ -29,21 +29,59 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
     its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
   end
 
-  context 'when the operand is a rename' do
-    let(:operand)     { base_relation.rename(:id => :user_id)      }
-    let(:restriction) { operand.restrict { |r| r[:user_id].eq(1) } }
+  context 'when the operand is a projection then a restriction' do
+    let(:operand) { base_relation.project([ :id, :name ]).restrict { |r| r[:id].ne(2) } }
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" WHERE "user_id" = 1') } }
+    its(:to_s) { should eql('SELECT "id", "name" FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
+  end
+
+  context 'when the operand is a projection then a restriction, followed by another restriction' do
+    let(:true_proposition) { Logic::Proposition::True.instance                                                           }
+    let(:operand)          { base_relation.project([ :id, :name ]).restrict(true_proposition).restrict(true_proposition) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name" FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1') }
+  end
+
+  context 'when the operand is a rename' do
+    context 'when the restriction includes the renamed column' do
+      let(:operand)     { base_relation.rename(:id => :user_id)      }
+      let(:restriction) { operand.restrict { |r| r[:user_id].eq(1) } }
+
+      it_should_behave_like 'a generated SQL expression'
+
+      its(:to_s) { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" WHERE "id" = 1') } }
+    end
+
+    context 'when the restriction does not include the renamed column' do
+      let(:operand)     { base_relation.rename(:name => :other_name) }
+      let(:restriction) { operand.restrict { |r| r[:id].eq(1) } }
+
+      it_should_behave_like 'a generated SQL expression'
+
+      its(:to_s) { pending { should eql('SELECT "id", "name" AS "other_name", "age" FROM "users" WHERE "id" = 1') } }
+    end
   end
 
   context 'when the operand is a restriction' do
-    let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
+    context 'when the predicates are equivalent' do
+      let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
 
-    it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" WHERE "id" = 1') }
+      its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') } }
+    end
+
+    context 'when the predicates are different' do
+      let(:operand) { base_relation.restrict { |r| r[:id].ne(2) } }
+
+      it_should_behave_like 'a generated SQL expression'
+
+      its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
+    end
   end
 
   context 'when the operand is ordered' do
@@ -51,7 +89,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"') } }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is reversed' do
@@ -59,7 +97,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') } }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is limited' do

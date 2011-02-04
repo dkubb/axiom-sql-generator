@@ -34,7 +34,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id", "name", "age"') } }
+    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id", "name", "age"') }
   end
 
   context 'when the operand is a restriction' do
@@ -50,7 +50,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is reversed' do
@@ -58,22 +58,42 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') } }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.order.take(1) }
+    context 'when the inner order is the same as the outer' do
+      let(:operand) { base_relation.order.take(1) }
 
-    it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id", "name", "age"') }
+      its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') } }
+    end
+
+    context 'when the inner order is the different from the outer, and the inner includes limit' do
+      let(:operand) { base_relation.order([ id.desc, name.desc, age.desc ]).take(1) }
+
+      it_should_behave_like 'a generated SQL expression'
+
+      its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1) AS "users" ORDER BY "id", "name", "age"') }
+    end
   end
 
   context 'when the operand is offset' do
-    let(:operand) { base_relation.order.drop(1) }
+    context 'when the inner order is the same as the outer' do
+      let(:operand) { base_relation.order.drop(1) }
 
-    it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" ORDER BY "id", "name", "age"') }
+      its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') } }
+    end
+
+    context 'when the inner order is the different from the outer, and the inner includes offset' do
+      let(:operand) { base_relation.order([ id.desc, name.desc, age.desc ]).drop(1) }
+
+      it_should_behave_like 'a generated SQL expression'
+
+      its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC OFFSET 1) AS "users" ORDER BY "id", "name", "age"') }
+    end
   end
 end

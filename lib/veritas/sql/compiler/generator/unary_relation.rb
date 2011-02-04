@@ -7,20 +7,31 @@ module Veritas
         module UnaryRelation
           include Logic
           include Direction
+          extend Aliasable
+
+          inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
           DISTINCT     = 'DISTINCT '.freeze
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
-          PRECEDENCE   = [
-            BaseRelation,                  # FROM
-            Algebra::Projection,           # DISTINCT
-            Algebra::Restriction,          # WHERE
-            Relation::Operation::Order,    # ORDER BY
-            Relation::Operation::Reverse,  # ORDER BY
-            Relation::Operation::Offset,   # OFFSET
-            Relation::Operation::Limit,    # LIMIT
-            Algebra::Rename,               # SELECT
-          ].freeze
+          COLLAPSIBLE  = {
+            Algebra::Projection          => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction,                                                                                                                                   ].freeze,
+            Algebra::Restriction         => Set[ BaseRelation, Algebra::Projection,                       Relation::Operation::Order, Relation::Operation::Reverse,                                                                         ].freeze,
+            Relation::Operation::Order   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse,                                                         Algebra::Rename ].freeze,
+            Relation::Operation::Reverse => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse,                                                         Algebra::Rename ].freeze,
+            Relation::Operation::Offset  => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse,                                                         Algebra::Rename ].freeze,
+            Relation::Operation::Limit   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse, Relation::Operation::Offset,                            Algebra::Rename ].freeze,
+            Algebra::Rename              => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse, Relation::Operation::Offset, Relation::Operation::Limit                 ].freeze,
+          }.freeze
+
+          # Initialize a Unary relation SQL generator
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def initialize
+            @scope = Set.new
+          end
 
           # Visit a Base Relation
           #
@@ -101,7 +112,6 @@ module Veritas
           def visit_veritas_relation_operation_limit(limit)
             @from      = inner_query_for(limit)
             @limit     = limit.limit
-            @order     = order_for(limit.directions)
             @columns ||= columns_for(limit.header)
             self
           end
@@ -116,7 +126,6 @@ module Veritas
           def visit_veritas_relation_operation_offset(offset)
             @from      = inner_query_for(offset)
             @offset    = offset.offset
-            @order     = order_for(offset.directions)
             @columns ||= columns_for(offset.header)
             self
           end
@@ -221,12 +230,23 @@ module Veritas
           def inner_query_for(relation)
             operand     = relation.operand
             inner_query = dispatch(operand)
+            scope_query(operand)
             if collapse_inner_query_for?(relation)
               @from
             else
-              set_columns_for(operand)
               aliased_inner_query(inner_query)
             end
+          end
+
+          # Add the operand to the current scope
+          #
+          # @param [Relation] operand
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def scope_query(operand)
+            @scope << operand.class
           end
 
           # Set the columns to "*" if they are not significant
@@ -236,8 +256,8 @@ module Veritas
           # @return [undefined]
           #
           # @api private
-          def set_columns_for(relation)
-            unless @distinct || relation.kind_of?(Algebra::Rename)
+          def set_columns_for_scope
+            unless @scope.include?(Algebra::Projection) || @scope.include?(Algebra::Rename)
               @columns = '*'
             end
           end
@@ -250,7 +270,7 @@ module Veritas
           #
           # @api private
           def collapse_inner_query_for?(relation)
-            PRECEDENCE.index(relation.class) > PRECEDENCE.index(relation.operand.class)
+            @scope.subset?(COLLAPSIBLE.fetch(relation.class))
           end
 
           # Returns an aliased inner query
@@ -261,6 +281,7 @@ module Veritas
           #
           # @api private
           def aliased_inner_query(inner_query)
+            set_columns_for_scope
             "(#{inner_query}) AS #{visit_identifier(@name)}"
           ensure
             reset_query_state
@@ -272,6 +293,7 @@ module Veritas
           #
           # @api private
           def reset_query_state
+            @scope.clear
             @distinct = @columns = @where = @order = @limit = @offset = nil
           end
 
