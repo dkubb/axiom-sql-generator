@@ -1,10 +1,3 @@
-* New collapsation strategy:
-  * Track the types of operations that are currently collapsed. If the
-    class already exists, then consider that the "boundary", and force
-    the system to use a full inner query.
-    * Use precedence like now, except allow types to have the same
-      precedence.
-
 * Make sure that table aliases are unique across the whole query, not
   just at a specific "level".
 
