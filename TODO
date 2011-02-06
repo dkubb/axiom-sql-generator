@@ -1,17 +1,5 @@
 * Add specs for binary relations
 
-* Add integration specs that compose unary operations out of others
-  * Try to do things like visit:
-
-      base_relation.restrict { |r| r[:id].eq(1) }.order.limit(10).restrict { |r| r[:name].eq('Dan Kubb) }.limit(1)
-
-    This should result in a nested SQL query, something equivalent to:
-
-      SELECT * FROM (SELECT * FROM users WHERE id = 1 LIMIT 10 ORDER BY id, name) WHERE name = 'Dan Kubb' LIMIT 1
-
-    NOTE: also check to see if the inner order is respected by the outer order in SQL or if it needs to be copied
-      - i.e. does the order of the relation we are selecting FROM affect the order of the query results
-
 * Adjust reek and roodi scores down to lower thresholds
 
 * Handle cases where an Inequality/Exclusion predicate is used (or a
