@@ -251,8 +251,6 @@ module Veritas
 
           # Set the columns to "*" if they are not significant
           #
-          # @param [Relation] relation
-          #
           # @return [undefined]
           #
           # @api private
