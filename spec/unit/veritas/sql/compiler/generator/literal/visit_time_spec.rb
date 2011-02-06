@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Generator::Literal, '#visit_time' do
   subject { object.visit_time(time) }
 
-  let(:klass)  { Class.new(Visitor) { include Generator::Literal } }
-  let(:object) { klass.new                                         }
+  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
+  let(:object)          { described_class.new                               }
 
   before :all do
     @original_tz = ENV['TZ']

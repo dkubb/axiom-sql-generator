@@ -3,14 +3,13 @@ require 'spec_helper'
 describe Generator, '#to_sql' do
   subject { object.to_sql }
 
-  let(:klass)         { Generator                                        }
   let(:id)            { Attribute::Integer.new(:id)                      }
   let(:name)          { Attribute::String.new(:name)                     }
   let(:age)           { Attribute::Integer.new(:age, :required => false) }
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
   let(:base_relation) { BaseRelation.new('users', header, body)          }
-  let(:object)        { klass.new                                        }
+  let(:object)        { described_class.new                              }
 
   context 'when no object visited' do
     it_should_behave_like 'an idempotent method'

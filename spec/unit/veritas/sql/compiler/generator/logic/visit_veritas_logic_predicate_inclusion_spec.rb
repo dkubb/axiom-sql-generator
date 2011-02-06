@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
   subject { object.visit_veritas_logic_predicate_inclusion(inclusion) }
 
-  let(:klass)     { Class.new(Visitor) { include Generator::Logic } }
-  let(:attribute) { Attribute::Integer.new(:id)                     }
-  let(:object)    { klass.new                                       }
+  let(:described_class) { Class.new(Visitor) { include Generator::Logic } }
+  let(:attribute)       { Attribute::Integer.new(:id)                     }
+  let(:object)          { described_class.new                             }
 
   context 'when right operand is an inclusive Range' do
     let(:inclusion) { attribute.exclude(1..10) }

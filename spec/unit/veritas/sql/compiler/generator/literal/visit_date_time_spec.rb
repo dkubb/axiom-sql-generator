@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Generator::Literal, '#visit_date_time' do
   subject { object.visit_date_time(date_time) }
 
-  let(:klass)           { Class.new(Visitor) { include Generator::Literal } }
+  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
   let(:usec_in_seconds) { Rational(usec, 10**6)                             }
-  let(:object)          { klass.new                                         }
+  let(:object)          { described_class.new                               }
 
   context 'when the DateTime is UTC' do
     let(:offset) { 0 }

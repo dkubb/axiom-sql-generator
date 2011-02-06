@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Generator::Logic, '#visit_veritas_logic_proposition_true' do
   subject { object.visit_veritas_logic_proposition_true(true_proposition) }
 
-  let(:klass)            { Class.new(Visitor) { include Generator::Logic } }
+  let(:described_class)  { Class.new(Visitor) { include Generator::Logic } }
   let(:true_proposition) { Logic::Proposition::True.instance               }
-  let(:object)           { klass.new                                       }
+  let(:object)           { described_class.new                             }
 
   it_should_behave_like 'a generated SQL expression'
 

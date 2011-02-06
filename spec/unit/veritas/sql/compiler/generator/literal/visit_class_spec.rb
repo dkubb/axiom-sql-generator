@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe Generator::Literal, '#visit_class' do
-  subject { object.visit_class(klass_arg) }
+  subject { object.visit_class(klass) }
 
-  let(:klass)  { Class.new(Visitor) { include Generator::Literal } }
-  let(:object) { klass.new                                         }
+  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
+  let(:object)          { described_class.new                               }
 
   before do
     Object.class_eval { remove_const(:NamedClass) if const_defined?(:NamedClass)  }
@@ -12,7 +12,7 @@ describe Generator::Literal, '#visit_class' do
   end
 
   context 'with a named class' do
-    let(:klass_arg) { NamedClass.freeze }
+    let(:klass) { NamedClass.freeze }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -20,7 +20,7 @@ describe Generator::Literal, '#visit_class' do
   end
 
   context 'with an anonymous class' do
-    let(:klass_arg) { klass }
+    let(:klass) { described_class }
 
     it_should_behave_like 'a generated SQL expression'
 

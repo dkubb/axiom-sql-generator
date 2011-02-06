@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Generator::Literal, '#visit_string' do
   subject { object.visit_string(string) }
 
-  let(:klass)  { Class.new(Visitor) { include Generator::Literal } }
-  let(:object) { klass.new                                         }
+  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
+  let(:object)          { described_class.new                               }
 
   context 'with a string containing no quotes' do
     let(:string) { 'string'.freeze }

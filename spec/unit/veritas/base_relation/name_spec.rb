@@ -3,10 +3,9 @@ require 'spec_helper'
 describe BaseRelation, '#name' do
   subject { object.name }
 
-  let(:klass)  { BaseRelation                  }
-  let(:header) { [ [ :id, Integer ] ]          }
-  let(:body)   { [ [ 1 ] ].each                }
-  let(:object) { klass.new(name, header, body) }
+  let(:header) { [ [ :id, Integer ] ]                    }
+  let(:body)   { [ [ 1 ] ].each                          }
+  let(:object) { described_class.new(name, header, body) }
 
   context 'when name is a frozen String' do
     let(:name) { 'users'.freeze }

@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Generator::Logic, '#visit_veritas_logic_connective_negation' do
   subject { object.visit_veritas_logic_connective_negation(negation) }
 
-  let(:klass)     { Class.new(Visitor) { include Generator::Logic }  }
-  let(:attribute) { Attribute::Integer.new(:id)                      }
-  let(:negation)  { Logic::Connective::Negation.new(attribute.eq(1)) }
-  let(:object)    { klass.new                                        }
+  let(:described_class) { Class.new(Visitor) { include Generator::Logic }  }
+  let(:attribute)       { Attribute::Integer.new(:id)                      }
+  let(:negation)        { Logic::Connective::Negation.new(attribute.eq(1)) }
+  let(:object)          { described_class.new                              }
 
   it_should_behave_like 'a generated SQL expression'
 

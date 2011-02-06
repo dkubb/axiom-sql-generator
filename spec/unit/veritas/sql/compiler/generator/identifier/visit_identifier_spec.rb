@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Generator::Identifier, '#visit_identifier' do
   subject { object.visit_identifier(identifier) }
 
-  let(:klass)  { Class.new(Visitor) { include Generator::Identifier } }
-  let(:object) { klass.new                                            }
+  let(:described_class) { Class.new(Visitor) { include Generator::Identifier } }
+  let(:object)          { described_class.new                                  }
 
   context 'with an identifier containing no quotes' do
     let(:identifier) { 'users' }

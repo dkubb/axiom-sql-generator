@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Generator::Literal, '#visit_numeric' do
   subject { object.visit_numeric(numeric) }
 
-  let(:klass)  { Class.new(Visitor) { include Generator::Literal } }
-  let(:object) { klass.new                                         }
+  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
+  let(:object)          { described_class.new                               }
 
   context 'with an Integer' do
     let(:numeric) { 1 }

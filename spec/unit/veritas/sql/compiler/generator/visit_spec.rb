@@ -3,8 +3,7 @@ require 'spec_helper'
 describe Generator, '#visit' do
   subject { object.visit(visitable) }
 
-  let(:klass)  { Generator }
-  let(:object) { klass.new }
+  let(:object) { described_class.new }
 
   context 'with a handled object' do
     let(:header)    { [ [ :id, Integer ] ]                    }

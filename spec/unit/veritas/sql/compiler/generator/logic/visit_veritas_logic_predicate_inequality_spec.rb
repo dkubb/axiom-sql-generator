@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
   subject { object.visit_veritas_logic_predicate_inequality(inequality) }
 
-  let(:klass)  { Class.new(Visitor) { include Generator::Logic } }
-  let(:object) { klass.new                                       }
+  let(:described_class) { Class.new(Visitor) { include Generator::Logic } }
+  let(:object)          { described_class.new                             }
 
   context 'and the left attribute is optional' do
     let(:attribute)  { Attribute::Integer.new(:age, :required => false) }

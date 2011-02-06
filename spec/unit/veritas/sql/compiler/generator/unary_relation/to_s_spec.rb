@@ -3,14 +3,14 @@ require 'spec_helper'
 describe Generator::UnaryRelation, '#to_s' do
   subject { object.to_s }
 
-  let(:klass)         { Class.new(Visitor) { include Generator::UnaryRelation } }
-  let(:id)            { Attribute::Integer.new(:id)                             }
-  let(:name)          { Attribute::String.new(:name)                            }
-  let(:age)           { Attribute::Integer.new(:age, :required => false)        }
-  let(:header)        { [ id, name, age ]                                       }
-  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                          }
-  let(:base_relation) { BaseRelation.new('users', header, body)                 }
-  let(:object)        { klass.new                                               }
+  let(:described_class) { Class.new(Visitor) { include Generator::UnaryRelation } }
+  let(:id)              { Attribute::Integer.new(:id)                             }
+  let(:name)            { Attribute::String.new(:name)                            }
+  let(:age)             { Attribute::Integer.new(:age, :required => false)        }
+  let(:header)          { [ id, name, age ]                                       }
+  let(:body)            { [ [ 1, 'Dan Kubb', 35 ] ].each                          }
+  let(:base_relation)   { BaseRelation.new('users', header, body)                 }
+  let(:object)          { described_class.new                                     }
 
   context 'when no object visited' do
     it_should_behave_like 'an idempotent method'
