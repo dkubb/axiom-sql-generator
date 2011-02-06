@@ -1,6 +1,3 @@
-* Make sure that table aliases are unique across the whole query, not
-  just at a specific "level".
-
 * Add specs for binary relations
 
 * Add integration specs that compose unary operations out of others
