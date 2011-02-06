@@ -3,15 +3,14 @@ require 'spec_helper'
 describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
   subject { object.visit_veritas_relation_operation_order(order) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::UnaryRelation } }
-  let(:id)              { Attribute::Integer.new(:id)                             }
-  let(:name)            { Attribute::String.new(:name)                            }
-  let(:age)             { Attribute::Integer.new(:age, :required => false)        }
-  let(:header)          { [ id, name, age ]                                       }
-  let(:body)            { [ [ 1, 'Dan Kubb', 35 ] ].each                          }
-  let(:base_relation)   { BaseRelation.new('users', header, body)                 }
-  let(:order)           { operand.order                                           }
-  let(:object)          { described_class.new                                     }
+  let(:id)            { Attribute::Integer.new(:id)                      }
+  let(:name)          { Attribute::String.new(:name)                     }
+  let(:age)           { Attribute::Integer.new(:age, :required => false) }
+  let(:header)        { [ id, name, age ]                                }
+  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
+  let(:base_relation) { BaseRelation.new('users', header, body)          }
+  let(:order)         { operand.order                                    }
+  let(:object)        { described_class.new                              }
 
   context 'when the operand is a base relation' do
     let(:operand) { base_relation }

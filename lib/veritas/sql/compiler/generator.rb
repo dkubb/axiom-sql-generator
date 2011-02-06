@@ -4,11 +4,8 @@ module Veritas
 
       # Generates an SQL statement for a relation
       class Generator < Visitor
-        include Attribute
-        include Direction
-        include Literal
-        include Logic
-        include UnaryRelation
+
+        EMPTY_STRING = ''.freeze
 
         # Initialize a Generator
         #

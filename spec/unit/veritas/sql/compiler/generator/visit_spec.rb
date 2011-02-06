@@ -3,12 +3,19 @@ require 'spec_helper'
 describe Generator, '#visit' do
   subject { object.visit(visitable) }
 
-  let(:object) { described_class.new }
+  let(:described_class) { Class.new(Generator) }
+  let(:object)          { described_class.new  }
 
   context 'with a handled object' do
-    let(:header)    { [ [ :id, Integer ] ]                    }
-    let(:body)      { [ [ 1 ] ].each                          }
-    let(:visitable) { BaseRelation.new('users', header, body) }
+    let(:visitable) { mock('Visitable') }
+
+    before do
+      described_class.class_eval do
+        def visit_spec_mocks_mock(mock)
+          mock
+        end
+      end
+    end
 
     it_should_behave_like 'a command method'
 
@@ -16,9 +23,15 @@ describe Generator, '#visit' do
   end
 
   context 'with a handled object more than once' do
-    let(:header)    { [ [ :id, Integer ] ]                    }
-    let(:body)      { [ [ 1 ] ].each                          }
-    let(:visitable) { BaseRelation.new('users', header, body) }
+    let(:visitable) { mock('Visitable') }
+
+    before do
+      described_class.class_eval do
+        def visit_spec_mocks_mock(mock)
+          mock
+        end
+      end
+    end
 
     before do
       object.visit(visitable)

@@ -4,15 +4,16 @@ module Veritas
       class Generator < Visitor
 
         # Generates an SQL statement for a unary relation
-        module UnaryRelation
-          include Logic
+        class UnaryRelation < Generator
+          include Attribute
           include Direction
+          include Literal
+          include Logic
           extend Aliasable
 
           inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
           DISTINCT     = 'DISTINCT '.freeze
-          EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
           COLLAPSIBLE  = {
             Algebra::Projection          => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction,                                                                                                                                   ].freeze,
