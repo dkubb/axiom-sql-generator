@@ -8,6 +8,7 @@ module Veritas
 
           UNION     = 'UNION'.freeze
           INTERSECT = 'INTERSECT'.freeze
+          EXCEPT    = 'EXCEPT'.freeze
 
           # Visit a Union
           #
@@ -34,6 +35,20 @@ module Veritas
             @left      = UnaryRelation.new.visit(intersection.left)
             @right     = UnaryRelation.new.visit(intersection.right)
             @operation = INTERSECT
+            self
+          end
+
+          # Visit an Difference
+          #
+          # @param [Algebra::Difference] difference
+          #
+          # @return [self]
+          #
+          # @api private
+          def visit_veritas_algebra_difference(difference)
+            @left      = UnaryRelation.new.visit(difference.left)
+            @right     = UnaryRelation.new.visit(difference.right)
+            @operation = EXCEPT
             self
           end
 
