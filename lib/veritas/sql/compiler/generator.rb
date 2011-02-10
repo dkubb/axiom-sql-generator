@@ -13,7 +13,6 @@ module Veritas
         #
         # @api private
         def initialize
-          super
           @sql = EMPTY_STRING
         end
 
