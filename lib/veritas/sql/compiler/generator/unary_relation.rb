@@ -31,6 +31,7 @@ module Veritas
           #
           # @api private
           def initialize
+            super
             @scope = Set.new
           end
 
