@@ -15,5 +15,5 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('(SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "users")') }
+  its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "users"') }
 end

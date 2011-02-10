@@ -47,7 +47,7 @@ module Veritas
           # @api public
           def to_s
             return EMPTY_STRING unless @operation
-            "(#{@left} #{@operation} #{@right})"
+            "#{@left} #{@operation} #{@right}"
           end
 
         end # class BinaryRelation
