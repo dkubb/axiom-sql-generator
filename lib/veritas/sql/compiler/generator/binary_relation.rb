@@ -6,7 +6,8 @@ module Veritas
         # Generates an SQL statement for a binary relation
         class BinaryRelation < Generator
 
-          UNION = 'UNION'.freeze
+          UNION     = 'UNION'.freeze
+          INTERSECT = 'INTERSECT'.freeze
 
           # Visit a Union
           #
@@ -19,6 +20,20 @@ module Veritas
             @left      = UnaryRelation.new.visit(union.left)
             @right     = UnaryRelation.new.visit(union.right)
             @operation = UNION
+            self
+          end
+
+          # Visit an Intersection
+          #
+          # @param [Algebra::Intersection] intersection
+          #
+          # @return [self]
+          #
+          # @api private
+          def visit_veritas_algebra_intersection(intersection)
+            @left      = UnaryRelation.new.visit(intersection.left)
+            @right     = UnaryRelation.new.visit(intersection.right)
+            @operation = INTERSECT
             self
           end
 
