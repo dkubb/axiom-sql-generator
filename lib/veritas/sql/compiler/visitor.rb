@@ -25,7 +25,7 @@ module Veritas
         # @api private
         def self.handler_for(visitable)
           klass = visitable.class
-          handlers[klass] or raise UnknownObject, "No handler for #{klass}"
+          handlers[klass] or raise UnknownObject, "No handler for #{klass} in #{self}"
         end
 
         # Return the handler cache that maps modules to method names

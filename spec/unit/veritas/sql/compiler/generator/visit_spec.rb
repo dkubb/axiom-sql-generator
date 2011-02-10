@@ -47,6 +47,6 @@ describe Generator, '#visit' do
   context 'with an unhandled object' do
     let(:visitable) { mock('Not Handled') }
 
-    specify { expect { subject }.to raise_error(Visitor::UnknownObject, "No handler for #{visitable.class}") }
+    specify { expect { subject }.to raise_error(Visitor::UnknownObject, "No handler for #{visitable.class} in #{object.class}") }
   end
 end
