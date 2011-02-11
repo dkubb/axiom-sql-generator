@@ -23,7 +23,7 @@ describe Generator::UnaryRelation, '#to_s' do
 
   context 'when a restriction is visited' do
     before do
-      object.visit_veritas_algebra_restriction(base_relation.restrict { |r| r[:id].eq(1) })
+      object.visit(base_relation.restrict { |r| r[:id].eq(1) })
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -33,7 +33,7 @@ describe Generator::UnaryRelation, '#to_s' do
 
   context 'when a limit is visited' do
     before do
-      object.visit_veritas_relation_operation_limit(base_relation.order.take(1))
+      object.visit(base_relation.order.take(1))
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -43,7 +43,7 @@ describe Generator::UnaryRelation, '#to_s' do
 
   context 'when an offset is visited' do
     before do
-      object.visit_veritas_relation_operation_offset(base_relation.order.drop(1))
+      object.visit(base_relation.order.drop(1))
     end
 
     it_should_behave_like 'a generated SQL expression'
