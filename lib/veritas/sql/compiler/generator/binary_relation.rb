@@ -1,7 +1,7 @@
 module Veritas
   module SQL
     module Compiler
-      class Generator < Visitor
+      class Generator
 
         # Generates an SQL statement for a binary relation
         class BinaryRelation < Generator
