@@ -159,7 +159,7 @@ module Veritas
           #
           # @api public
           def visited?
-            !@from.nil?
+            !@name.nil?
           end
 
         private
