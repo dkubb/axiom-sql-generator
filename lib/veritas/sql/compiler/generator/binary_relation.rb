@@ -5,6 +5,9 @@ module Veritas
 
         # Generates an SQL statement for a binary relation
         class BinaryRelation < Generator
+          extend Aliasable
+
+          inheritable_alias(:visit_veritas_base_relation => :visit_veritas_relation_operation_unary)
 
           UNION     = 'UNION'.freeze
           INTERSECT = 'INTERSECT'.freeze
@@ -50,17 +53,6 @@ module Veritas
             @right     = dispatch(difference.right)
             @operation = EXCEPT
             self
-          end
-
-          # Visit a Base Relation
-          #
-          # @param [BaseRelation] base_relation
-          #
-          # @return [UnaryRelation]
-          #
-          # @api private
-          def visit_veritas_base_relation(base_relation)
-            UnaryRelation.new.visit(base_relation)
           end
 
           # Visit a Unary Relation
