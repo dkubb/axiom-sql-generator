@@ -257,9 +257,16 @@ module Veritas
           #
           # @api private
           def set_columns_for_scope
-            unless @scope.include?(Algebra::Projection) || @scope.include?(Algebra::Rename)
-              @columns = '*'
-            end
+            @columns = '*' if all_columns?
+          end
+
+          # Test if the query should use "*" and not specify columns explicitly
+          #
+          # @return [Boolean]
+          #
+          # @api private
+          def all_columns?
+            !@scope.include?(Algebra::Projection) && !@scope.include?(Algebra::Rename)
           end
 
           # Test if the relation should be collapsed
