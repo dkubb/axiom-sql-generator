@@ -63,6 +63,17 @@ module Veritas
             UnaryRelation.new.visit(base_relation)
           end
 
+          # Visit a Unary Relation
+          #
+          # @param [Relation::Operation::Unary] unary
+          #
+          # @return [UnaryRelation]
+          #
+          # @api private
+          def visit_veritas_relation_operation_unary(unary)
+            UnaryRelation.new.visit(unary)
+          end
+
           # Return the SQL for the visitable object
           #
           # @example
