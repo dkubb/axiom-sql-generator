@@ -18,8 +18,8 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_union(union)
-            @left      = UnaryRelation.new.visit(union.left)
-            @right     = UnaryRelation.new.visit(union.right)
+            @left      = dispatch(union.left)
+            @right     = dispatch(union.right)
             @operation = UNION
             self
           end
@@ -32,8 +32,8 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_intersection(intersection)
-            @left      = UnaryRelation.new.visit(intersection.left)
-            @right     = UnaryRelation.new.visit(intersection.right)
+            @left      = dispatch(intersection.left)
+            @right     = dispatch(intersection.right)
             @operation = INTERSECT
             self
           end
@@ -46,10 +46,21 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_difference(difference)
-            @left      = UnaryRelation.new.visit(difference.left)
-            @right     = UnaryRelation.new.visit(difference.right)
+            @left      = dispatch(difference.left)
+            @right     = dispatch(difference.right)
             @operation = EXCEPT
             self
+          end
+
+          # Visit a Base Relation
+          #
+          # @param [BaseRelation] base_relation
+          #
+          # @return [UnaryRelation]
+          #
+          # @api private
+          def visit_veritas_base_relation(base_relation)
+            UnaryRelation.new.visit(base_relation)
           end
 
           # Return the SQL for the visitable object
