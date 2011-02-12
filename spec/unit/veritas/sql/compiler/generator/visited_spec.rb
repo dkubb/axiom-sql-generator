@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::UnaryRelation, '#visited?' do
+describe Generator, '#visited?' do
   subject { object.visited? }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
@@ -11,15 +11,23 @@ describe Generator::UnaryRelation, '#visited?' do
   let(:base_relation) { BaseRelation.new('users', header, body)          }
   let(:object)        { described_class.new                              }
 
-  context 'when an object have been visited' do
-    before do
-      object.visit_veritas_base_relation(base_relation)
-    end
+  context 'when name is nil' do
+    it_should_behave_like 'an idempotent method'
 
-    it { should be(true) }
+    it { should be(false) }
   end
 
-  context 'when an object has not been visited' do
-    it { should be(false) }
+  context 'when name is set' do
+    let(:name) { 'test' }
+
+    before do
+      # subclasses set @name, but nothing in this class
+      # does does so simulate it being set
+      object.instance_variable_set(:@name, name)
+    end
+
+    it_should_behave_like 'an idempotent method'
+
+    it { should be(true) }
   end
 end

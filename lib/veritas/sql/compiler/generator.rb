@@ -54,6 +54,18 @@ module Veritas
           @sql
         end
 
+        # Test if a visitable object has been visited
+        #
+        # @example
+        #   visitor.visited?  # true or false
+        #
+        # @return [Boolean]
+        #
+        # @api public
+        def visited?
+          !@name.nil?
+        end
+
       end # class Generator
     end # module Compiler
   end # module SQL
