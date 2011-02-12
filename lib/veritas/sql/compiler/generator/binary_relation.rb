@@ -74,18 +74,35 @@ module Veritas
           # @example
           #   sql = binary_relation.to_s
           #
-          # @param [Boolean] all_columns
-          #   optionally specify if the SELECT list should be "*"
-          #
           # @return [#to_s]
           #
           # @api public
-          def to_s(all_columns = false)
-            return EMPTY_STRING unless visited?
-            "#{@left.to_s(all_columns)} #{@operation} #{@right.to_s(all_columns)}"
+          def to_s
+            generate_sql(:to_s)
+          end
+
+          # Return the SQL suitable for an inner query
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def to_inner
+            generate_sql(:to_inner)
           end
 
         private
+
+          # Generate the SQL using the supplied method
+          #
+          # @param [Symbol] method
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def generate_sql(method)
+            return EMPTY_STRING unless visited?
+            "#{@left.send(method)} #{@operation} #{@right.send(method)}"
+          end
 
           # Dispatch the operand to the proper handler
           #
