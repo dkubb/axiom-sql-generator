@@ -7,6 +7,13 @@ module Veritas
 
         EMPTY_STRING = ''.freeze
 
+        # Return the alias name
+        #
+        # @return [#to_s]
+        #
+        # @api private
+        attr_reader :name
+
         # Initialize a Generator
         #
         # @return [undefined]
