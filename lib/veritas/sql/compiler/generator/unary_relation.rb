@@ -132,17 +132,34 @@ module Veritas
             self
           end
 
+          # Visit a Binary Relation
+          #
+          # @param [Relation::Operation::Binary] binary
+          #
+          # @return [BinaryRelation]
+          #
+          # @api private
+          def visit_veritas_relation_operation_binary(binary)
+            generator = BinaryRelation.new.visit(binary)
+            @name     = generator.name
+            @from     = "(#{generator}) AS #{visit_identifier(@name)}"
+            generator
+          end
+
           # Return the SQL for the visitable object
           #
           # @example
           #   sql = unary_relation.to_s
           #
+          # @param [Boolean] all_columns
+          #   optionally specify if the SELECT list should be "*"
+          #
           # @return [#to_s]
           #
           # @api public
-          def to_s
+          def to_s(all_columns = false)
             return EMPTY_STRING unless visited?
-            sql = "SELECT #{@distinct}#{@columns} FROM #{@from}"
+            sql = "SELECT #{@distinct}#{all_columns ? '*' : @columns} FROM #{@from}"
             sql << " WHERE #{@where}"    if @where
             sql << " ORDER BY #{@order}" if @order
             sql << " LIMIT #{@limit}"    if @limit
@@ -289,7 +306,7 @@ module Veritas
           # @api private
           def aliased_inner_query(inner_query)
             set_columns_for_scope
-            "(#{inner_query}) AS #{visit_identifier(@name)}"
+            "(#{inner_query.to_s(all_columns?)}) AS #{visit_identifier(@name)}"
           ensure
             reset_query_state
           end

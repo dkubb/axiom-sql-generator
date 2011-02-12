@@ -95,4 +95,28 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
       its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC OFFSET 1) AS "users" ORDER BY "id", "name", "age"') }
     end
   end
+
+  context 'when the operand is a difference' do
+    let(:operand) { base_relation.difference(base_relation) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" EXCEPT SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
+  end
+
+  context 'when the operand is an intersection' do
+    let(:operand) { base_relation.intersect(base_relation) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" INTERSECT SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
+  end
+
+  context 'when the operand is a union' do
+    let(:operand) { base_relation.union(base_relation) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" UNION SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
+  end
 end

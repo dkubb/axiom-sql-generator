@@ -85,4 +85,28 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
   end
+
+  context 'when the operand is a difference' do
+    let(:operand) { base_relation.order.difference(base_relation.order) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" EXCEPT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" LIMIT 1') }
+  end
+
+  context 'when the operand is an intersection' do
+    let(:operand) { base_relation.order.intersect(base_relation.order) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" LIMIT 1') }
+  end
+
+  context 'when the operand is a union' do
+    let(:operand) { base_relation.order.union(base_relation.order) }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" UNION SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" LIMIT 1') }
+  end
 end

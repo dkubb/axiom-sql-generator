@@ -21,9 +21,10 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_union(union)
-            @left      = dispatch(union.left)
-            @right     = dispatch(union.right)
+            @left      = operand_dispatch(union.left)
+            @right     = operand_dispatch(union.right)
             @operation = UNION
+            @name      = [ @left.name, @right.name ].uniq.join('_')
             self
           end
 
@@ -35,9 +36,10 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_intersection(intersection)
-            @left      = dispatch(intersection.left)
-            @right     = dispatch(intersection.right)
+            @left      = operand_dispatch(intersection.left)
+            @right     = operand_dispatch(intersection.right)
             @operation = INTERSECT
+            @name      = [ @left.name, @right.name ].uniq.join('_')
             self
           end
 
@@ -49,9 +51,10 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_difference(difference)
-            @left      = dispatch(difference.left)
-            @right     = dispatch(difference.right)
+            @left      = operand_dispatch(difference.left)
+            @right     = operand_dispatch(difference.right)
             @operation = EXCEPT
+            @name      = [ @left.name, @right.name ].uniq.join('_')
             self
           end
 
@@ -71,12 +74,32 @@ module Veritas
           # @example
           #   sql = binary_relation.to_s
           #
+          # @param [Boolean] all_columns
+          #   optionally specify if the SELECT list should be "*"
+          #
           # @return [#to_s]
           #
           # @api public
-          def to_s
-            return EMPTY_STRING unless @operation
-            "#{@left} #{@operation} #{@right}"
+          def to_s(all_columns = false)
+            return EMPTY_STRING unless @name
+            "#{@left.to_s(all_columns)} #{@operation} #{@right.to_s(all_columns)}"
+          end
+
+        private
+
+          # Dispatch the operand to the proper handler
+          #
+          # @param [Visitable] visitable
+          #
+          # @return [Generator]
+          #
+          # @api private
+          def operand_dispatch(visitable)
+            if visitable.kind_of?(Relation::Operation::Binary)
+              BinaryRelation.new.visit(visitable)
+            else
+              dispatch(visitable)
+            end
           end
 
         end # class BinaryRelation
