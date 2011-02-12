@@ -81,7 +81,7 @@ module Veritas
           #
           # @api public
           def to_s(all_columns = false)
-            return EMPTY_STRING unless @name
+            return EMPTY_STRING unless visited?
             "#{@left.to_s(all_columns)} #{@operation} #{@right.to_s(all_columns)}"
           end
 
