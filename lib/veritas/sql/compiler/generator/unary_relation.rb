@@ -142,7 +142,8 @@ module Veritas
           def visit_veritas_relation_operation_binary(binary)
             generator = BinaryRelation.new.visit(binary)
             @name     = generator.name
-            @from     = "(#{generator}) AS #{visit_identifier(@name)}"
+            @from     = "(#{generator.to_inner}) AS #{visit_identifier(@name)}"
+            @columns  = columns_for(binary.header)
             generator
           end
 

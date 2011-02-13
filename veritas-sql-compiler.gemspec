@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-02-11}
+  s.date = %q{2011-02-12}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -92,6 +92,7 @@ Gem::Specification.new do |s|
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_rename_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_restriction_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_base_relation_spec.rb",
+     "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_binary_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_limit_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_offset_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_order_spec.rb",
@@ -170,6 +171,7 @@ Gem::Specification.new do |s|
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_rename_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_algebra_restriction_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_base_relation_spec.rb",
+     "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_binary_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_limit_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_offset_spec.rb",
      "spec/unit/veritas/sql/compiler/generator/unary_relation/visit_veritas_relation_operation_order_spec.rb",
