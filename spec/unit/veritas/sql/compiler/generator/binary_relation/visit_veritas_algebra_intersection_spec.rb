@@ -87,6 +87,33 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
     its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
   end
 
+  context 'when the operand is a difference' do
+    let(:operand) { base_relation.difference(base_relation) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)     { should eql('((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users"))') }
+    its(:to_inner) { should eql('((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users"))') }
+  end
+
+  context 'when the operand is an intersection' do
+    let(:operand) { base_relation.intersect(base_relation) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)     { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users"))') }
+    its(:to_inner) { should eql('((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users"))') }
+  end
+
+  context 'when the operand is a union' do
+    let(:operand) { base_relation.union(base_relation) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)     { should eql('((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users"))') }
+    its(:to_inner) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))') }
+  end
+
   context 'when the operands have different base relations' do
     let(:relation_name) { 'users_others'                           }
     let(:left)          { BaseRelation.new('users',  header, body) }
