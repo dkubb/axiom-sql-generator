@@ -5,5 +5,5 @@ end
 shared_examples_for 'a generated SQL SELECT query' do
   it_should_behave_like 'a generated SQL expression'
 
-  its(:name) { should == 'users' }
+  its(:name) { should == relation_name }
 end

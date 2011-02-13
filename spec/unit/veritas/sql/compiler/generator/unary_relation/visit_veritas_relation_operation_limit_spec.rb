@@ -3,12 +3,13 @@ require 'spec_helper'
 describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
   subject { object.visit_veritas_relation_operation_limit(limit) }
 
+  let(:relation_name) { 'users'                                          }
   let(:id)            { Attribute::Integer.new(:id)                      }
   let(:name)          { Attribute::String.new(:name)                     }
   let(:age)           { Attribute::Integer.new(:age, :required => false) }
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { BaseRelation.new('users', header, body)          }
+  let(:base_relation) { BaseRelation.new(relation_name, header, body)    }
   let(:limit)         { operand.take(1)                                  }
   let(:object)        { described_class.new                              }
 
