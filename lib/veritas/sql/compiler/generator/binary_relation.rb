@@ -130,7 +130,7 @@ module Veritas
           #
           # @api private
           def set_name
-            @name = [ @left.name, @right.name ].uniq.join('_')
+            @name = [ @left.name, @right.name ].uniq.join('_').freeze
           end
 
           # Dispatch the operand to the proper handler
