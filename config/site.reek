@@ -8,7 +8,7 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 20  # TODO: reduce this in UnaryRelation
+  max_methods: 22  # TODO: reduce this in UnaryRelation
   exclude: []
   enabled: true
   max_instance_variables: 9  # TODO: reduce this in UnaryRelation
@@ -66,7 +66,7 @@ NestedIterators:
   enabled: true
   max_allowed_nesting: 1
 LongMethod:
-  max_statements: 6
+  max_statements: 7
   exclude: [
     'Veritas::SQL::Compiler::Generator::UnaryRelation#to_s'
   ]
