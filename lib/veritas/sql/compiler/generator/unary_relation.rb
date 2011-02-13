@@ -46,7 +46,6 @@ module Veritas
             @name    = base_relation.name
             @from    = visit_identifier(@name)
             @columns = columns_for(base_relation.header)
-            scope_query(base_relation)
             self
           end
 

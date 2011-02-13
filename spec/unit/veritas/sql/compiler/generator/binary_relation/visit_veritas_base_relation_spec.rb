@@ -16,5 +16,6 @@ describe Generator::BinaryRelation, '#visit_veritas_base_relation' do
 
   it { should be_kind_of(Generator::UnaryRelation) }
 
-  its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users"') }
+  its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users"') }
+  its(:to_inner) { should eql('SELECT * FROM "users"') }
 end

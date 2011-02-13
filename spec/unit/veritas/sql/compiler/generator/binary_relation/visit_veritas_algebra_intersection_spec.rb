@@ -20,7 +20,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "users"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "users"') }
+    its(:to_inner) { should eql('SELECT * FROM "users" INTERSECT SELECT * FROM "users"') }
   end
 
   context 'when the operand is a projection' do
@@ -28,7 +29,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" INTERSECT SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users" INTERSECT SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users" INTERSECT SELECT DISTINCT "id", "name" FROM "users"') }
   end
 
   context 'when the operand is a rename' do
@@ -36,7 +38,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" INTERSECT SELECT "id" AS "user_id", "name", "age" FROM "users"') }
+    its(:to_s)     { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" INTERSECT SELECT "id" AS "user_id", "name", "age" FROM "users"') }
+    its(:to_inner) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" INTERSECT SELECT "id" AS "user_id", "name", "age" FROM "users"') }
   end
 
   context 'when the operand is a restriction' do
@@ -44,7 +47,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 INTERSECT SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 INTERSECT SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') }
+    its(:to_inner) { should eql('SELECT * FROM "users" WHERE "id" = 1 INTERSECT SELECT * FROM "users" WHERE "id" = 1') }
   end
 
   context 'when the operand is ordered' do
@@ -52,7 +56,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is reversed' do
@@ -60,7 +65,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC INTERSECT SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is limited' do
@@ -68,7 +74,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1 INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the operand is an offset' do
@@ -76,7 +83,8 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1 INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1 INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1 INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
   end
 
   context 'when the operands have different base relations' do
@@ -86,6 +94,7 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "others"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "others"') }
+    its(:to_inner) { should eql('SELECT * FROM "users" INTERSECT SELECT * FROM "others"') }
   end
 end

@@ -18,7 +18,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is a projection' do
@@ -26,7 +27,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id" DESC, "name" DESC') }
+    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id" DESC, "name" DESC') }
+    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id" DESC, "name" DESC') }
   end
 
   context 'when the operand is a rename' do
@@ -34,7 +36,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "user_id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is a restriction' do
@@ -42,7 +45,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is ordered' do
@@ -50,7 +54,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is reversed' do
@@ -58,7 +63,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is limited' do
@@ -66,7 +72,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is an offset' do
@@ -74,7 +81,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is a difference' do
@@ -82,7 +90,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" EXCEPT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" EXCEPT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" EXCEPT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is an intersection' do
@@ -90,7 +99,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" INTERSECT SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
   context 'when the operand is a union' do
@@ -98,6 +108,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" UNION SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" UNION SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" UNION SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 end
