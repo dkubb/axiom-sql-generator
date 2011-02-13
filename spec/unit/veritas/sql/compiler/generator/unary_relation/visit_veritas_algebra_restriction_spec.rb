@@ -15,7 +15,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is a base relation' do
     let(:operand) { base_relation }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') }
   end
@@ -23,7 +23,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is a projection' do
     let(:operand) { base_relation.project([ :id, :name ]) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
   end
@@ -31,7 +31,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is a projection then a restriction' do
     let(:operand) { base_relation.project([ :id, :name ]).restrict { |r| r[:id].ne(2) } }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name" FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
   end
@@ -40,7 +40,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
     let(:true_proposition) { Logic::Proposition::True.instance                                                           }
     let(:operand)          { base_relation.project([ :id, :name ]).restrict(true_proposition).restrict(true_proposition) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name" FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1') }
   end
@@ -50,7 +50,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
       let(:operand)     { base_relation.rename(:id => :user_id)      }
       let(:restriction) { operand.restrict { |r| r[:user_id].eq(1) } }
 
-      it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL SELECT query'
 
       its(:to_s) { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" WHERE "id" = 1') } }
     end
@@ -59,7 +59,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
       let(:operand)     { base_relation.rename(:name => :other_name) }
       let(:restriction) { operand.restrict { |r| r[:id].eq(1) } }
 
-      it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL SELECT query'
 
       its(:to_s) { pending { should eql('SELECT "id", "name" AS "other_name", "age" FROM "users" WHERE "id" = 1') } }
     end
@@ -69,7 +69,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
     context 'when the predicates are equivalent' do
       let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
 
-      it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL SELECT query'
 
       its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') } }
     end
@@ -77,7 +77,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
     context 'when the predicates are different' do
       let(:operand) { base_relation.restrict { |r| r[:id].ne(2) } }
 
-      it_should_behave_like 'a generated SQL expression'
+      it_should_behave_like 'a generated SQL SELECT query'
 
       its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
     end
@@ -86,7 +86,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is ordered' do
     let(:operand) { base_relation.order }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"') }
   end
@@ -94,7 +94,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is reversed' do
     let(:operand) { base_relation.order.reverse }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
@@ -102,7 +102,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is limited' do
     let(:operand) { base_relation.order.take(1) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" WHERE "id" = 1') }
   end
@@ -110,7 +110,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is offset' do
     let(:operand) { base_relation.order.drop(1) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" WHERE "id" = 1') }
   end
@@ -118,7 +118,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is a difference' do
     let(:operand) { base_relation.difference(base_relation) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" EXCEPT SELECT * FROM "users") AS "users" WHERE "id" = 1') }
   end
@@ -126,7 +126,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is an intersection' do
     let(:operand) { base_relation.intersect(base_relation) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" INTERSECT SELECT * FROM "users") AS "users" WHERE "id" = 1') }
   end
@@ -134,7 +134,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
   context 'when the operand is a union' do
     let(:operand) { base_relation.union(base_relation) }
 
-    it_should_behave_like 'a generated SQL expression'
+    it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" UNION SELECT * FROM "users") AS "users" WHERE "id" = 1') }
   end

@@ -11,7 +11,7 @@ describe Generator::BinaryRelation, '#visit_veritas_base_relation' do
   let(:base_relation) { BaseRelation.new('users', header, body)          }
   let(:object)        { described_class.new                              }
 
-  it_should_behave_like 'a generated SQL expression'
+  it_should_behave_like 'a generated SQL SELECT query'
 
   it { should be_kind_of(Generator::UnaryRelation) }
 

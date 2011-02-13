@@ -11,7 +11,7 @@ describe Generator::UnaryRelation, '#visit_veritas_base_relation' do
   let(:base_relation) { BaseRelation.new('users', header, body)          }
   let(:object)        { described_class.new                              }
 
-  it_should_behave_like 'a generated SQL expression'
+  it_should_behave_like 'a generated SQL SELECT query'
 
   its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users"') }
 end

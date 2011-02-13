@@ -12,7 +12,7 @@ describe Generator::BinaryRelation, '#visit_veritas_relation_operation_unary' do
   let(:unary)         { base_relation.rename({})                         }
   let(:object)        { described_class.new                              }
 
-  it_should_behave_like 'a generated SQL expression'
+  it_should_behave_like 'a generated SQL SELECT query'
 
   it { should be_kind_of(Generator::UnaryRelation) }
 
