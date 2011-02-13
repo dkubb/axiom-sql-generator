@@ -81,7 +81,7 @@ describe Generator::UnaryRelation, '#visit_veritas_algebra_projection' do
     its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users"') }
   end
 
-  context 'when the operand is offset' do
+  context 'when the operand is an offset' do
     let(:operand) { base_relation.order.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'

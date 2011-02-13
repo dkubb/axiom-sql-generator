@@ -79,7 +79,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
     end
   end
 
-  context 'when the operand is offset' do
+  context 'when the operand is an offset' do
     context 'when the inner order is the same as the outer' do
       let(:operand) { base_relation.order.drop(1) }
 
@@ -88,7 +88,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
       its(:to_s) { pending { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') } }
     end
 
-    context 'when the inner order is the different from the outer, and the inner includes offset' do
+    context 'when the inner order is the different from the outer, and the inner includes an offset' do
       let(:operand) { base_relation.order([ id.desc, name.desc, age.desc ]).drop(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'

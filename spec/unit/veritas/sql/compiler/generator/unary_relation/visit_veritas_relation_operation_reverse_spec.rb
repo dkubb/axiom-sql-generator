@@ -69,7 +69,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_reverse' d
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" ORDER BY "id" DESC, "name" DESC, "age" DESC') }
   end
 
-  context 'when the operand is offset' do
+  context 'when the operand is an offset' do
     let(:operand) { base_relation.order.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'

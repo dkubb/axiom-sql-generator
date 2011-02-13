@@ -71,7 +71,7 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 INTERSECT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
-  context 'when the operand is offset' do
+  context 'when the operand is an offset' do
     let(:operand) { base_relation.order.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'

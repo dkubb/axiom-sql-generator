@@ -79,7 +79,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_limit' do
     end
   end
 
-  context 'when the operand is offset' do
+  context 'when the operand is an offset' do
     let(:operand) { base_relation.order.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
