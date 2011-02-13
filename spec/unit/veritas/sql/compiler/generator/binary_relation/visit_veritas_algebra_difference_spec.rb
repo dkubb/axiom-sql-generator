@@ -10,7 +10,9 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_difference' do
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
   let(:base_relation) { BaseRelation.new(relation_name, header, body)    }
-  let(:difference)    { operand.difference(operand)                      }
+  let(:left)          { operand                                          }
+  let(:right)         { operand                                          }
+  let(:difference)    { left.difference(right)                           }
   let(:object)        { described_class.new                              }
 
   context 'when the operand is a base relation' do
@@ -75,5 +77,15 @@ describe Generator::BinaryRelation, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1 EXCEPT SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+  end
+
+  context 'when the operands have different base relations' do
+    let(:relation_name) { 'users_others'                           }
+    let(:left)          { BaseRelation.new('users',  header, body) }
+    let(:right)         { BaseRelation.new('others', header, body) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" EXCEPT SELECT "id", "name", "age" FROM "others"') }
   end
 end
