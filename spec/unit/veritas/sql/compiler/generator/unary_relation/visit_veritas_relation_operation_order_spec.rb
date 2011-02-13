@@ -23,12 +23,23 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
   end
 
   context 'when the operand is a projection' do
-    let(:operand) { base_relation.project([ :id, :name ]) }
+    context 'when the projection contains the base_relation' do
+      let(:operand) { base_relation.project([ :id, :name ]) }
 
-    it_should_behave_like 'a generated SQL SELECT query'
+      it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name"') }
+      its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name"') }
+      its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name"') }
+    end
+
+    context 'when the projection contains an order' do
+      let(:operand) { base_relation.order.project([ :id, :name ]) }
+
+      it_should_behave_like 'a generated SQL SELECT query'
+
+      its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id", "name"') }
+      its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users" ORDER BY "id", "name"') }
+    end
   end
 
   context 'when the operand is a rename' do
