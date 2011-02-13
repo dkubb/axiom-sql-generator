@@ -273,15 +273,6 @@ module Veritas
             @scope << operand.class
           end
 
-          # Set the columns to "*" if they are not significant
-          #
-          # @return [undefined]
-          #
-          # @api private
-          def set_columns_for_scope
-            @columns = '*' if all_columns?
-          end
-
           # Test if the query should use "*" and not specify columns explicitly
           #
           # @return [Boolean]
@@ -310,7 +301,6 @@ module Veritas
           #
           # @api private
           def aliased_inner_query(inner_query)
-            set_columns_for_scope
             "(#{inner_query.send(all_columns? ? :to_inner : :to_s)}) AS #{visit_identifier(@name)}"
           ensure
             reset_query_state
