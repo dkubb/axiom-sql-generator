@@ -21,10 +21,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_union(union)
-            @left      = operand_dispatch(union.left)
-            @right     = operand_dispatch(union.right)
-            @operation = UNION
-            @name      = [ @left.name, @right.name ].uniq.join('_')
+            set_operation(UNION)
+            set_operands(union)
+            set_name
             self
           end
 
@@ -36,10 +35,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_intersection(intersection)
-            @left      = operand_dispatch(intersection.left)
-            @right     = operand_dispatch(intersection.right)
-            @operation = INTERSECT
-            @name      = [ @left.name, @right.name ].uniq.join('_')
+            set_operation(INTERSECT)
+            set_operands(intersection)
+            set_name
             self
           end
 
@@ -51,10 +49,9 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_difference(difference)
-            @left      = operand_dispatch(difference.left)
-            @right     = operand_dispatch(difference.right)
-            @operation = EXCEPT
-            @name      = [ @left.name, @right.name ].uniq.join('_')
+            set_operation(EXCEPT)
+            set_operands(difference)
+            set_name
             self
           end
 
@@ -102,6 +99,38 @@ module Veritas
           def generate_sql(method)
             return EMPTY_STRING unless visited?
             "(#{@left.send(method)}) #{@operation} (#{@right.send(method)})"
+          end
+
+          # Set the operation
+          #
+          # @param [#to_s] operation
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def set_operation(operation)
+            @operation = operation
+          end
+
+          # Set the operands from the relation
+          #
+          # @param [Relation::Operation::Set] relation
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def set_operands(relation)
+            @left  = operand_dispatch(relation.left)
+            @right = operand_dispatch(relation.right)
+          end
+
+          # Set the name using the operands' name
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def set_name
+            @name = [ @left.name, @right.name ].uniq.join('_')
           end
 
           # Dispatch the operand to the proper handler
