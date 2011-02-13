@@ -5,9 +5,6 @@ module Veritas
 
         # Generates an SQL statement for a binary relation
         class BinaryRelation < Generator
-          extend Aliasable
-
-          inheritable_alias(:visit_veritas_base_relation => :visit_veritas_relation_operation_unary)
 
           UNION     = 'UNION'.freeze
           INTERSECT = 'INTERSECT'.freeze
@@ -53,17 +50,6 @@ module Veritas
             set_operands(difference)
             set_name
             self
-          end
-
-          # Visit a Unary Relation
-          #
-          # @param [Relation::Operation::Unary] unary
-          #
-          # @return [UnaryRelation]
-          #
-          # @api private
-          def visit_veritas_relation_operation_unary(unary)
-            UnaryRelation.new.visit(unary)
           end
 
           # Return the SQL for the visitable object
@@ -141,11 +127,13 @@ module Veritas
           #
           # @api private
           def operand_dispatch(visitable)
-            if visitable.kind_of?(Relation::Operation::Binary)
-              BinaryRelation.new.visit(visitable)
-            else
-              dispatch(visitable)
+            generator_class = case visitable
+              when Relation::Operation::Binary
+                self.class
+              else
+                UnaryRelation
             end
+            generator_class.new.visit(visitable)
           end
 
         end # class BinaryRelation
