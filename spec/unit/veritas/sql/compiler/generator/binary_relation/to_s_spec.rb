@@ -28,7 +28,7 @@ describe Generator::BinaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" EXCEPT SELECT "id", "name", "age" FROM "users"') }
+    its(:to_s) { should eql('(SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")') }
   end
 
   context 'when an intersection is visited' do
@@ -38,7 +38,7 @@ describe Generator::BinaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" INTERSECT SELECT "id", "name", "age" FROM "users"') }
+    its(:to_s) { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")') }
   end
 
   context 'when a union is visited' do
@@ -48,6 +48,6 @@ describe Generator::BinaryRelation, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" UNION SELECT "id", "name", "age" FROM "users"') }
+    its(:to_s) { should eql('(SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")') }
   end
 end

@@ -101,7 +101,7 @@ module Veritas
           # @api private
           def generate_sql(method)
             return EMPTY_STRING unless visited?
-            "#{@left.send(method)} #{@operation} #{@right.send(method)}"
+            "(#{@left.send(method)}) #{@operation} (#{@right.send(method)})"
           end
 
           # Dispatch the operand to the proper handler

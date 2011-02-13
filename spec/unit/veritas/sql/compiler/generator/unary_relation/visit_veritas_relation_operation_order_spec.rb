@@ -123,8 +123,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" EXCEPT SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" EXCEPT SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is an intersection' do
@@ -132,8 +132,8 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" INTERSECT SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" INTERSECT SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
   end
 
   context 'when the operand is a union' do
@@ -141,7 +141,7 @@ describe Generator::UnaryRelation, '#visit_veritas_relation_operation_order' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" UNION SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" UNION SELECT * FROM "users") AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
   end
 end
