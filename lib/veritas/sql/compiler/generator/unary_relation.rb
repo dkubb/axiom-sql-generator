@@ -46,6 +46,7 @@ module Veritas
             @name    = base_relation.name
             @from    = visit_identifier(@name)
             @columns = columns_for(base_relation.header)
+            scope_query(base_relation)
             self
           end
 
@@ -60,6 +61,7 @@ module Veritas
             @from     = inner_query_for(projection)
             @distinct = DISTINCT
             @columns  = columns_for(projection.header)
+            scope_query(projection)
             self
           end
 
@@ -73,6 +75,7 @@ module Veritas
           def visit_veritas_algebra_rename(rename)
             @from    = inner_query_for(rename)
             @columns = columns_for(rename.operand.header, rename.aliases.to_hash)
+            scope_query(rename)
             self
           end
 
@@ -87,6 +90,7 @@ module Veritas
             @from      = inner_query_for(restriction)
             @where     = dispatch(restriction.predicate)
             @columns ||= columns_for(restriction.header)
+            scope_query(restriction)
             self
           end
 
@@ -101,6 +105,7 @@ module Veritas
             @from      = inner_query_for(order)
             @order     = order_for(order.directions)
             @columns ||= columns_for(order.header)
+            scope_query(order)
             self
           end
 
@@ -115,6 +120,7 @@ module Veritas
             @from      = inner_query_for(limit)
             @limit     = limit.limit
             @columns ||= columns_for(limit.header)
+            scope_query(limit)
             self
           end
 
@@ -129,6 +135,7 @@ module Veritas
             @from      = inner_query_for(offset)
             @offset    = offset.offset
             @columns ||= columns_for(offset.header)
+            scope_query(offset)
             self
           end
 
@@ -165,7 +172,7 @@ module Veritas
           #
           # @api private
           def to_inner
-            generate_sql('*')
+            generate_sql(all_columns? ? '*' : @columns)
           end
 
         private
@@ -255,7 +262,6 @@ module Veritas
           def inner_query_for(relation)
             operand     = relation.operand
             inner_query = dispatch(operand)
-            scope_query(operand)
             if collapse_inner_query_for?(relation)
               @from
             else
@@ -302,7 +308,7 @@ module Veritas
           #
           # @api private
           def aliased_inner_query(inner_query)
-            "(#{inner_query.send(all_columns? ? :to_inner : :to_s)}) AS #{visit_identifier(@name)}"
+            "(#{inner_query.to_inner}) AS #{visit_identifier(@name)}"
           ensure
             reset_query_state
           end

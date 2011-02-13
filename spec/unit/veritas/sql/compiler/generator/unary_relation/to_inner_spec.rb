@@ -21,6 +21,26 @@ describe Generator::UnaryRelation, '#to_inner' do
     its(:to_s) { should == '' }
   end
 
+  context 'when a projection is visited' do
+    before do
+      object.visit(base_relation.project([ :id, :name ]))
+    end
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
+  end
+
+  context 'when a rename is visited' do
+    before do
+      object.visit(base_relation.rename(:id => :user_id))
+    end
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users"') }
+  end
+
   context 'when a restriction is visited' do
     before do
       object.visit(base_relation.restrict { |r| r[:id].eq(1) })
