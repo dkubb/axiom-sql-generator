@@ -46,7 +46,7 @@ module Veritas
             def visit_veritas_base_relation(base_relation)
               @name    = base_relation.name
               @from    = visit_identifier(@name)
-              @columns = columns_for(base_relation.header)
+              @columns = columns_for(base_relation)
               self
             end
 
@@ -60,7 +60,7 @@ module Veritas
             def visit_veritas_algebra_projection(projection)
               @from     = inner_query_for(projection)
               @distinct = DISTINCT
-              @columns  = columns_for(projection.header)
+              @columns  = columns_for(projection)
               scope_query(projection)
               self
             end
@@ -74,7 +74,7 @@ module Veritas
             # @api private
             def visit_veritas_algebra_rename(rename)
               @from    = inner_query_for(rename)
-              @columns = columns_for(rename.operand.header, rename.aliases.to_hash)
+              @columns = columns_for(rename.operand, rename.aliases.to_hash)
               scope_query(rename)
               self
             end
@@ -89,7 +89,7 @@ module Veritas
             def visit_veritas_algebra_restriction(restriction)
               @from      = inner_query_for(restriction)
               @where     = dispatch(restriction.predicate)
-              @columns ||= columns_for(restriction.header)
+              @columns ||= columns_for(restriction)
               scope_query(restriction)
               self
             end
@@ -104,7 +104,7 @@ module Veritas
             def visit_veritas_relation_operation_order(order)
               @from      = inner_query_for(order)
               @order     = order_for(order.directions)
-              @columns ||= columns_for(order.header)
+              @columns ||= columns_for(order)
               scope_query(order)
               self
             end
@@ -119,7 +119,7 @@ module Veritas
             def visit_veritas_relation_operation_limit(limit)
               @from      = inner_query_for(limit)
               @limit     = limit.limit
-              @columns ||= columns_for(limit.header)
+              @columns ||= columns_for(limit)
               scope_query(limit)
               self
             end
@@ -134,7 +134,7 @@ module Veritas
             def visit_veritas_relation_operation_offset(offset)
               @from      = inner_query_for(offset)
               @offset    = offset.offset
-              @columns ||= columns_for(offset.header)
+              @columns ||= columns_for(offset)
               scope_query(offset)
               self
             end
@@ -150,7 +150,7 @@ module Veritas
               generator = Relation::Set.new.visit(set)
               @name     = generator.name
               @from     = "(#{generator.to_inner}) AS #{visit_identifier(@name)}"
-              @columns  = columns_for(set.header)
+              @columns  = columns_for(set)
               generator
             end
 
@@ -196,7 +196,7 @@ module Veritas
 
             # Return a list of columns in a header
             #
-            # @param [Header] header
+            # @param [Veritas::Relation] relation
             #
             # @param [#[]] aliases
             #   optional aliases for the columns
@@ -204,8 +204,8 @@ module Veritas
             # @return [#to_s]
             #
             # @api private
-            def columns_for(header, aliases = {})
-              header.map { |attribute| column_for(attribute, aliases) }.join(SEPARATOR)
+            def columns_for(relation, aliases = {})
+              relation.header.map { |attribute| column_for(attribute, aliases) }.join(SEPARATOR)
             end
 
             # Return the column for an attribute
