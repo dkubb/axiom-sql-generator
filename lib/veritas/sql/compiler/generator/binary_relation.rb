@@ -1,10 +1,10 @@
 module Veritas
   module SQL
     module Compiler
-      class Generator
+      module Generator
 
         # Generates an SQL statement for a binary relation
-        class BinaryRelation < Generator
+        class BinaryRelation < Relation
 
           DIFFERENCE   = 'EXCEPT'.freeze
           INTERSECTION = 'INTERSECT'.freeze
@@ -137,7 +137,7 @@ module Veritas
           end
 
         end # class BinaryRelation
-      end # class Generator
+      end # module Generator
     end # module Compiler
   end # module SQL
 end # module Veritas

@@ -1,10 +1,10 @@
 module Veritas
   module SQL
     module Compiler
-      class Generator
+      module Generator
 
         # Generates an SQL statement for a unary relation
-        class UnaryRelation < Generator
+        class UnaryRelation < Relation
           include Attribute
           include Direction
           include Literal
@@ -16,13 +16,13 @@ module Veritas
           DISTINCT     = 'DISTINCT '.freeze
           SEPARATOR    = ', '.freeze
           COLLAPSIBLE  = {
-            Algebra::Projection          => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction,                                                                                                                                   ].freeze,
-            Algebra::Restriction         => Set[ BaseRelation, Algebra::Projection,                       Relation::Operation::Order, Relation::Operation::Reverse,                                                                         ].freeze,
-            Relation::Operation::Order   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse,                                                         Algebra::Rename ].freeze,
-            Relation::Operation::Reverse => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse,                                                         Algebra::Rename ].freeze,
-            Relation::Operation::Offset  => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse,                                                         Algebra::Rename ].freeze,
-            Relation::Operation::Limit   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse, Relation::Operation::Offset,                            Algebra::Rename ].freeze,
-            Algebra::Rename              => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Relation::Operation::Order, Relation::Operation::Reverse, Relation::Operation::Offset, Relation::Operation::Limit                 ].freeze,
+            Algebra::Projection                   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction,                                                                                                                                                                        ].freeze,
+            Algebra::Restriction                  => Set[ BaseRelation, Algebra::Projection,                       Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
+            Veritas::Relation::Operation::Order   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+            Veritas::Relation::Operation::Reverse => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+            Veritas::Relation::Operation::Offset  => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+            Veritas::Relation::Operation::Limit   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                      Algebra::Rename ].freeze,
+            Algebra::Rename                       => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit                  ].freeze,
           }.freeze
 
           # Initialize a Unary relation SQL generator
@@ -323,7 +323,7 @@ module Veritas
           end
 
         end # class UnaryRelation
-      end # class Generator
+      end # module Generator
     end # module Compiler
   end # module SQL
 end # module Veritas

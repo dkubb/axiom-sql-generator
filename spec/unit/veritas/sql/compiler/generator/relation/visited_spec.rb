@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator, '#visited?' do
+describe Generator::Relation, '#visited?' do
   subject { object.visited? }
 
   let(:id)            { Attribute::Integer.new(:id)                      }

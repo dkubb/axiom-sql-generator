@@ -1,7 +1,7 @@
 module Veritas
   module SQL
     module Compiler
-      class Generator < Visitor
+      module Generator
 
         # Generates an SQL statement for an attribute
         module Attribute
@@ -19,7 +19,7 @@ module Veritas
           end
 
         end # module Attribute
-      end # class Generator
+      end # module Generator
     end # module Compiler
   end # module SQL
 end # module Veritas

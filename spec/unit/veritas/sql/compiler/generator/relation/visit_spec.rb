@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator, '#visit' do
+describe Generator::Relation, '#visit' do
   subject { object.visit(visitable) }
 
-  let(:described_class) { Class.new(Generator) }
-  let(:object)          { described_class.new  }
+  let(:described_class) { Class.new(Generator::Relation) }
+  let(:object)          { described_class.new            }
 
   context 'with a handled object' do
     let(:visitable) { mock('Visitable') }
