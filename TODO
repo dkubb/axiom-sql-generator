@@ -1,13 +1,3 @@
-* Add specs for binary relations
-
-* Consider making a Generator::Relation class
-  * Move Generator code into it
-  * Rename Generator::UnaryRelation to Generator::Relation::Unary
-  * Rename Generator::BinaryRelation to Generator::Relation::Binary
-  * Generator would provide a factory method that returns either the
-    Unary or Binary relation instances depending on the relation
-    provided.
-
 * Adjust reek and roodi scores down to lower thresholds
 
 * Handle cases where an Inequality/Exclusion predicate is used (or a
