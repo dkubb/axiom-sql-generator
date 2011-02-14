@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::BinaryRelation, '#visit_veritas_algebra_difference' do
+describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
   subject { object.visit_veritas_algebra_difference(difference) }
 
   let(:relation_name) { 'users'                                          }

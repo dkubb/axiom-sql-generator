@@ -33,7 +33,7 @@ module Veritas
             # @api private
             def initialize
               super
-              @scope = Set.new
+              @scope = ::Set.new
             end
 
             # Visit a Base Relation
@@ -139,18 +139,18 @@ module Veritas
               self
             end
 
-            # Visit a Binary Relation
+            # Visit a Set Relation
             #
-            # @param [Relation::Operation::Binary] binary
+            # @param [Relation::Operation::Set] set
             #
-            # @return [BinaryRelation]
+            # @return [Relation::Set]
             #
             # @api private
-            def visit_veritas_relation_operation_binary(binary)
-              generator = BinaryRelation.new.visit(binary)
+            def visit_veritas_relation_operation_set(set)
+              generator = Relation::Set.new.visit(set)
               @name     = generator.name
               @from     = "(#{generator.to_inner}) AS #{visit_identifier(@name)}"
-              @columns  = columns_for(binary.header)
+              @columns  = columns_for(set.header)
               generator
             end
 

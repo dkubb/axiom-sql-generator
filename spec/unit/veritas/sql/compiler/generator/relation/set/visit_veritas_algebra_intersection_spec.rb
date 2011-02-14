@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::BinaryRelation, '#visit_veritas_algebra_intersection' do
+describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
   subject { object.visit_veritas_algebra_intersection(intersection) }
 
   let(:relation_name) { 'users'                                          }

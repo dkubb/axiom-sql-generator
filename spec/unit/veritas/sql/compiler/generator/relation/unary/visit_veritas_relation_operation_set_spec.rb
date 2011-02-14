@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Generator::Relation::Unary, '#visit_veritas_relation_operation_binary' do
-  subject { object.visit_veritas_relation_operation_binary(binary) }
+describe Generator::Relation::Unary, '#visit_veritas_relation_operation_set' do
+  subject { object.visit_veritas_relation_operation_set(set) }
 
   let(:relation_name) { 'users'                                          }
   let(:id)            { Attribute::Integer.new(:id)                      }
@@ -10,12 +10,12 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_binary' 
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
   let(:base_relation) { BaseRelation.new(relation_name, header, body)    }
-  let(:binary)        { base_relation.union(base_relation)               }
+  let(:set)           { base_relation.union(base_relation)               }
   let(:object)        { described_class.new                              }
 
   let(:operand) { base_relation.order }
 
-  it { should be_kind_of(Generator::BinaryRelation) }
+  it { should be_kind_of(Generator::Relation::Set) }
 
   it_should_behave_like 'a generated SQL SELECT query'
 
