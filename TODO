@@ -1,7 +1,5 @@
 * Add specs for binary relations
 
-* Refactor to_inner to wrap the statement in parenthesis
-
 * Consider making a Generator::Relation class
   * Move Generator code into it
   * Rename Generator::UnaryRelation to Generator::Relation::Unary
