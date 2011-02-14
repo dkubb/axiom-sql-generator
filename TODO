@@ -1,5 +1,9 @@
 * Add a generator for binary relations
 
+* Change relation generators to accept the relation to the constructor
+  and call #visit inside #initialize
+  * Include Veritas::Immutable within Relation
+
 * Adjust reek and roodi scores down to lower thresholds
 
 * Handle cases where an Inequality/Exclusion predicate is used (or a
