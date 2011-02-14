@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::UnaryRelation, '#visit_veritas_algebra_restriction' do
+describe Generator::Relation::Unary, '#visit_veritas_algebra_restriction' do
   subject { object.visit_veritas_algebra_restriction(restriction) }
 
   let(:relation_name) { 'users'                                          }

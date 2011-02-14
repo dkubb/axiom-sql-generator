@@ -131,7 +131,7 @@ module Veritas
               when Relation::Operation::Binary
                 self.class
               else
-                UnaryRelation
+                Relation::Unary
             end
             generator_class.new.visit(visitable)
           end

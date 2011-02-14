@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::UnaryRelation, '#to_inner' do
+describe Generator::Relation::Unary, '#to_inner' do
   subject { object.to_inner }
 
   let(:id)            { Attribute::Integer.new(:id)                      }

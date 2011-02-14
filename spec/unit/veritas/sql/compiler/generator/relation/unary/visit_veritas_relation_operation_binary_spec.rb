@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::UnaryRelation, '#visit_veritas_relation_operation_binary' do
+describe Generator::Relation::Unary, '#visit_veritas_relation_operation_binary' do
   subject { object.visit_veritas_relation_operation_binary(binary) }
 
   let(:relation_name) { 'users'                                          }

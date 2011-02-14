@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::UnaryRelation, '#to_s' do
+describe Generator::Relation::Unary, '#to_s' do
   subject { object.to_s }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
