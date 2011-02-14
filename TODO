@@ -1,3 +1,5 @@
+* Add a generator for binary relations
+
 * Adjust reek and roodi scores down to lower thresholds
 
 * Handle cases where an Inequality/Exclusion predicate is used (or a
