@@ -132,7 +132,7 @@ module Veritas
                 when Veritas::Relation::Operation::Set
                   self.class
                 else
-                  Relation::Unary
+                  Unary
               end
               generator_class.new.visit(visitable)
             end
