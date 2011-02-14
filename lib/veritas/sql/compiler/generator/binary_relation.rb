@@ -6,9 +6,9 @@ module Veritas
         # Generates an SQL statement for a binary relation
         class BinaryRelation < Generator
 
-          UNION     = 'UNION'.freeze
-          INTERSECT = 'INTERSECT'.freeze
-          EXCEPT    = 'EXCEPT'.freeze
+          DIFFERENCE   = 'EXCEPT'.freeze
+          INTERSECTION = 'INTERSECT'.freeze
+          UNION        = 'UNION'.freeze
 
           # Visit a Union
           #
@@ -32,7 +32,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_intersection(intersection)
-            set_operation(INTERSECT)
+            set_operation(INTERSECTION)
             set_operands(intersection)
             set_name
             self
@@ -46,7 +46,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_difference(difference)
-            set_operation(EXCEPT)
+            set_operation(DIFFERENCE)
             set_operands(difference)
             set_name
             self
