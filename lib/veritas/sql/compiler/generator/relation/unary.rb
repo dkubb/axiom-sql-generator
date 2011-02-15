@@ -238,7 +238,7 @@ module Veritas
             #
             # @api private
             def alias_for(column, alias_attribute)
-              "#{column} AS #{visit_identifier alias_attribute.name}"
+              "#{column} AS #{visit_identifier(alias_attribute.name)}"
             end
 
             # Return a list of columns for ordering
