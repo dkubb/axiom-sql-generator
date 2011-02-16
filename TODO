@@ -1,3 +1,6 @@
+* Figure out how to handle BaseRelation in Binary ops so that only
+  the table name is returned instead of the full SELECT statement
+
 * Add a generator for binary relations
 
 * See if Relation::Unary#dispatch can be overriden, so that when binary/set
