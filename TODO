@@ -1,5 +1,10 @@
 * Add a generator for binary relations
 
+* See if Relation::Unary#dispatch can be overriden, so that when binary/set
+  ops are seen, it delegates to a private method, otherwise to super. This
+  would remove the need for public methods to handle binary/set ops, which
+  seems wrong.
+
 * Change relation generators to accept the relation to the constructor
   and call #visit inside #initialize
   * Include Veritas::Immutable within Relation
