@@ -12,6 +12,7 @@ require 'veritas/sql/compiler/generator/logic'
 
 require 'veritas/sql/compiler/generator/relation'
 require 'veritas/sql/compiler/generator/relation/unary'
+require 'veritas/sql/compiler/generator/relation/binary'
 require 'veritas/sql/compiler/generator/relation/set'
 
 require 'veritas/sql/compiler/version'

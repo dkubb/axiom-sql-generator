@@ -53,7 +53,7 @@ module Veritas
               self
             end
 
-            # Return the SQL for the visitable object
+            # Return the SQL for the set relation
             #
             # @example
             #   sql = set_relation.to_s
@@ -131,6 +131,8 @@ module Veritas
               generator_class = case visitable
                 when Veritas::Relation::Operation::Set
                   self.class
+                when Veritas::Relation::Operation::Binary
+                  Binary
                 else
                   Unary
               end

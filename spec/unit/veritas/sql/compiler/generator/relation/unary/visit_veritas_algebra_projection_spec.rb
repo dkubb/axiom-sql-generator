@@ -124,4 +124,13 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
     its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users"') }
     its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users"') }
   end
+
+  context 'when the operand is a join' do
+    let(:operand) { base_relation.join(base_relation) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)     { pending { should eql('SELECT DISTINCT "id", "name" FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") AS "users"') } }
+    its(:to_inner) { pending { should eql('SELECT DISTINCT "id", "name" FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") AS "users"') } }
+  end
 end

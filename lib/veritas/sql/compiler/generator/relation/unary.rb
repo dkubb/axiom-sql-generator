@@ -15,7 +15,6 @@ module Veritas
             inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
             DISTINCT     = 'DISTINCT '.freeze
-            SEPARATOR    = ', '.freeze
             COLLAPSIBLE  = {
               Algebra::Projection                   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction,                                                                                                                                                                        ].freeze,
               Algebra::Restriction                  => Set[ BaseRelation, Algebra::Projection,                       Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
@@ -147,14 +146,21 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_set(set)
-              generator = Relation::Set.new.visit(set)
-              @name     = generator.name
-              @from     = "(#{generator.to_inner}) AS #{visit_identifier(@name)}"
-              @columns  = columns_for(set)
-              generator
+              generator_dispatch(Relation::Set, set)
             end
 
-            # Return the SQL for the visitable object
+            # Visit a Binary Relation
+            #
+            # @param [Relation::Operation::Binary] set
+            #
+            # @return [Relation::Binary]
+            #
+            # @api private
+            def visit_veritas_relation_operation_binary(binary)
+              generator_dispatch(Relation::Binary, binary)
+            end
+
+            # Return the SQL for the unary relation
             #
             # @example
             #   sql = unary_relation.to_s
@@ -311,6 +317,23 @@ module Veritas
               "(#{inner_query.to_inner}) AS #{visit_identifier(@name)}"
             ensure
               reset_query_state
+            end
+
+            # Dispatches to a Relation Generator
+            #
+            # @param [Class<Generator::Relation>] generator_class
+            #
+            # @param [Veritas::Relation::Operation::Binary] binary
+            #
+            # @return [Generator::Relation]
+            #
+            # @api private
+            def generator_dispatch(generator_class, binary)
+              generator = generator_class.new.visit(binary)
+              @name     = generator.name
+              @from     = aliased_inner_query(generator)
+              @columns  = columns_for(binary)
+              generator
             end
 
             # Reset the query state

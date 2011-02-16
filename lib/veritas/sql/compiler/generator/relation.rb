@@ -7,6 +7,7 @@ module Veritas
         class Relation < Visitor
 
           EMPTY_STRING = ''.freeze
+          SEPARATOR    = ', '.freeze
 
           # Return the alias name
           #

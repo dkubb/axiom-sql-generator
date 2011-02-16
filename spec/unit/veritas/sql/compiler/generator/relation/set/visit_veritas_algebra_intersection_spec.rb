@@ -114,6 +114,15 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
     its(:to_inner) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))') }
   end
 
+  context 'when the operand is a join' do
+    let(:operand) { base_relation.join(base_relation) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)     { pending { should eql('(SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") INTERSECT (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users")') } }
+    its(:to_inner) { pending { should eql('(SELECT * FROM "users" NATURAL JOIN "users") INTERSECT (SELECT * NATURAL JOIN "users")') } }
+  end
+
   context 'when the operands have different base relations' do
     let(:relation_name) { 'users_others'                           }
     let(:left)          { BaseRelation.new('users',  header, body) }
