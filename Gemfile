@@ -3,10 +3,16 @@ source :rubygems
 gem 'veritas', '0.0.2', :git => 'git://github.com/dkubb/veritas.git'
 
 group :development do
+  gem 'backports', '~> 1.18.2'
+  gem 'jeweler',   '~> 1.5.2'
   gem 'rake',      '~> 0.8.7'
   gem 'rspec',     '~> 1.3.1', :git => 'git://github.com/dkubb/rspec.git'
-  gem 'jeweler',   '~> 1.4.0'
-  gem 'backports', '~> 1.18.2'
+end
+
+group :jruby do
+  platform :jruby do
+    gem 'jruby-openssl', '~> 0.7.2'
+  end
 end
 
 platforms :mri_18 do
@@ -26,5 +32,3 @@ platforms :mri_18 do
     gem 'yardstick',     '~> 0.2.0'
   end
 end
-
-gem 'jruby-openssl', '~> 0.7.2', :platforms => :jruby
