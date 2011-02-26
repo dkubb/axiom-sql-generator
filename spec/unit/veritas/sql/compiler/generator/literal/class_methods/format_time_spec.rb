@@ -18,13 +18,16 @@ describe Generator::Literal, '.format_time' do
       its(:to_s) { should eql('2010-12-31T23:59:59+00:00') }
     end
 
-    context 'and the microseconds are greater than 0' do
-      let(:usec) { 1                                                                }
-      let(:time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds, offset) }
+    # rubinius 1.2.1 has problems with fractional seconds above 59
+    unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
+      context 'and the microseconds are greater than 0' do
+        let(:usec) { 1                                                                }
+        let(:time) { DateTime.new(2010, 12, 31, 23, 59, 59 + usec_in_seconds, offset) }
 
-      it { should respond_to(:to_s) }
+        it { should respond_to(:to_s) }
 
-      its(:to_s) { should eql('2010-12-31T23:59:59.000001+00:00') }
+        its(:to_s) { should eql('2010-12-31T23:59:59.000001+00:00') }
+      end
     end
   end
 
@@ -38,13 +41,16 @@ describe Generator::Literal, '.format_time' do
       its(:to_s) { should eql('2010-12-31T23:59:59+00:00') }
     end
 
-    context 'and the microseconds are greater than 0' do
-      let(:usec) { 1                                        }
-      let(:time) { Time.utc(2010, 12, 31, 23, 59, 59, usec) }
+    # rubinius 1.2.1 has problems with fractional seconds above 59
+    unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
+      context 'and the microseconds are greater than 0' do
+        let(:usec) { 1                                        }
+        let(:time) { Time.utc(2010, 12, 31, 23, 59, 59, usec) }
 
-      it { should respond_to(:to_s) }
+        it { should respond_to(:to_s) }
 
-      its(:to_s) { should eql('2010-12-31T23:59:59.000001+00:00') }
+        its(:to_s) { should eql('2010-12-31T23:59:59.000001+00:00') }
+      end
     end
   end
 end
