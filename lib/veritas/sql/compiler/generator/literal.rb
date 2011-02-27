@@ -12,7 +12,7 @@ module Veritas
           QUOTE                = "'".freeze
           ESCAPED_QUOTE        = "''".freeze
           SEPARATOR            = ', '.freeze
-          MICROSECONDS_PER_DAY = 60 * 60 * 24 * 10**6;
+          SEC_FRACTION_TO_USEC = (RUBY_VERSION < '1.9' ? 60 * 60 * 24 : 1) * 10**6
           TIME_FORMAT          = '%Y-%m-%dT%H:%M:%S'.freeze
           USEC_FORMAT          = '.%06d'.freeze
           UTC_OFFSET           = '+00:00'.freeze
@@ -115,7 +115,7 @@ module Veritas
           #
           # @api private
           def visit_date_time(date_time)
-            usec = Literal.dup_frozen(date_time).sec_fraction * MICROSECONDS_PER_DAY
+            usec = Literal.dup_frozen(date_time).sec_fraction * SEC_FRACTION_TO_USEC
             dispatch Literal.format_time(date_time.new_offset(0), usec.to_i)
           end
 
