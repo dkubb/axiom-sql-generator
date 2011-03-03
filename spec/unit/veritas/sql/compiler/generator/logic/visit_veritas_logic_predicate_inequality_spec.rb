@@ -35,7 +35,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
   context 'and the right is a value' do
     let(:attribute)  { Attribute::Integer.new(:id) }
-    let(:inequality) { attribute.eq(1)             }
+    let(:inequality) { attribute.ne(1)             }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -44,7 +44,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inequality' do
 
   context 'and the right is a nil value' do
     let(:attribute)  { Attribute::Integer.new(:id) }
-    let(:inequality) { attribute.eq(nil)           }
+    let(:inequality) { attribute.ne(nil)           }
 
     it_should_behave_like 'a generated SQL expression'
 
