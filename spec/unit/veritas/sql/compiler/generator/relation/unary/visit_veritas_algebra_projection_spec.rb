@@ -38,8 +38,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)     { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users" AS "users"') } }
-      its(:to_inner) { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users" AS "users"') } }
+      its(:to_s)     { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
+      its(:to_inner) { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
     end
 
     context 'when the projection does not include the renamed column' do
