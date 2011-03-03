@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Binary, '#to_inner' do
+describe Generator::Relation::Binary::Base, '#to_inner' do
   subject { object.to_inner }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
@@ -21,13 +21,13 @@ describe Generator::Relation::Binary, '#to_inner' do
     its(:to_s) { should == '' }
   end
 
-  context 'when a join is visited' do
+  context 'when a base relation is visited' do
     before do
-      object.visit(base_relation.join(base_relation))
+      object.visit(base_relation)
     end
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT * FROM "users" NATURAL JOIN "users"') }
+    its(:to_s) { should eql('"users"') }
   end
 end

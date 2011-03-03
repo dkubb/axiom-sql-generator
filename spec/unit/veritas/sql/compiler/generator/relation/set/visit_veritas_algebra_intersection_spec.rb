@@ -119,8 +119,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('(SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") INTERSECT (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users")') } }
-    its(:to_inner) { pending { should eql('(SELECT * FROM "users" NATURAL JOIN "users") INTERSECT (SELECT * NATURAL JOIN "users")') } }
+    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") INTERSECT (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users")') }
+    its(:to_inner) { should eql('(SELECT * FROM "users" NATURAL JOIN "users") INTERSECT (SELECT * FROM "users" NATURAL JOIN "users")') }
   end
 
   context 'when the operands have different base relations' do

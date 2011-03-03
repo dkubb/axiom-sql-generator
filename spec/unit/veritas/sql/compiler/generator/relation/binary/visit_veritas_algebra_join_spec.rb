@@ -20,8 +20,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users"') } }
-    its(:to_inner) { pending { should eql('SELECT * FROM "users" NATURAL JOIN "users"') } }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users"') }
+    its(:to_inner) { should eql('SELECT * FROM "users" NATURAL JOIN "users"') }
   end
 
   context 'when the operand is a projection' do
@@ -119,8 +119,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"') } }
-    its(:to_inner) { pending { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"') } }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"') }
   end
 
   context 'when the operands have different base relations' do
@@ -130,7 +130,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "others"') } }
-    its(:to_inner) { pending { should eql('SELECT * FROM "users" NATURAL JOIN "others"')                   } }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "others"') }
+    its(:to_inner) { should eql('SELECT * FROM "users" NATURAL JOIN "others"') }
   end
 end

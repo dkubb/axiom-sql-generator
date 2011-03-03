@@ -160,7 +160,7 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_restriction' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('SELECT "id", "name", "age" FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") AS "users" WHERE "id" = 1') } }
-    its(:to_inner) { pending { should eql('SELECT * FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") AS "users" WHERE "id" = 1') } }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" WHERE "id" = 1') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" WHERE "id" = 1') }
   end
 end

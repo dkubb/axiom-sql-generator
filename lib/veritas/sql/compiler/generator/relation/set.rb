@@ -128,15 +128,44 @@ module Veritas
             #
             # @api private
             def operand_dispatch(visitable)
-              generator_class = case visitable
-                when Veritas::Relation::Operation::Set
-                  self.class
-                when Veritas::Relation::Operation::Binary
-                  Binary
-                else
-                  Unary
+              if visitable.kind_of?(Veritas::Relation::Operation::Set)
+                self.class.new.visit(visitable)
+              else
+                dispatch(visitable)
               end
-              generator_class.new.visit(visitable)
+            end
+
+            # Visit a Binary Relation
+            #
+            # @param [Veritas::Relation::Operation::Binary] binary
+            #
+            # @return [Relation::Binary]
+            #
+            # @api private
+            def visit_veritas_relation_operation_binary(binary)
+              Binary.new.visit(binary)
+            end
+
+            # Visit a Unary Relation
+            #
+            # @param [Veritas::Relation::Operation::Unary] unary
+            #
+            # @return [Relation::Unary]
+            #
+            # @api private
+            def visit_veritas_relation_operation_unary(unary)
+              Unary.new.visit(unary)
+            end
+
+            # Visit a Base Relation
+            #
+            # @param [Veritas::BaseRelation] base_relation
+            #
+            # @return [Relation::Unary]
+            #
+            # @api private
+            def visit_veritas_base_relation(base_relation)
+              visit_veritas_relation_operation_unary(base_relation)
             end
 
           end # class Set

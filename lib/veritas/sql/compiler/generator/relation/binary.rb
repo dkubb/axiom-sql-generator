@@ -8,6 +8,17 @@ module Veritas
           class Binary < Relation
             include Attribute
 
+            # Return the table expression for the generator and identifier
+            #
+            # @param [#to_inner] generator
+            #
+            # @return [#to_s]
+            #
+            # @api private
+            def self.table_expression(generator, *)
+              generator.kind_of?(Base) ? generator.to_inner : super
+            end
+
             # Visit an Join
             #
             # @param [Algebra::Join] join
@@ -16,10 +27,9 @@ module Veritas
             #
             # @api private
             def visit_veritas_algebra_join(join)
-              @left    = operand_dispatch(join.left)
-              @right   = operand_dispatch(join.right)
-              @columns = columns_for(join)
-              @name    = [ @left.name, @right.name ].uniq.join('_').freeze
+              set_columns(join)
+              set_operands(join)
+              set_name
               self
             end
 
@@ -55,10 +65,57 @@ module Veritas
             # @api private
             def generate_sql(columns)
               return EMPTY_STRING unless visited?
-              "SELECT #{columns} FROM" \
-              " (#{@left.to_inner}) AS #{visit_identifier('left')}" \
-              " NATURAL JOIN" \
-              " (#{@right.to_inner}) AS #{visit_identifier('right')}"
+              "SELECT #{columns} FROM #{left_table_expression} NATURAL JOIN #{right_table_expression}"
+            end
+
+            # Return the left table expression
+            #
+            # @return [#to_s]
+            #
+            # @api private
+            def left_table_expression
+              self.class.table_expression(@left, 'left')
+            end
+
+            # Return the right table expression
+            #
+            # @return [#to_s]
+            #
+            # @api private
+            def right_table_expression
+              self.class.table_expression(@right, 'right')
+            end
+
+            # Set the columns from the relation
+            #
+            # @param [Relation::Operation::Binary] relation
+            #
+            # @return [undefined]
+            #
+            # @api private
+            def set_columns(relation)
+              @columns = columns_for(relation)
+            end
+
+            # Set the operands from the relation
+            #
+            # @param [Relation::Operation::Binary] relation
+            #
+            # @return [undefined]
+            #
+            # @api private
+            def set_operands(relation)
+              @left  = operand_dispatch(relation.left)
+              @right = operand_dispatch(relation.right)
+            end
+
+            # Set the name using the operands' name
+            #
+            # @return [undefined]
+            #
+            # @api private
+            def set_name
+              @name = [ @left.name, @right.name ].uniq.join('_').freeze
             end
 
             # Return a list of columns in a header
@@ -80,17 +137,73 @@ module Veritas
             #
             # @api private
             def operand_dispatch(visitable)
-              generator_class = case visitable
-                when Veritas::Relation::Operation::Set
-                  Set
-                when Veritas::Relation::Operation::Binary
-                  self.class
-                else
-                  Unary
+              if visitable.kind_of?(Veritas::Algebra::Join)
+                self.class.new.visit(visitable)
+              else
+                dispatch(visitable)
               end
-              generator_class.new.visit(visitable)
             end
 
+            # Visit a Set Relation
+            #
+            # @param [Veritas::Relation::Operation::Set] set
+            #
+            # @return [Relation::Set]
+            #
+            # @api private
+            def visit_veritas_relation_operation_set(set)
+              Set.new.visit(set)
+            end
+
+            # Visit a Unary Relation
+            #
+            # @param [Veritas::Relation::Operation::Unary] unary
+            #
+            # @return [Relation::Unary]
+            #
+            # @api private
+            def visit_veritas_relation_operation_unary(unary)
+              Unary.new.visit(unary)
+            end
+
+            # Visit a Base Relation
+            #
+            # @param [Veritas::BaseRelation] base_relation
+            #
+            # @return [Relation::Base]
+            #
+            # @api private
+            def visit_veritas_base_relation(base_relation)
+              Base.new.visit(base_relation)
+            end
+
+            # Generates an SQL statement for base relation binary operands
+            class Base < Relation
+              include Identifier
+
+              # Visit a Base Relation
+              #
+              # @param [Veritas::BaseRelation] base_relation
+              #
+              # @return [self]
+              #
+              # @api private
+              def visit_veritas_base_relation(base_relation)
+                @name = base_relation.name
+                @from = visit_identifier(@name)
+                self
+              end
+
+              # Return the SQL suitable for an inner query
+              #
+              # @return [#to_s]
+              #
+              # @api private
+              def to_inner
+                visited? ? @from : EMPTY_STRING
+              end
+
+            end # class Base
           end # class Binary
         end # class Relation
       end # module Generator

@@ -128,7 +128,7 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('SELECT "id", "name", "age" FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users" ORDER BY "id", "name", "age") AS "users" LIMIT 1') } }
-    its(:to_inner) { pending { should eql('SELECT * FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users" ORDER BY "id", "name", "age") AS "users" LIMIT 1') } }
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" LIMIT 1') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" LIMIT 1') }
   end
 end

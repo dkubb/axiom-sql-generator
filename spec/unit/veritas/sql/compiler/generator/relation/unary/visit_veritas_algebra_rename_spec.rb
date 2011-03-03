@@ -137,7 +137,7 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_rename' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") AS "users"') } }
-    its(:to_inner) { pending { should eql('SELECT "id" AS "user_id", "name", "age" FROM (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") AS "users"') } }
+    its(:to_s)     { should eql('SELECT "id" AS "user_id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users"') }
+    its(:to_inner) { should eql('SELECT "id" AS "user_id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users"') }
   end
 end

@@ -28,6 +28,6 @@ describe Generator::Relation::Binary, '#to_s' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users") AS "left" NATURAL JOIN (SELECT * FROM "users") AS "right"') }
+    its(:to_s) { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users"') }
   end
 end

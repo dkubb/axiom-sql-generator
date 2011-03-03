@@ -36,7 +36,7 @@ module Veritas
         def self.handlers
           @handlers ||= Hash.new do |hash, key|
             hash[key] = ancestor_methods_for(key).detect do |method|
-              method_defined?(method)
+              method_defined?(method) || private_method_defined?(method)
             end
           end
         end

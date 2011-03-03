@@ -5,6 +5,7 @@ module Veritas
 
         # Abstract base class for SQL generation from a relation
         class Relation < Visitor
+          extend Identifier
 
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
@@ -15,6 +16,20 @@ module Veritas
           #
           # @api private
           attr_reader :name
+
+          # Return the table expression for the relation and identifier
+          #
+          # @param [#to_inner] relation
+          #
+          # @param [#to_s] identifier
+          #   optional identifier, defaults to relation.name
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def self.table_expression(relation, identifier = relation.name)
+            "(#{relation.to_inner}) AS #{visit_identifier(identifier)}"
+          end
 
           # Initialize a Generator
           #

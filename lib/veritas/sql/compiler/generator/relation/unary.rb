@@ -16,13 +16,13 @@ module Veritas
 
             DISTINCT     = 'DISTINCT '.freeze
             COLLAPSIBLE  = {
-              Algebra::Projection                   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction,                                                                                                                                                                        ].freeze,
-              Algebra::Restriction                  => Set[ BaseRelation, Algebra::Projection,                       Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
-              Veritas::Relation::Operation::Order   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-              Veritas::Relation::Operation::Reverse => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-              Veritas::Relation::Operation::Offset  => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-              Veritas::Relation::Operation::Limit   => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                      Algebra::Rename ].freeze,
-              Algebra::Rename                       => Set[ BaseRelation, Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit                  ].freeze,
+              Algebra::Projection                   => Set[ Algebra::Projection, Algebra::Restriction,                                                                                                                                                                        ].freeze,
+              Algebra::Restriction                  => Set[ Algebra::Projection,                       Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
+              Veritas::Relation::Operation::Order   => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+              Veritas::Relation::Operation::Reverse => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+              Veritas::Relation::Operation::Offset  => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+              Veritas::Relation::Operation::Limit   => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                      Algebra::Rename ].freeze,
+              Algebra::Rename                       => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit                  ].freeze,
             }.freeze
 
             # Initialize a Unary relation SQL generator
@@ -136,28 +136,6 @@ module Veritas
               @columns ||= columns_for(offset)
               scope_query(offset)
               self
-            end
-
-            # Visit a Set Relation
-            #
-            # @param [Relation::Operation::Set] set
-            #
-            # @return [Relation::Set]
-            #
-            # @api private
-            def visit_veritas_relation_operation_set(set)
-              generator_dispatch(Relation::Set, set)
-            end
-
-            # Visit a Binary Relation
-            #
-            # @param [Relation::Operation::Binary] set
-            #
-            # @return [Relation::Binary]
-            #
-            # @api private
-            def visit_veritas_relation_operation_binary(binary)
-              generator_dispatch(Relation::Binary, binary)
             end
 
             # Return the SQL for the unary relation
@@ -314,9 +292,31 @@ module Veritas
             #
             # @api private
             def aliased_inner_query(inner_query)
-              "(#{inner_query.to_inner}) AS #{visit_identifier(@name)}"
+              self.class.table_expression(inner_query)
             ensure
               reset_query_state
+            end
+
+            # Visit a Set Relation
+            #
+            # @param [Relation::Operation::Set] set
+            #
+            # @return [Relation::Set]
+            #
+            # @api private
+            def visit_veritas_relation_operation_set(set)
+              generator_dispatch(Relation::Set, set)
+            end
+
+            # Visit a Binary Relation
+            #
+            # @param [Relation::Operation::Binary] set
+            #
+            # @return [Relation::Binary]
+            #
+            # @api private
+            def visit_veritas_relation_operation_binary(binary)
+              generator_dispatch(Relation::Binary, binary)
             end
 
             # Dispatches to a Relation Generator
@@ -332,7 +332,6 @@ module Veritas
               generator = generator_class.new.visit(binary)
               @name     = generator.name
               @from     = aliased_inner_query(generator)
-              @columns  = columns_for(binary)
               generator
             end
 
