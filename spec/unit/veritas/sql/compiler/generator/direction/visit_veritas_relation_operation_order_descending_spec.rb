@@ -4,7 +4,7 @@ describe Generator::Direction, '#visit_veritas_relation_operation_order_descendi
   subject { object.visit_veritas_relation_operation_order_descending(direction) }
 
   let(:described_class) { Class.new(Visitor) { include Generator::Direction } }
-  let(:direction)       { Attribute::Integer.new(:id).asc                     }
+  let(:direction)       { Attribute::Integer.new(:id).desc                    }
   let(:object)          { described_class.new                                 }
 
   it_should_behave_like 'a generated SQL expression'
