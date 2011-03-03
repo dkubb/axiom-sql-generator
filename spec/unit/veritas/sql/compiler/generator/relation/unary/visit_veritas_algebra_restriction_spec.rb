@@ -73,23 +73,12 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_restriction' do
   end
 
   context 'when the operand is a restriction' do
-    context 'when the predicates are equivalent' do
-      let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
+    let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
 
-      it_should_behave_like 'a generated SQL SELECT query'
+    it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)     { pending { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') } }
-      its(:to_inner) { pending { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') } }
-    end
-
-    context 'when the predicates are different' do
-      let(:operand) { base_relation.restrict { |r| r[:id].ne(2) } }
-
-      it_should_behave_like 'a generated SQL SELECT query'
-
-      its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
-      its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
-    end
+    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" WHERE "id" = 1') }
+    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" WHERE "id" = 1') }
   end
 
   context 'when the operand is ordered' do
