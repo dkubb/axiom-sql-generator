@@ -8,7 +8,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
   let(:object)          { described_class.new                             }
 
   context 'when right operand is an inclusive Range' do
-    let(:inclusion) { attribute.exclude(1..10) }
+    let(:inclusion) { attribute.include(1..10) }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -16,7 +16,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
   end
 
   context 'when right operand is an exclusive Range' do
-    let(:inclusion) { attribute.exclude(1...10) }
+    let(:inclusion) { attribute.include(1...10) }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -24,7 +24,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
   end
 
   context 'when right operand is an Array' do
-    let(:inclusion) { attribute.exclude([ 1, 2 ]) }
+    let(:inclusion) { attribute.include([ 1, 2 ]) }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -32,7 +32,7 @@ describe Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
   end
 
   context 'when right operand is an empty Array' do
-    let(:inclusion) { attribute.exclude([]) }
+    let(:inclusion) { attribute.include([]) }
 
     it_should_behave_like 'a generated SQL expression'
 
