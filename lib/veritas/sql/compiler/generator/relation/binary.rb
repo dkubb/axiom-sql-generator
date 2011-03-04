@@ -8,6 +8,8 @@ module Veritas
           class Binary < Relation
             include Attribute
 
+            JOIN = 'NATURAL JOIN'.freeze
+
             # Return the table expression for the generator and identifier
             #
             # @param [#to_inner] generator
@@ -27,6 +29,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_algebra_join(join)
+              set_operation(JOIN)
               set_columns(join)
               set_operands(join)
               set_name
@@ -65,7 +68,7 @@ module Veritas
             # @api private
             def generate_sql(columns)
               return EMPTY_STRING unless visited?
-              "SELECT #{columns} FROM #{left_table_expression} NATURAL JOIN #{right_table_expression}"
+              "SELECT #{columns} FROM #{left_table_expression} #{@operation} #{right_table_expression}"
             end
 
             # Return the left table expression
@@ -84,6 +87,17 @@ module Veritas
             # @api private
             def right_table_expression
               self.class.table_expression(@right, 'right')
+            end
+
+            # Set the operation
+            #
+            # @param [#to_s] operation
+            #
+            # @return [undefined]
+            #
+            # @api private
+            def set_operation(operation)
+              @operation = operation
             end
 
             # Set the columns from the relation
