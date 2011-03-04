@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-02-25}
+  s.date = %q{2011-03-03}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -77,9 +77,13 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_predicate_less_than_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_proposition_false_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_proposition_true_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/binary/base/to_inner_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/binary/base/visit_veritas_base_relation_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/binary/class_methods/table_expression_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/to_inner_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/to_s_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/visit_veritas_algebra_join_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/class_methods/table_expression_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/name_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_inner_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_s_spec.rb",
@@ -93,12 +97,10 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_algebra_rename_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_algebra_restriction_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_base_relation_spec.rb",
-    "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_binary_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_limit_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_offset_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_order_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_reverse_spec.rb",
-    "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_set_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/visit_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/visited_spec.rb",
     "spec/unit/veritas/sql/compiler/visitor/class_methods/handler_for_spec.rb",
@@ -156,9 +158,13 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_predicate_less_than_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_proposition_false_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/logic/visit_veritas_logic_proposition_true_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/binary/base/to_inner_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/binary/base/visit_veritas_base_relation_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/binary/class_methods/table_expression_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/to_inner_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/to_s_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/visit_veritas_algebra_join_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/class_methods/table_expression_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/name_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_inner_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_s_spec.rb",
@@ -172,12 +178,10 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_algebra_rename_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_algebra_restriction_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_base_relation_spec.rb",
-    "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_binary_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_limit_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_offset_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_order_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_reverse_spec.rb",
-    "spec/unit/veritas/sql/compiler/generator/relation/unary/visit_veritas_relation_operation_set_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/visit_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/visited_spec.rb",
     "spec/unit/veritas/sql/compiler/visitor/class_methods/handler_for_spec.rb",
