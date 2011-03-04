@@ -8,7 +8,8 @@ module Veritas
           class Binary < Relation
             include Attribute
 
-            JOIN = 'NATURAL JOIN'.freeze
+            JOIN    = 'NATURAL JOIN'.freeze
+            PRODUCT = 'CROSS JOIN'.freeze
 
             # Return the table expression for the generator and identifier
             #
@@ -32,6 +33,21 @@ module Veritas
               set_operation(JOIN)
               set_columns(join)
               set_operands(join)
+              set_name
+              self
+            end
+
+            # Visit an Product
+            #
+            # @param [Algebra::Product] product
+            #
+            # @return [self]
+            #
+            # @api private
+            def visit_veritas_algebra_product(product)
+              set_operation(PRODUCT)
+              set_columns(product)
+              set_operands(product)
               set_name
               self
             end
@@ -151,10 +167,11 @@ module Veritas
             #
             # @api private
             def operand_dispatch(visitable)
-              if visitable.kind_of?(Veritas::Algebra::Join)
-                self.class.new.visit(visitable)
-              else
-                dispatch(visitable)
+              case visitable
+                when Veritas::Algebra::Join, Veritas::Algebra::Product
+                  self.class.new.visit(visitable)
+                else
+                  dispatch(visitable)
               end
             end
 
