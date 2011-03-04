@@ -15,7 +15,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
   let(:join)          { left.join(right)                                 }
   let(:object)        { described_class.new                              }
 
-  context 'when the operand is a base relation' do
+  context 'when the operands are base relations' do
     let(:operand) { base_relation }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -24,7 +24,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM "users" NATURAL JOIN "users"') }
   end
 
-  context 'when the operand is a projection' do
+  context 'when the operands are projections' do
     let(:operand) { base_relation.project([ :id, :name ]) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -33,7 +33,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" NATURAL JOIN (SELECT DISTINCT "id", "name" FROM "users") AS "right"') }
   end
 
-  context 'when the operand is a rename' do
+  context 'when the operands are rename' do
     let(:operand) { base_relation.rename(:id => :user_id) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -42,7 +42,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" NATURAL JOIN (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "right"') }
   end
 
-  context 'when the operand is a restriction' do
+  context 'when the operands are restrictions' do
     let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -51,7 +51,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" NATURAL JOIN (SELECT * FROM "users" WHERE "id" = 1) AS "right"') }
   end
 
-  context 'when the operand is ordered' do
+  context 'when the operands are ordered' do
     let(:operand) { base_relation.order }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -60,7 +60,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right"') }
   end
 
-  context 'when the operand is reversed' do
+  context 'when the operands are reversed' do
     let(:operand) { base_relation.order.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -69,7 +69,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "right"') }
   end
 
-  context 'when the operand is limited' do
+  context 'when the operands are limited' do
     let(:operand) { base_relation.order.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -78,7 +78,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "right"') }
   end
 
-  context 'when the operand is an offset' do
+  context 'when the operands are offsets' do
     let(:operand) { base_relation.order.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -87,7 +87,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "right"') }
   end
 
-  context 'when the operand is a difference' do
+  context 'when the operands are differences' do
     let(:operand) { base_relation.difference(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -96,7 +96,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "right"') }
   end
 
-  context 'when the operand is an intersection' do
+  context 'when the operands are intersections' do
     let(:operand) { base_relation.intersect(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -105,7 +105,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "right"') }
   end
 
-  context 'when the operand is a union' do
+  context 'when the operands are unions' do
     let(:operand) { base_relation.union(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -114,7 +114,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "right"') }
   end
 
-  context 'when the operand is a join' do
+  context 'when the operands are joins' do
     let(:operand) { base_relation.join(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'

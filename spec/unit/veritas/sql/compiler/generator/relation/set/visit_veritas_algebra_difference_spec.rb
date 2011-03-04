@@ -15,7 +15,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
   let(:difference)    { left.difference(right)                           }
   let(:object)        { described_class.new                              }
 
-  context 'when the operand is a base relation' do
+  context 'when the operands are base relations' do
     let(:operand) { base_relation }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -24,7 +24,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "users")') }
   end
 
-  context 'when the operand is a projection' do
+  context 'when the operands are projections' do
     let(:operand) { base_relation.project([ :id, :name ]) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -33,7 +33,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('(SELECT DISTINCT "id", "name" FROM "users") EXCEPT (SELECT DISTINCT "id", "name" FROM "users")') }
   end
 
-  context 'when the operand is a rename' do
+  context 'when the operands are renames' do
     let(:operand) { base_relation.rename(:id => :user_id) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -42,7 +42,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('(SELECT "id" AS "user_id", "name", "age" FROM "users") EXCEPT (SELECT "id" AS "user_id", "name", "age" FROM "users")') }
   end
 
-  context 'when the operand is a restriction' do
+  context 'when the operands are restrictions' do
     let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -78,7 +78,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
   end
 
-  context 'when the operand is an offset' do
+  context 'when the operands are offsets' do
     let(:operand) { base_relation.order.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -87,7 +87,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
   end
 
-  context 'when the operand is a difference' do
+  context 'when the operands are differences' do
     let(:operand) { base_relation.difference(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -96,7 +96,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users"))') }
   end
 
-  context 'when the operand is an intersection' do
+  context 'when the operands are intersections' do
     let(:operand) { base_relation.intersect(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -105,7 +105,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users"))') }
   end
 
-  context 'when the operand is a union' do
+  context 'when the operands are unions' do
     let(:operand) { base_relation.union(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
@@ -114,7 +114,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     its(:to_inner) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))') }
   end
 
-  context 'when the operand is a join' do
+  context 'when the operands are joins' do
     let(:operand) { base_relation.join(base_relation) }
 
     it_should_behave_like 'a generated SQL SELECT query'
