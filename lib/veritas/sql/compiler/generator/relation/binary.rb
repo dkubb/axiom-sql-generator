@@ -222,28 +222,16 @@ module Veritas
             end
 
             # Generates an SQL statement for base relation binary operands
-            class Base < Relation
-              include Identifier
+            class Base < Unary
 
-              # Visit a Base Relation
-              #
-              # @param [Veritas::BaseRelation] base_relation
-              #
-              # @return [self]
-              #
-              # @api private
-              def visit_veritas_base_relation(base_relation)
-                @name = base_relation.name
-                @from = visit_identifier(@name)
-                self
-              end
+            private
 
-              # Return the SQL suitable for an subquery
+              # Generate the SQL for this base relation
               #
               # @return [#to_s]
               #
               # @api private
-              def to_subquery
+              def generate_sql(*)
                 visited? ? @from : EMPTY_STRING
               end
 
