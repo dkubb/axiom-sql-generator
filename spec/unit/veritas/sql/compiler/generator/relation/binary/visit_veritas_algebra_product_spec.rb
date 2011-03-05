@@ -21,8 +21,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM "users" CROSS JOIN "other"') }
-    its(:to_inner) { should eql('SELECT * FROM "users" CROSS JOIN "other"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM "users" CROSS JOIN "other"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" CROSS JOIN "other"') }
   end
 
   context 'when the operands are a projection' do
@@ -31,8 +31,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "other_id", "other_name" FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" CROSS JOIN (SELECT DISTINCT "other_id", "other_name" FROM "other") AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" CROSS JOIN (SELECT DISTINCT "other_id", "other_name" FROM "other") AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "other_id", "other_name" FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" CROSS JOIN (SELECT DISTINCT "other_id", "other_name" FROM "other") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" CROSS JOIN (SELECT DISTINCT "other_id", "other_name" FROM "other") AS "right"') }
   end
 
   context 'when the operand is a rename' do
@@ -41,8 +41,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "user_id", "name", "age", "other_user_id", "other_name", "other_age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" CROSS JOIN (SELECT "other_id" AS "other_user_id", "other_name", "other_age" FROM "other") AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" CROSS JOIN (SELECT "other_id" AS "other_user_id", "other_name", "other_age" FROM "other") AS "right"') }
+    its(:to_s)        { should eql('SELECT "user_id", "name", "age", "other_user_id", "other_name", "other_age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" CROSS JOIN (SELECT "other_id" AS "other_user_id", "other_name", "other_age" FROM "other") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" CROSS JOIN (SELECT "other_id" AS "other_user_id", "other_name", "other_age" FROM "other") AS "right"') }
   end
 
   context 'when the operand is a restriction' do
@@ -51,8 +51,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" CROSS JOIN (SELECT * FROM "other" WHERE "other_id" = 1) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" CROSS JOIN (SELECT * FROM "other" WHERE "other_id" = 1) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" CROSS JOIN (SELECT * FROM "other" WHERE "other_id" = 1) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" CROSS JOIN (SELECT * FROM "other" WHERE "other_id" = 1) AS "right"') }
   end
 
   context 'when the operand is ordered' do
@@ -61,8 +61,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age") AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age") AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age") AS "right"') }
   end
 
   context 'when the operand is reversed' do
@@ -71,8 +71,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id" DESC, "other_name" DESC, "other_age" DESC) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id" DESC, "other_name" DESC, "other_age" DESC) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id" DESC, "other_name" DESC, "other_age" DESC) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id" DESC, "other_name" DESC, "other_age" DESC) AS "right"') }
   end
 
   context 'when the operand is limited' do
@@ -81,8 +81,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" LIMIT 1) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" LIMIT 1) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" LIMIT 1) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" LIMIT 1) AS "right"') }
   end
 
   context 'when the operand is an offset' do
@@ -91,8 +91,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" OFFSET 1) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" OFFSET 1) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" OFFSET 1) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" CROSS JOIN (SELECT * FROM "other" ORDER BY "other_id", "other_name", "other_age" OFFSET 1) AS "right"') }
   end
 
   context 'when the operand is a difference' do
@@ -101,8 +101,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") EXCEPT (SELECT * FROM "other")) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") EXCEPT (SELECT * FROM "other")) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") EXCEPT (SELECT * FROM "other")) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") EXCEPT (SELECT * FROM "other")) AS "right"') }
   end
 
   context 'when the operand is a intersection' do
@@ -111,8 +111,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") INTERSECT (SELECT * FROM "other")) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") INTERSECT (SELECT * FROM "other")) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") INTERSECT (SELECT * FROM "other")) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") INTERSECT (SELECT * FROM "other")) AS "right"') }
   end
 
   context 'when the operand is a union' do
@@ -121,8 +121,8 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") UNION (SELECT * FROM "other")) AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") UNION (SELECT * FROM "other")) AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") UNION (SELECT * FROM "other")) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" CROSS JOIN ((SELECT * FROM "other") UNION (SELECT * FROM "other")) AS "right"') }
   end
 
   context 'when the operand is a join' do
@@ -131,7 +131,7 @@ describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" CROSS JOIN (SELECT * FROM "other" NATURAL JOIN "other") AS "right"') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" CROSS JOIN (SELECT * FROM "other" NATURAL JOIN "other") AS "right"') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "other_id", "other_name", "other_age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" CROSS JOIN (SELECT * FROM "other" NATURAL JOIN "other") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" CROSS JOIN (SELECT * FROM "other" NATURAL JOIN "other") AS "right"') }
   end
 end

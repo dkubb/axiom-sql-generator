@@ -19,7 +19,7 @@ module Veritas
 
           # Return the table expression for the relation and identifier
           #
-          # @param [#to_inner] relation
+          # @param [#to_subquery] relation
           #
           # @param [#to_s] identifier
           #   optional identifier, defaults to relation.name
@@ -28,7 +28,7 @@ module Veritas
           #
           # @api private
           def self.table_expression(relation, identifier = relation.name)
-            "(#{relation.to_inner}) AS #{visit_identifier(identifier)}"
+            "(#{relation.to_subquery}) AS #{visit_identifier(identifier)}"
           end
 
           # Initialize a Generator

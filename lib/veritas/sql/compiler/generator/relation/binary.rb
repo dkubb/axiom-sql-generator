@@ -13,13 +13,13 @@ module Veritas
 
             # Return the table expression for the generator and identifier
             #
-            # @param [#to_inner] generator
+            # @param [#to_subquery] generator
             #
             # @return [#to_s]
             #
             # @api private
             def self.table_expression(generator, *)
-              generator.kind_of?(Base) ? generator.to_inner : super
+              generator.kind_of?(Base) ? generator.to_subquery : super
             end
 
             # Visit an Join
@@ -69,7 +69,7 @@ module Veritas
             # @return [#to_s]
             #
             # @api private
-            def to_inner
+            def to_subquery
               generate_sql('*')
             end
 
@@ -230,7 +230,7 @@ module Veritas
               # @return [#to_s]
               #
               # @api private
-              def to_inner
+              def to_subquery
                 visited? ? @from : EMPTY_STRING
               end
 

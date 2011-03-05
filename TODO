@@ -1,4 +1,3 @@
-* Rename #to_inner to #to_subquery
 * Rename .table_expression to .subquery. A subquery is defined as being
   a special case of a table expression contained within parenthesis.
 

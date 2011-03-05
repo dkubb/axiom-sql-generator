@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Generator::Relation::Binary, '#to_inner' do
-  subject { object.to_inner }
+describe Generator::Relation::Set, '#to_subquery' do
+  subject { object.to_subquery }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
   let(:name)          { Attribute::String.new(:name)                     }
@@ -21,13 +21,33 @@ describe Generator::Relation::Binary, '#to_inner' do
     its(:to_s) { should == '' }
   end
 
-  context 'when a join is visited' do
+  context 'when a difference is visited' do
     before do
-      object.visit(base_relation.join(base_relation))
+      object.visit(base_relation.difference(base_relation))
     end
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT * FROM "users" NATURAL JOIN "users"') }
+    its(:to_s) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "users")') }
+  end
+
+  context 'when an intersection is visited' do
+    before do
+      object.visit(base_relation.intersect(base_relation))
+    end
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('(SELECT * FROM "users") INTERSECT (SELECT * FROM "users")') }
+  end
+
+  context 'when a union is visited' do
+    before do
+      object.visit(base_relation.union(base_relation))
+    end
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s) { should eql('(SELECT * FROM "users") UNION (SELECT * FROM "users")') }
   end
 end

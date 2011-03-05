@@ -18,8 +18,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the operand is a projection' do
@@ -27,8 +27,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
   end
 
   context 'when the operand is a rename' do
@@ -36,8 +36,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the operand is a restriction' do
@@ -45,8 +45,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the operand is ordered' do
@@ -54,8 +54,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
   end
 
   context 'when the operand is reversed' do
@@ -63,8 +63,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1') }
   end
 
   context 'when the operand is limited' do
@@ -73,8 +73,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
     context 'when the relation is not optimized' do
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
-      its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
+      its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
+      its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
     end
 
     context 'when the relation is optimized' do
@@ -82,8 +82,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
-      its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+      its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+      its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
     end
   end
 
@@ -92,8 +92,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
-    its(:to_inner) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1 OFFSET 1') }
   end
 
   context 'when the operand is a difference' do
@@ -101,8 +101,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
   end
 
   context 'when the operand is an intersection' do
@@ -110,8 +110,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
   end
 
   context 'when the operand is a union' do
@@ -119,8 +119,8 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") UNION (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") UNION (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") UNION (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") UNION (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" LIMIT 1') }
   end
 
   context 'when the operand is a join' do
@@ -128,7 +128,7 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" LIMIT 1') }
-    its(:to_inner) { should eql('SELECT * FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" LIMIT 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" LIMIT 1') }
   end
 end

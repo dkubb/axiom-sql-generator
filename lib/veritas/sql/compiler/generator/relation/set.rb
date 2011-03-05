@@ -70,8 +70,8 @@ module Veritas
             # @return [#to_s]
             #
             # @api private
-            def to_inner
-              generate_sql(:to_inner)
+            def to_subquery
+              generate_sql(:to_subquery)
             end
 
           private

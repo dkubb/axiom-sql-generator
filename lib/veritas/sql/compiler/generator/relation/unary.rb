@@ -155,7 +155,7 @@ module Veritas
             # @return [#to_s]
             #
             # @api private
-            def to_inner
+            def to_subquery
               generate_sql(all_columns? ? '*' : @columns)
             end
 

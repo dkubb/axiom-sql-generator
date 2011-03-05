@@ -20,8 +20,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")') }
-    its(:to_inner) { should eql('(SELECT * FROM "users") INTERSECT (SELECT * FROM "users")') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users") INTERSECT (SELECT * FROM "users")') }
   end
 
   context 'when the operands are projections' do
@@ -29,8 +29,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT DISTINCT "id", "name" FROM "users") INTERSECT (SELECT DISTINCT "id", "name" FROM "users")') }
-    its(:to_inner) { should eql('(SELECT DISTINCT "id", "name" FROM "users") INTERSECT (SELECT DISTINCT "id", "name" FROM "users")') }
+    its(:to_s)        { should eql('(SELECT DISTINCT "id", "name" FROM "users") INTERSECT (SELECT DISTINCT "id", "name" FROM "users")') }
+    its(:to_subquery) { should eql('(SELECT DISTINCT "id", "name" FROM "users") INTERSECT (SELECT DISTINCT "id", "name" FROM "users")') }
   end
 
   context 'when the operands are renames' do
@@ -38,8 +38,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id" AS "user_id", "name", "age" FROM "users") INTERSECT (SELECT "id" AS "user_id", "name", "age" FROM "users")') }
-    its(:to_inner) { should eql('(SELECT "id" AS "user_id", "name", "age" FROM "users") INTERSECT (SELECT "id" AS "user_id", "name", "age" FROM "users")') }
+    its(:to_s)        { should eql('(SELECT "id" AS "user_id", "name", "age" FROM "users") INTERSECT (SELECT "id" AS "user_id", "name", "age" FROM "users")') }
+    its(:to_subquery) { should eql('(SELECT "id" AS "user_id", "name", "age" FROM "users") INTERSECT (SELECT "id" AS "user_id", "name", "age" FROM "users")') }
   end
 
   context 'when the operands are restrictions' do
@@ -47,8 +47,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" WHERE "id" = 1) INTERSECT (SELECT "id", "name", "age" FROM "users" WHERE "id" = 1)') }
-    its(:to_inner) { should eql('(SELECT * FROM "users" WHERE "id" = 1) INTERSECT (SELECT * FROM "users" WHERE "id" = 1)') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" WHERE "id" = 1) INTERSECT (SELECT "id", "name", "age" FROM "users" WHERE "id" = 1)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" WHERE "id" = 1) INTERSECT (SELECT * FROM "users" WHERE "id" = 1)') }
   end
 
   context 'when the operand is ordered' do
@@ -56,8 +56,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age")') }
-    its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")') }
   end
 
   context 'when the operand is reversed' do
@@ -65,8 +65,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)') }
-    its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) INTERSECT (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) INTERSECT (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)') }
   end
 
   context 'when the operand is limited' do
@@ -74,8 +74,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1) INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
-    its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1) INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
   end
 
   context 'when the operands are offsets' do
@@ -83,8 +83,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1) INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
-    its(:to_inner) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1) INTERSECT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
   end
 
   context 'when the operands are differences' do
@@ -92,8 +92,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users"))') }
-    its(:to_inner) { should eql('((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users"))') }
+    its(:to_s)        { should eql('((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users"))') }
+    its(:to_subquery) { should eql('((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users"))') }
   end
 
   context 'when the operands are intersections' do
@@ -101,8 +101,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users"))') }
-    its(:to_inner) { should eql('((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users"))') }
+    its(:to_s)        { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users"))') }
+    its(:to_subquery) { should eql('((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users"))') }
   end
 
   context 'when the operands are unions' do
@@ -110,8 +110,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users"))') }
-    its(:to_inner) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))') }
+    its(:to_s)        { should eql('((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")) INTERSECT ((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users"))') }
+    its(:to_subquery) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) INTERSECT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))') }
   end
 
   context 'when the operands are joins' do
@@ -119,8 +119,8 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") INTERSECT (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users")') }
-    its(:to_inner) { should eql('(SELECT * FROM "users" NATURAL JOIN "users") INTERSECT (SELECT * FROM "users" NATURAL JOIN "users")') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") INTERSECT (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" NATURAL JOIN "users") INTERSECT (SELECT * FROM "users" NATURAL JOIN "users")') }
   end
 
   context 'when the operands have different base relations' do
@@ -130,7 +130,7 @@ describe Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "others")') }
-    its(:to_inner) { should eql('(SELECT * FROM "users") INTERSECT (SELECT * FROM "others")') }
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "others")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users") INTERSECT (SELECT * FROM "others")') }
   end
 end

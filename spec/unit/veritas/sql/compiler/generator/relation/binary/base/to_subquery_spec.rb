@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Generator::Relation::Binary::Base, '#to_inner' do
-  subject { object.to_inner }
+describe Generator::Relation::Binary::Base, '#to_subquery' do
+  subject { object.to_subquery }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
   let(:name)          { Attribute::String.new(:name)                     }

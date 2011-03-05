@@ -18,8 +18,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
   end
 
   context 'when the operand is a projection' do
@@ -27,8 +27,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
   end
 
   context 'when the operand is a rename' do
@@ -38,8 +38,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)     { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
-      its(:to_inner) { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
+      its(:to_s)        { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
+      its(:to_subquery) { pending { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') } }
     end
 
     context 'when the projection does not include the renamed column' do
@@ -48,8 +48,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)     { should eql('SELECT DISTINCT "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
-      its(:to_inner) { should eql('SELECT DISTINCT "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
+      its(:to_s)        { should eql('SELECT DISTINCT "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
+      its(:to_subquery) { should eql('SELECT DISTINCT "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
     end
   end
 
@@ -58,8 +58,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
   end
 
   context 'when the operand is ordered' do
@@ -67,8 +67,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "users"') }
   end
 
   context 'when the operand is reversed' do
@@ -76,8 +76,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "users"') }
   end
 
   context 'when the operand is limited' do
@@ -85,8 +85,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users"') }
   end
 
   context 'when the operand is an offset' do
@@ -94,8 +94,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users"') }
   end
 
   context 'when the operand is a difference' do
@@ -103,8 +103,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users"') }
   end
 
   context 'when the operand is an intersection' do
@@ -112,8 +112,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users"') }
   end
 
   context 'when the operand is a union' do
@@ -121,8 +121,8 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users"') }
   end
 
   context 'when the operand is a join' do
@@ -130,7 +130,7 @@ describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)     { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users"') }
-    its(:to_inner) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users"') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users"') }
+    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users"') }
   end
 end

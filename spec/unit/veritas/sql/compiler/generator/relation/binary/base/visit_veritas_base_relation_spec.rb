@@ -16,5 +16,5 @@ describe Generator::Relation::Binary::Base, '#visit_veritas_base_relation' do
 
   its(:name) { should eql('users') }
 
-  its(:to_inner) { should eql('"users"') }
+  its(:to_subquery) { should eql('"users"') }
 end
