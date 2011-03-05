@@ -6,11 +6,11 @@ module Veritas
 
           # Generates an SQL statement for a unary relation
           class Unary < Relation
+            extend Aliasable
             include Attribute
             include Direction
             include Literal
             include Logic
-            extend Aliasable
 
             inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
