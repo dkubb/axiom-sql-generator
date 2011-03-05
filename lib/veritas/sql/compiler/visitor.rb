@@ -13,9 +13,9 @@ module Veritas
         DOUBLE_COLON    = '::'.freeze
         UNDERSCORE      = '_'.freeze
 
-        # Lookup the handler method for a visitable object
+        # Lookup the handler method for a visitable class
         #
-        # @param [Visitable] visitable
+        # @param [Class<Visitable>] visitable_class
         #
         # @return [#to_sym]
         #
@@ -23,9 +23,8 @@ module Veritas
         #   raised when the visitable object has no handler
         #
         # @api private
-        def self.handler_for(visitable)
-          klass = visitable.class
-          handlers[klass] or raise UnknownObject, "No handler for #{klass} in #{self}"
+        def self.handler_for(visitable_class)
+          handlers[visitable_class] or raise UnknownObject, "No handler for #{visitable_class} in #{self}"
         end
 
         # Return the handler cache that maps modules to method names
@@ -60,7 +59,7 @@ module Veritas
         #
         # @api private
         def self.method_for(mod)
-          name = 'visit_' << mod.name
+          name = "visit_#{mod.name}"
           name.gsub!(NAME_SEP_REGEXP, NAME_REP)
           name.gsub!(DOUBLE_COLON,    UNDERSCORE)
           name.downcase!
@@ -112,7 +111,7 @@ module Veritas
         #
         # @api private
         def dispatch(visitable)
-          send(self.class.handler_for(visitable), visitable)
+          send(self.class.handler_for(visitable.class), visitable)
         end
 
       end # class Visitor

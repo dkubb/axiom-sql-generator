@@ -8,8 +8,14 @@ module Veritas
           class Binary < Relation
             include Attribute
 
-            JOIN    = 'NATURAL JOIN'.freeze
-            PRODUCT = 'CROSS JOIN'.freeze
+            JOIN           = 'NATURAL JOIN'.freeze
+            PRODUCT        = 'CROSS JOIN'.freeze
+            DISPATCH_TYPES = [
+              Veritas::Relation::Operation::Set,
+              Veritas::Relation::Operation::Binary,
+              Veritas::Relation::Operation::Unary,
+              Veritas::BaseRelation,
+            ].freeze
 
             # Return the subquery for the generator and identifier
             #
@@ -167,12 +173,19 @@ module Veritas
             #
             # @api private
             def operand_dispatch(visitable)
-              case visitable
-                when Veritas::Algebra::Join, Veritas::Algebra::Product
-                  self.class.new.visit(visitable)
-                else
-                  dispatch(visitable)
-              end
+              visitor_class = DISPATCH_TYPES.detect { |klass| visitable.kind_of?(klass) }
+              send(self.class.handler_for(visitor_class), visitable)
+            end
+
+            # Visit a Binary Relation
+            #
+            # @param [Veritas::Relation::Operation::Binary] binary
+            #
+            # @return [Relation::Binary]
+            #
+            # @api private
+            def visit_veritas_relation_operation_binary(binary)
+              self.class::Binary.new.visit(binary)
             end
 
             # Visit a Set Relation
@@ -183,7 +196,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_set(set)
-              Set.new.visit(set)
+              self.class::Set.new.visit(set)
             end
 
             # Visit a Unary Relation
@@ -194,7 +207,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_unary(unary)
-              Unary.new.visit(unary)
+              self.class::Unary.new.visit(unary)
             end
 
             # Visit a Base Relation
@@ -205,7 +218,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_base_relation(base_relation)
-              Base.new.visit(base_relation)
+              self.class::Base.new.visit(base_relation)
             end
 
             # Generates an SQL statement for base relation binary operands

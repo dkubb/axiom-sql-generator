@@ -5,7 +5,7 @@ module Veritas
         class Relation
 
           # Generates an SQL statement for a set relation
-          class Set < Relation
+          class Set < Binary
 
             DIFFERENCE   = 'EXCEPT'.freeze
             INTERSECTION = 'INTERSECT'.freeze
@@ -88,85 +88,8 @@ module Veritas
               "(#{@left.send(method)}) #{@operation} (#{@right.send(method)})"
             end
 
-            # Set the operation
-            #
-            # @param [#to_s] operation
-            #
-            # @return [undefined]
-            #
-            # @api private
-            def set_operation(operation)
-              @operation = operation
-            end
-
-            # Set the operands from the relation
-            #
-            # @param [Relation::Operation::Set] relation
-            #
-            # @return [undefined]
-            #
-            # @api private
-            def set_operands(relation)
-              @left  = operand_dispatch(relation.left)
-              @right = operand_dispatch(relation.right)
-            end
-
-            # Set the name using the operands' name
-            #
-            # @return [undefined]
-            #
-            # @api private
-            def set_name
-              @name = [ @left.name, @right.name ].uniq.join('_').freeze
-            end
-
-            # Dispatch the operand to the proper handler
-            #
-            # @param [Visitable] visitable
-            #
-            # @return [Generator]
-            #
-            # @api private
-            def operand_dispatch(visitable)
-              if visitable.kind_of?(Veritas::Relation::Operation::Set)
-                self.class.new.visit(visitable)
-              else
-                dispatch(visitable)
-              end
-            end
-
-            # Visit a Binary Relation
-            #
-            # @param [Veritas::Relation::Operation::Binary] binary
-            #
-            # @return [Relation::Binary]
-            #
-            # @api private
-            def visit_veritas_relation_operation_binary(binary)
-              Binary.new.visit(binary)
-            end
-
-            # Visit a Unary Relation
-            #
-            # @param [Veritas::Relation::Operation::Unary] unary
-            #
-            # @return [Relation::Unary]
-            #
-            # @api private
-            def visit_veritas_relation_operation_unary(unary)
-              Unary.new.visit(unary)
-            end
-
-            # Visit a Base Relation
-            #
-            # @param [Veritas::BaseRelation] base_relation
-            #
-            # @return [Relation::Unary]
-            #
-            # @api private
-            def visit_veritas_base_relation(base_relation)
-              visit_veritas_relation_operation_unary(base_relation)
-            end
+            # Generates an SQL statement for base relation set operands
+            class Base < Unary; end
 
           end # class Set
         end # class Relation

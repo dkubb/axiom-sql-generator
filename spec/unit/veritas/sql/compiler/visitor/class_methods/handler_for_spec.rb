@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Visitor, '.handler_for' do
-  subject { object.handler_for(visitable) }
+  subject { object.handler_for(visitable_class) }
 
   let(:object) { Class.new(Visitor) }
 
@@ -17,7 +17,7 @@ describe Visitor, '.handler_for' do
   end
 
   context 'with an object handled by a public method' do
-    let(:visitable) { MySpec::Visitable.new }
+    let(:visitable_class) { MySpec::Visitable }
 
     before do
       object.class_eval do
@@ -39,7 +39,7 @@ describe Visitor, '.handler_for' do
   end
 
   context 'with an object handled by a private method' do
-    let(:visitable) { MySpec::Visitable.new }
+    let(:visitable_class) { MySpec::Visitable }
 
     before do
       object.class_eval do
@@ -62,8 +62,8 @@ describe Visitor, '.handler_for' do
   end
 
   context 'with an unhandled object' do
-    let(:visitable) { mock('unhandled object') }
+    let(:visitable_class) { Class.new }
 
-    specify { expect { subject }.to raise_error(object::UnknownObject, "No handler for #{visitable.class} in #{object}") }
+    specify { expect { subject }.to raise_error(object::UnknownObject, "No handler for #{visitable_class} in #{object}") }
   end
 end
