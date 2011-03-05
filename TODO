@@ -5,6 +5,11 @@
 * Change relation generators to accept the relation to the constructor
   and call #visit inside #initialize
   * Include Veritas::Immutable within Relation
+  * Consider making #visit_* methods private
+
+* Replace some of the conditional logic with polymorphism, especially
+  where there is special case logic for certain types of generators
+  within other generators.
 
 * Adjust reek and roodi scores down to lower thresholds
 
