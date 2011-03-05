@@ -11,14 +11,14 @@ module Veritas
             JOIN    = 'NATURAL JOIN'.freeze
             PRODUCT = 'CROSS JOIN'.freeze
 
-            # Return the table expression for the generator and identifier
+            # Return the subquery for the generator and identifier
             #
             # @param [#to_subquery] generator
             #
             # @return [#to_s]
             #
             # @api private
-            def self.table_expression(generator, *)
+            def self.subquery(generator, *)
               generator.kind_of?(Base) ? generator.to_subquery : super
             end
 
@@ -84,25 +84,25 @@ module Veritas
             # @api private
             def generate_sql(columns)
               return EMPTY_STRING unless visited?
-              "SELECT #{columns} FROM #{left_table_expression} #{@operation} #{right_table_expression}"
+              "SELECT #{columns} FROM #{left_subquery} #{@operation} #{right_subquery}"
             end
 
-            # Return the left table expression
+            # Return the left subquery
             #
             # @return [#to_s]
             #
             # @api private
-            def left_table_expression
-              self.class.table_expression(@left, 'left')
+            def left_subquery
+              self.class.subquery(@left, 'left')
             end
 
-            # Return the right table expression
+            # Return the right subquery
             #
             # @return [#to_s]
             #
             # @api private
-            def right_table_expression
-              self.class.table_expression(@right, 'right')
+            def right_subquery
+              self.class.subquery(@right, 'right')
             end
 
             # Set the operation

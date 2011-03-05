@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Generator::Relation, '.table_expression' do
-  subject { object.table_expression(generator) }
+describe Generator::Relation, '.subquery' do
+  subject { object.subquery(generator) }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
   let(:name)          { Attribute::String.new(:name)                     }

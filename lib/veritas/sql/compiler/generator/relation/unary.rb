@@ -292,7 +292,7 @@ module Veritas
             #
             # @api private
             def aliased_inner_query(inner_query)
-              self.class.table_expression(inner_query)
+              self.class.subquery(inner_query)
             ensure
               reset_query_state
             end

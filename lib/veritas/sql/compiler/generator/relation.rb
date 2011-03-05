@@ -17,7 +17,7 @@ module Veritas
           # @api private
           attr_reader :name
 
-          # Return the table expression for the relation and identifier
+          # Return the subquery for the relation and identifier
           #
           # @param [#to_subquery] relation
           #
@@ -27,7 +27,7 @@ module Veritas
           # @return [#to_s]
           #
           # @api private
-          def self.table_expression(relation, identifier = relation.name)
+          def self.subquery(relation, identifier = relation.name)
             "(#{relation.to_subquery}) AS #{visit_identifier(identifier)}"
           end
 

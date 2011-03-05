@@ -1,6 +1,3 @@
-* Rename .table_expression to .subquery. A subquery is defined as being
-  a special case of a table expression contained within parenthesis.
-
 * Change relation generators to accept the relation to the constructor
   and call #visit inside #initialize
   * Include Veritas::Immutable within Relation
