@@ -65,7 +65,7 @@ module Veritas
               generate_sql(:to_s)
             end
 
-            # Return the SQL suitable for an inner query
+            # Return the SQL suitable for an subquery
             #
             # @return [#to_s]
             #

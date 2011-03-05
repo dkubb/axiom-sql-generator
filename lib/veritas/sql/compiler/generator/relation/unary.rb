@@ -57,7 +57,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_algebra_projection(projection)
-              @from     = inner_query_for(projection)
+              @from     = subquery_for(projection)
               @distinct = DISTINCT
               @columns  = columns_for(projection)
               scope_query(projection)
@@ -72,7 +72,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_algebra_rename(rename)
-              @from    = inner_query_for(rename)
+              @from    = subquery_for(rename)
               @columns = columns_for(rename.operand, rename.aliases.to_hash)
               scope_query(rename)
               self
@@ -86,7 +86,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_algebra_restriction(restriction)
-              @from      = inner_query_for(restriction)
+              @from      = subquery_for(restriction)
               @where     = dispatch(restriction.predicate)
               @columns ||= columns_for(restriction)
               scope_query(restriction)
@@ -101,7 +101,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_order(order)
-              @from      = inner_query_for(order)
+              @from      = subquery_for(order)
               @order     = order_for(order.directions)
               @columns ||= columns_for(order)
               scope_query(order)
@@ -116,7 +116,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_limit(limit)
-              @from      = inner_query_for(limit)
+              @from      = subquery_for(limit)
               @limit     = limit.limit
               @columns ||= columns_for(limit)
               scope_query(limit)
@@ -131,7 +131,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_offset(offset)
-              @from      = inner_query_for(offset)
+              @from      = subquery_for(offset)
               @offset    = offset.offset
               @columns ||= columns_for(offset)
               scope_query(offset)
@@ -150,7 +150,7 @@ module Veritas
               generate_sql(@columns)
             end
 
-            # Return the SQL suitable for an inner query
+            # Return the SQL suitable for an subquery
             #
             # @return [#to_s]
             #
@@ -243,13 +243,13 @@ module Veritas
             # @return [#to_s]
             #
             # @api private
-            def inner_query_for(relation)
+            def subquery_for(relation)
               operand     = relation.operand
-              inner_query = dispatch(operand)
-              if collapse_inner_query_for?(relation)
+              subquery = dispatch(operand)
+              if collapse_subquery_for?(relation)
                 @from
               else
-                aliased_inner_query(inner_query)
+                aliased_subquery(subquery)
               end
             end
 
@@ -280,19 +280,19 @@ module Veritas
             # @return [#to_s]
             #
             # @api private
-            def collapse_inner_query_for?(relation)
+            def collapse_subquery_for?(relation)
               @scope.subset?(COLLAPSIBLE.fetch(relation.class))
             end
 
-            # Returns an aliased inner query
+            # Returns an aliased subquery
             #
-            # @param [#to_s] inner_query
+            # @param [#to_s] subquery
             #
             # @return [#to_s]
             #
             # @api private
-            def aliased_inner_query(inner_query)
-              self.class.subquery(inner_query)
+            def aliased_subquery(subquery)
+              self.class.subquery(subquery)
             ensure
               reset_query_state
             end
@@ -331,7 +331,7 @@ module Veritas
             def generator_dispatch(generator_class, binary)
               generator = generator_class.new.visit(binary)
               @name     = generator.name
-              @from     = aliased_inner_query(generator)
+              @from     = aliased_subquery(generator)
               generator
             end
 

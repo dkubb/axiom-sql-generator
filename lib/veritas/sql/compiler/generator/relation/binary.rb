@@ -70,7 +70,7 @@ module Veritas
               generate_sql(@columns)
             end
 
-            # Return the SQL suitable for an inner query
+            # Return the SQL suitable for an subquery
             #
             # @return [#to_s]
             #
@@ -238,7 +238,7 @@ module Veritas
                 self
               end
 
-              # Return the SQL suitable for an inner query
+              # Return the SQL suitable for an subquery
               #
               # @return [#to_s]
               #
