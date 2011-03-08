@@ -21,7 +21,7 @@ module Veritas
           #
           # @param [#strftime] time
           #   the DateTime or Time object to format
-          # @param [Integer] usec
+          # @param [Numeric] usec
           #   the number of microseconds in the time
           #
           # @return [#to_s]
@@ -115,8 +115,9 @@ module Veritas
           #
           # @api private
           def visit_date_time(date_time)
-            usec = Literal.dup_frozen(date_time).sec_fraction * SEC_FRACTION_TO_USEC
-            dispatch Literal.format_time(date_time.new_offset(0), usec.to_i)
+            utc  = date_time.new_offset(0)
+            usec = utc.sec_fraction * SEC_FRACTION_TO_USEC
+            dispatch Literal.format_time(utc, usec)
           end
 
           # Visit a Time
@@ -129,7 +130,9 @@ module Veritas
           #
           # @api private
           def visit_time(time)
-            dispatch Literal.format_time(Literal.dup_frozen(time).utc, time.usec)
+            utc  = Literal.dup_frozen(time).utc
+            usec = utc.usec
+            dispatch Literal.format_time(utc, usec)
           end
 
           # Visit a true value
