@@ -244,7 +244,7 @@ module Veritas
             #
             # @api private
             def subquery_for(relation)
-              operand     = relation.operand
+              operand  = relation.operand
               subquery = dispatch(operand)
               if collapse_subquery_for?(relation)
                 @from
