@@ -6,6 +6,10 @@
 * Replace some of the conditional logic with polymorphism, especially
   where there is special case logic for certain types of generators
   within other generators.
+  * Replace Equality/Inequality with classes that handle all of the
+    special cases.
+  * Use different classes for inclusive/exclusive Range literals so that
+    they can be serialized to SQL differently.
 
 * Adjust reek and roodi scores down to lower thresholds
 
