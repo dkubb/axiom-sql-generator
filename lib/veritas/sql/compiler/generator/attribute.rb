@@ -15,7 +15,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_attribute(attribute)
-            "#{visit_identifier(attribute.name)}"
+            visit_identifier(attribute.name)
           end
 
         end # module Attribute
