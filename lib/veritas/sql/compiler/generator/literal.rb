@@ -12,7 +12,7 @@ module Veritas
           QUOTE                = "'".freeze
           ESCAPED_QUOTE        = "''".freeze
           SEPARATOR            = ', '.freeze
-          SEC_FRACTION_TO_USEC = (RUBY_VERSION < '1.9' ? 60 * 60 * 24 : 1) * 10**6
+          SEC_FRACTION_TO_USEC = 10**6 * (RUBY_VERSION < '1.9' ? 60 * 60 * 24 : 1)
           TIME_FORMAT          = '%Y-%m-%dT%H:%M:%S'.freeze
           USEC_FORMAT          = '.%06d'.freeze
           UTC_OFFSET           = '+00:00'.freeze
