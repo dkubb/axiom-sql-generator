@@ -97,38 +97,38 @@ describe Generator::Relation::Unary, '#visit_veritas_relation_operation_offset' 
   end
 
   context 'when the operand is a difference' do
-    let(:operand) { base_relation.order.difference(base_relation.order) }
+    let(:operand) { base_relation.difference(base_relation).order }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" OFFSET 1') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" OFFSET 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
   end
 
   context 'when the operand is an intersection' do
-    let(:operand) { base_relation.order.intersect(base_relation.order) }
+    let(:operand) { base_relation.intersect(base_relation).order }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" OFFSET 1') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") INTERSECT (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" OFFSET 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
   end
 
   context 'when the operand is a union' do
-    let(:operand) { base_relation.order.union(base_relation.order) }
+    let(:operand) { base_relation.union(base_relation).order }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") UNION (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" OFFSET 1') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users" ORDER BY "id", "name", "age") UNION (SELECT * FROM "users" ORDER BY "id", "name", "age")) AS "users" OFFSET 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
   end
 
   context 'when the operand is a join' do
-    let(:operand) { base_relation.order.join(base_relation.order) }
+    let(:operand) { base_relation.join(base_relation).order }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" OFFSET 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right") AS "users" OFFSET 1') }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" ORDER BY "id", "name", "age" OFFSET 1') }
   end
 end
