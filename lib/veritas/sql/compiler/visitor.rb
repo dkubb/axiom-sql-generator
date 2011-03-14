@@ -74,7 +74,6 @@ module Veritas
         #   generator.visit(visitable)
         #
         # @param [Visitable] visitable
-        #   A visitable object
         #
         # @return [self]
         #
