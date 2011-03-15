@@ -115,7 +115,7 @@ module Veritas
           #
           # @api private
           def visit_date_time(date_time)
-            utc  = date_time.new_offset(0)
+            utc  = date_time.new_offset
             usec = utc.sec_fraction * SEC_FRACTION_TO_USEC
             dispatch Literal.format_time(utc, usec)
           end
