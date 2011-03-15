@@ -39,12 +39,7 @@ FeatureEnvy:
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
     'Veritas::SQL::Compiler::Generator::Logic#optional?',
-    'Veritas::SQL::Compiler::Generator::Relation::Unary#collapse_subquery_for?',
-    'Veritas::SQL::Compiler::Generator::Relation::Binary#visit_veritas_base_relation',
-    'Veritas::SQL::Compiler::Generator::Relation::Binary#visit_veritas_relation_operation_set',
-    'Veritas::SQL::Compiler::Generator::Relation::Binary#visit_veritas_relation_operation_unary',
-    'Veritas::SQL::Compiler::Generator::Relation::Set#visit_veritas_relation_operation_binary',
-    'Veritas::SQL::Compiler::Generator::Relation::Set#visit_veritas_relation_operation_unary'
+    'Veritas::SQL::Compiler::Generator::Relation::Unary#collapse_subquery_for?'
   ]
   enabled: true
 ClassVariable:
@@ -94,12 +89,7 @@ UtilityFunction:
     'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
     'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
     'Veritas::SQL::Compiler::Generator::Logic#optional?',
-    'Veritas::SQL::Compiler::Generator::Relation::Unary#collapse_subquery_for?',
-    'Veritas::SQL::Compiler::Generator::Relation::Binary#visit_veritas_base_relation',
-    'Veritas::SQL::Compiler::Generator::Relation::Binary#visit_veritas_relation_operation_set',
-    'Veritas::SQL::Compiler::Generator::Relation::Binary#visit_veritas_relation_operation_unary',
-    'Veritas::SQL::Compiler::Generator::Relation::Set#visit_veritas_relation_operation_binary',
-    'Veritas::SQL::Compiler::Generator::Relation::Set#visit_veritas_relation_operation_unary'
+    'Veritas::SQL::Compiler::Generator::Relation::Unary#collapse_subquery_for?'
   ]
   enabled: true
 Attribute:
