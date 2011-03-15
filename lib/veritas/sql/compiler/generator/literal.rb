@@ -6,32 +6,15 @@ module Veritas
         # Generates an SQL statement for a literal
         module Literal
 
-          TRUE                 = 'TRUE'.freeze
-          FALSE                = 'FALSE'.freeze
-          NULL                 = 'NULL'.freeze
-          QUOTE                = "'".freeze
-          ESCAPED_QUOTE        = "''".freeze
-          SEPARATOR            = ', '.freeze
-          SEC_FRACTION_TO_USEC = 10**6 * (RUBY_VERSION < '1.9' ? 60 * 60 * 24 : 1)
-          TIME_FORMAT          = '%Y-%m-%dT%H:%M:%S'.freeze
-          USEC_FORMAT          = '.%06d'.freeze
-          UTC_OFFSET           = '+00:00'.freeze
-
-          # Format the time, appending microseconds and the UTC offset
-          #
-          # @param [#strftime] time
-          #   the DateTime or Time object to format
-          # @param [Numeric] usec
-          #   the number of microseconds in the time
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def self.format_time(time, usec)
-            formatted = time.strftime(TIME_FORMAT)
-            formatted << USEC_FORMAT % usec unless usec.zero?
-            formatted << UTC_OFFSET
-          end
+          TRUE            = 'TRUE'.freeze
+          FALSE           = 'FALSE'.freeze
+          NULL            = 'NULL'.freeze
+          QUOTE           = "'".freeze
+          ESCAPED_QUOTE   = "''".freeze
+          SEPARATOR       = ', '.freeze
+          DATE_FORMAT     = '%F'.freeze
+          DATETIME_FORMAT = "#{DATE_FORMAT}T%T.%N%Z".freeze
+          TIME_SCALE      = 9
 
           # Returns an unfrozen object
           #
@@ -94,18 +77,20 @@ module Veritas
             name.empty? ? NULL : visit_string(name)
           end
 
-          # Visit a Date
+          # Visit a Date and return in ISO 8601 date format
           #
           # @param [Date] date
           #
           # @return [#to_s]
           #
+          # @todo use Date#iso8601 when added to 1.8.7 by backports
+          #
           # @api private
           def visit_date(date)
-            dispatch Literal.dup_frozen(date).to_s
+            dispatch Literal.dup_frozen(date).strftime(DATE_FORMAT)
           end
 
-          # Visit a DateTime
+          # Visit a DateTime and return in ISO 8601 date-time format
           #
           # Converts the DateTime to UTC format.
           #
@@ -113,11 +98,11 @@ module Veritas
           #
           # @return [#to_s]
           #
+          # @todo use DateTime#iso8601(TIME_SCALE) when added to 1.8.7 by backports
+          #
           # @api private
           def visit_date_time(date_time)
-            utc  = date_time.new_offset
-            usec = utc.sec_fraction * SEC_FRACTION_TO_USEC
-            dispatch Literal.format_time(utc, usec)
+            dispatch date_time.new_offset.strftime(DATETIME_FORMAT)
           end
 
           # Visit a Time
@@ -130,9 +115,7 @@ module Veritas
           #
           # @api private
           def visit_time(time)
-            utc  = Literal.dup_frozen(time).utc
-            usec = utc.usec
-            dispatch Literal.format_time(utc, usec)
+            dispatch Literal.dup_frozen(time).utc.iso8601(TIME_SCALE)
           end
 
           # Visit a true value

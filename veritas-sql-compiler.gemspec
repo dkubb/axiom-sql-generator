@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-03-12}
+  s.date = %q{2011-03-14}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -53,7 +53,6 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/direction/visit_veritas_relation_operation_order_descending_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/identifier/visit_identifier_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/class_methods/dup_frozen_spec.rb",
-    "spec/unit/veritas/sql/compiler/generator/literal/class_methods/format_time_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/visit_class_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/visit_date_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/visit_date_time_spec.rb",
@@ -135,7 +134,6 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/direction/visit_veritas_relation_operation_order_descending_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/identifier/visit_identifier_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/class_methods/dup_frozen_spec.rb",
-    "spec/unit/veritas/sql/compiler/generator/literal/class_methods/format_time_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/visit_class_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/visit_date_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/literal/visit_date_time_spec.rb",

@@ -1,3 +1,6 @@
+require 'date'
+require 'time'
+
 require 'veritas'
 
 require 'veritas/base_relation'
