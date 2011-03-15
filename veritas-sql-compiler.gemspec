@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-03-14}
+  s.date = %q{2011-03-15}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
     "lib/veritas/sql/compiler/generator/literal.rb",
     "lib/veritas/sql/compiler/generator/logic.rb",
     "lib/veritas/sql/compiler/generator/relation.rb",
+    "lib/veritas/sql/compiler/generator/relation/base.rb",
     "lib/veritas/sql/compiler/generator/relation/binary.rb",
     "lib/veritas/sql/compiler/generator/relation/set.rb",
     "lib/veritas/sql/compiler/generator/relation/unary.rb",
@@ -84,6 +85,7 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/relation/binary/visit_veritas_algebra_join_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/visit_veritas_algebra_product_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/class_methods/subquery_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/class_methods/visit_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/name_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_s_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_subquery_spec.rb",
@@ -165,6 +167,7 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/generator/relation/binary/visit_veritas_algebra_join_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/binary/visit_veritas_algebra_product_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/class_methods/subquery_spec.rb",
+    "spec/unit/veritas/sql/compiler/generator/relation/class_methods/visit_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/name_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_s_spec.rb",
     "spec/unit/veritas/sql/compiler/generator/relation/set/to_subquery_spec.rb",
