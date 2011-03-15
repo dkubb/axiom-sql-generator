@@ -322,7 +322,6 @@ module Veritas
             end
 
           end # class Unary
-
         end # class Relation
       end # module Generator
     end # module Compiler
