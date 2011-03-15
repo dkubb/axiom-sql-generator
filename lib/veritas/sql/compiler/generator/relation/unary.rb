@@ -297,17 +297,6 @@ module Veritas
               reset_query_state
             end
 
-            # Visit a Set Relation
-            #
-            # @param [Relation::Operation::Set] set
-            #
-            # @return [Relation::Set]
-            #
-            # @api private
-            def visit_veritas_relation_operation_set(set)
-              generator_dispatch(Relation::Set, set)
-            end
-
             # Visit a Binary Relation
             #
             # @param [Relation::Operation::Binary] set
@@ -316,20 +305,7 @@ module Veritas
             #
             # @api private
             def visit_veritas_relation_operation_binary(binary)
-              generator_dispatch(Relation::Binary, binary)
-            end
-
-            # Dispatches to a Relation Generator
-            #
-            # @param [Class<Generator::Relation>] generator_class
-            #
-            # @param [Veritas::Relation::Operation::Binary] binary
-            #
-            # @return [Generator::Relation]
-            #
-            # @api private
-            def generator_dispatch(generator_class, binary)
-              generator = generator_class.new.visit(binary)
+              generator = self.class.visit(binary)
               @name     = generator.name
               @from     = aliased_subquery(generator)
               generator
@@ -346,6 +322,7 @@ module Veritas
             end
 
           end # class Unary
+
         end # class Relation
       end # module Generator
     end # module Compiler

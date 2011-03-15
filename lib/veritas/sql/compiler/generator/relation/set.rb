@@ -89,7 +89,7 @@ module Veritas
             end
 
             # Generates an SQL statement for base relation set operands
-            class Base < Unary; end
+            class Base < Relation::Base; end
 
           end # class Set
         end # class Relation
