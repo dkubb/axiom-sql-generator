@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Veritas
   module SQL
     module Compiler
@@ -45,6 +47,8 @@ module Veritas
 
           # Visit a String
           #
+          # @note The string must be utf-8 encoded
+          #
           # @param [String] string
           #
           # @return [#to_s]
@@ -61,8 +65,14 @@ module Veritas
           # @return [#to_s]
           #
           # @api private
-          def visit_numeric(numeric)
-            numeric.to_s
+          if String.public_method_defined?(:force_encoding)
+            def visit_numeric(numeric)
+              numeric.to_s.force_encoding(Encoding::UTF_8)
+            end
+          else
+            def visit_numeric(numeric)
+              numeric.to_s
+            end
           end
 
           # Visit a Class
