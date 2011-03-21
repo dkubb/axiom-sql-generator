@@ -10,7 +10,7 @@ describe Generator::Literal, '#visit_date_time' do
   context 'when the DateTime is UTC' do
     let(:offset) { 0 }
 
-    context 'and the microseconds are equal to 0' do
+    context 'and the nanoseconds are equal to 0' do
       let(:nsec)      { 0                                                                       }
       let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + nsec_in_seconds, offset).freeze }
 
@@ -21,7 +21,7 @@ describe Generator::Literal, '#visit_date_time' do
 
     # rubinius 1.2.1 has problems with fractional seconds above 59
     unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
-      context 'and the microseconds are greater than 0' do
+      context 'and the nanoseconds are greater than 0' do
         let(:nsec)      { 1                                                                       }
         let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + nsec_in_seconds, offset).freeze }
 
@@ -33,9 +33,9 @@ describe Generator::Literal, '#visit_date_time' do
   end
 
   context 'when the DateTime is not UTC' do
-    let(:offset) { Rational(-28800, 60 * 60 * 24) }
+    let(:offset) { Rational(-8, 24) }
 
-    context 'and the microseconds are equal to 0' do
+    context 'and the nanoseconds are equal to 0' do
       let(:nsec)      { 0                                                                       }
       let(:date_time) { DateTime.new(2010, 12, 31, 15, 59, 59 + nsec_in_seconds, offset).freeze }
 
@@ -46,7 +46,7 @@ describe Generator::Literal, '#visit_date_time' do
 
     # rubinius 1.2.1 has problems with fractional seconds above 59
     unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
-      context 'and the microseconds are greater than 0' do
+      context 'and the nanoseconds are greater than 0' do
         let(:nsec)      { 1                                                                       }
         let(:date_time) { DateTime.new(2010, 12, 31, 15, 59, 59 + nsec_in_seconds, offset).freeze }
 
