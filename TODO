@@ -5,6 +5,9 @@
     special cases.
   * Use different classes for inclusive/exclusive Range literals so that
     they can be serialized to SQL differently.
+    * Create Veritas::Literal::Range proxy object w/factory method
+    * Create Veritas::Literal::Range::Inclusive
+    * Create Veritas::Literal::Range::Exclusive
 
 * Adjust reek and roodi scores down to lower thresholds
 
