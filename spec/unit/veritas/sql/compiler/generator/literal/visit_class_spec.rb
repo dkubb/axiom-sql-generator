@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Literal, '#visit_class' do
+describe SQL::Compiler::Generator::Literal, '#visit_class' do
   subject { object.visit_class(klass) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
-  let(:object)          { described_class.new                               }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Literal } }
+  let(:object)          { described_class.new                                                             }
 
   before do
     Object.class_eval { remove_const(:NamedClass) if const_defined?(:NamedClass)  }

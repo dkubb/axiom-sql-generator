@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Binary, '#visit_veritas_algebra_product' do
+describe SQL::Compiler::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   subject { object.visit_veritas_algebra_product(product) }
 
   let(:relation_name) { 'users_other'                                                              }

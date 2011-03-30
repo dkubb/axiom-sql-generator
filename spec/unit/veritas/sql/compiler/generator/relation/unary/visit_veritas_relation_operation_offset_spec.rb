@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Unary, '#visit_veritas_relation_operation_offset' do
+describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_relation_operation_offset' do
   subject { object.visit_veritas_relation_operation_offset(offset) }
 
   let(:relation_name) { 'users'                                          }

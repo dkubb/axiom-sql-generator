@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Set, '#to_s' do
+describe SQL::Compiler::Generator::Relation::Set, '#to_s' do
   subject { object.to_s }
 
   let(:id)            { Attribute::Integer.new(:id)                      }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Binary, '#to_subquery' do
+describe SQL::Compiler::Generator::Relation::Binary, '#to_subquery' do
   subject { object.to_subquery }
 
   let(:id)            { Attribute::Integer.new(:id)                      }

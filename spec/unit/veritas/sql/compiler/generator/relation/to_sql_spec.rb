@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Generator::Relation, '#to_sql' do
+describe SQL::Compiler::Generator::Relation, '#to_sql' do
   subject { object.to_sql }
 
-  let(:described_class) { Class.new(Generator::Relation)                   }
+  let(:described_class) { Class.new(SQL::Compiler::Generator::Relation)    }
   let(:id)              { Attribute::Integer.new(:id)                      }
   let(:name)            { Attribute::String.new(:name)                     }
   let(:age)             { Attribute::Integer.new(:age, :required => false) }

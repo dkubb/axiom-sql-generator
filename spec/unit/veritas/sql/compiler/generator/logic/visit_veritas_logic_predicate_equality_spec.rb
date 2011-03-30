@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Generator::Logic, '#visit_veritas_logic_predicate_equality' do
+describe SQL::Compiler::Generator::Logic, '#visit_veritas_logic_predicate_equality' do
   subject { object.visit_veritas_logic_predicate_equality(equality) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Logic } }
-  let(:attribute)       { Attribute::Integer.new(:id)                     }
-  let(:object)          { described_class.new                             }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Logic } }
+  let(:attribute)       { Attribute::Integer.new(:id)                                                   }
+  let(:object)          { described_class.new                                                           }
 
   context 'when the right operand is not nil' do
     let(:equality) { attribute.eq(1) }

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Generator::Logic, '#visit_veritas_logic_predicate_exclusion' do
+describe SQL::Compiler::Generator::Logic, '#visit_veritas_logic_predicate_exclusion' do
   subject { object.visit_veritas_logic_predicate_exclusion(exclusion) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Logic } }
-  let(:attribute)       { Attribute::Integer.new(:id)                     }
-  let(:object)          { described_class.new                             }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Logic } }
+  let(:attribute)       { Attribute::Integer.new(:id)                                                   }
+  let(:object)          { described_class.new                                                           }
 
   context 'when right operand is an inclusive Range' do
     let(:exclusion) { attribute.exclude(1..10) }

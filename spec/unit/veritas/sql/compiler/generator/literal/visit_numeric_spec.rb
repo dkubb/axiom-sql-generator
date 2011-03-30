@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Literal, '#visit_numeric' do
+describe SQL::Compiler::Generator::Literal, '#visit_numeric' do
   subject { object.visit_numeric(numeric) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
-  let(:object)          { described_class.new                               }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Literal } }
+  let(:object)          { described_class.new                                                             }
 
   context 'with an Integer' do
     let(:numeric) { 1 }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Unary, '#visit_veritas_relation_operation_reverse' do
+describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_relation_operation_reverse' do
   subject { object.visit_veritas_relation_operation_reverse(order) }
 
   let(:relation_name) { 'users'                                          }

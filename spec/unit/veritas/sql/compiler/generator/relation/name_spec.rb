@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Relation, '#name' do
+describe SQL::Compiler::Generator::Relation, '#name' do
   subject { object.name }
 
-  let(:described_class) { Class.new(Generator::Relation) }
-  let(:object)          { described_class.new            }
+  let(:described_class) { Class.new(SQL::Compiler::Generator::Relation) }
+  let(:object)          { described_class.new                           }
 
   context 'when name is nil' do
     it_should_behave_like 'an idempotent method'

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation, '.visit' do
+describe SQL::Compiler::Generator::Relation, '.visit' do
   subject { object.visit(relation) }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
@@ -14,7 +14,7 @@ describe Generator::Relation, '.visit' do
   context 'when the relation is a set operation' do
     let(:relation) { base_relation.union(base_relation) }
 
-    it { should be_kind_of(Generator::Relation::Set) }
+    it { should be_kind_of(SQL::Compiler::Generator::Relation::Set) }
 
     its(:name) { should == 'users' }
 
@@ -24,7 +24,7 @@ describe Generator::Relation, '.visit' do
   context 'when the relation is a binary operation' do
     let(:relation) { base_relation.join(base_relation.project([ :id ])) }
 
-    it { should be_kind_of(Generator::Relation::Binary) }
+    it { should be_kind_of(SQL::Compiler::Generator::Relation::Binary) }
 
     its(:name) { should == 'users' }
 
@@ -34,7 +34,7 @@ describe Generator::Relation, '.visit' do
   context 'when the relation is a unary operation' do
     let(:relation) { base_relation.project([ :id ]) }
 
-    it { should be_kind_of(Generator::Relation::Unary) }
+    it { should be_kind_of(SQL::Compiler::Generator::Relation::Unary) }
 
     its(:name) { should == 'users' }
 
@@ -44,7 +44,7 @@ describe Generator::Relation, '.visit' do
   context 'when the relation is a base relation' do
     let(:relation) { base_relation }
 
-    it { should be_kind_of(Generator::Relation::Base) }
+    it { should be_kind_of(SQL::Compiler::Generator::Relation::Base) }
 
     its(:name) { should == 'users' }
 
@@ -54,6 +54,6 @@ describe Generator::Relation, '.visit' do
   context 'when the relation is invalid' do
     let(:relation) { mock('Invalid Relation') }
 
-    specify { expect { subject }.to raise_error(InvalidRelationError, "#{relation.class} is not a visitable relation") }
+    specify { expect { subject }.to raise_error(SQL::Compiler::InvalidRelationError, "#{relation.class} is not a visitable relation") }
   end
 end

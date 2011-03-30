@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' do
+describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_relation_operation_limit' do
   subject { object.visit_veritas_relation_operation_limit(limit) }
 
   let(:relation_name) { 'users'                                          }

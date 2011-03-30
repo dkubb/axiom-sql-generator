@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation, '.subquery' do
+describe SQL::Compiler::Generator::Relation, '.subquery' do
   subject { object.subquery(generator) }
 
   let(:id)            { Attribute::Integer.new(:id)                      }
@@ -13,7 +13,7 @@ describe Generator::Relation, '.subquery' do
 
   context 'when generator is a unary' do
     let(:relation)  { base_relation.project([ :id ])                 }
-    let(:generator) { Generator::Relation::Unary.new.visit(relation) }
+    let(:generator) { SQL::Compiler::Generator::Relation::Unary.new.visit(relation) }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -22,7 +22,7 @@ describe Generator::Relation, '.subquery' do
 
   context 'when generator is a binary' do
     let(:relation)  { base_relation.join(base_relation)               }
-    let(:generator) { Generator::Relation::Binary.new.visit(relation) }
+    let(:generator) { SQL::Compiler::Generator::Relation::Binary.new.visit(relation) }
 
     it_should_behave_like 'a generated SQL expression'
 

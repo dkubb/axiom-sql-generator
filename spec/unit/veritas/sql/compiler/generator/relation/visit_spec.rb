@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Relation, '#visit' do
+describe SQL::Compiler::Generator::Relation, '#visit' do
   subject { object.visit(visitable) }
 
-  let(:described_class) { Class.new(Generator::Relation) }
-  let(:object)          { described_class.new            }
+  let(:described_class) { Class.new(SQL::Compiler::Generator::Relation) }
+  let(:object)          { described_class.new                           }
 
   context 'with a handled object' do
     let(:visitable) { mock('Visitable') }
@@ -47,6 +47,6 @@ describe Generator::Relation, '#visit' do
   context 'with an unhandled object' do
     let(:visitable) { mock('Not Handled') }
 
-    specify { expect { subject }.to raise_error(Visitor::UnknownObject, "No handler for #{visitable.class} in #{object.class}") }
+    specify { expect { subject }.to raise_error(SQL::Compiler::Visitor::UnknownObject, "No handler for #{visitable.class} in #{object.class}") }
   end
 end

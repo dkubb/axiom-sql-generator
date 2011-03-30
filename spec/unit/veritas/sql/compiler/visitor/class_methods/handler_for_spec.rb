@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Visitor, '.handler_for' do
+describe SQL::Compiler::Visitor, '.handler_for' do
   subject { object.handler_for(visitable_class) }
 
-  let(:object) { Class.new(Visitor) }
+  let(:object) { Class.new(SQL::Compiler::Visitor) }
 
   before :all do
     module ::MySpec

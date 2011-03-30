@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Visitor, '#visit' do
+describe SQL::Compiler::Visitor, '#visit' do
   subject { object.visit(visitable) }
 
   let(:visitable) { mock('handled object') }

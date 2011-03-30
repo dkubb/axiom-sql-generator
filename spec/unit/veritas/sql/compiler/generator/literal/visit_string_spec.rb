@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Literal, '#visit_string' do
+describe SQL::Compiler::Generator::Literal, '#visit_string' do
   subject { object.visit_string(string) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
-  let(:object)          { described_class.new                               }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Literal } }
+  let(:object)          { described_class.new                                                             }
 
   context 'with a string containing no quotes' do
     let(:string) { 'string'.freeze }

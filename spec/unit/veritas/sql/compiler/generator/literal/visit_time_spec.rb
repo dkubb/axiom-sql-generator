@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Literal, '#visit_time' do
+describe SQL::Compiler::Generator::Literal, '#visit_time' do
   subject { object.visit_time(time) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
-  let(:object)          { described_class.new                               }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Literal } }
+  let(:object)          { described_class.new                                                             }
 
   before :all do
     @original_tz = ENV['TZ']

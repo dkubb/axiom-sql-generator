@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
+describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
   subject { object.visit_veritas_algebra_projection(projection) }
 
   let(:relation_name) { 'users'                                          }

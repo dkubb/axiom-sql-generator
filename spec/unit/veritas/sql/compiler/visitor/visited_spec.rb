@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Visitor, '#visited?' do
+describe SQL::Compiler::Visitor, '#visited?' do
   subject { object.visited? }
 
   let(:object) { described_class.new }

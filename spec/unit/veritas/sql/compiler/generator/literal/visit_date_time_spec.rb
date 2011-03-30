@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe Generator::Literal, '#visit_date_time' do
+describe SQL::Compiler::Generator::Literal, '#visit_date_time' do
   subject { object.visit_date_time(date_time) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Literal } }
-  let(:nsec_in_seconds) { Rational(nsec, 10**9)                             }
-  let(:object)          { described_class.new                               }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Literal } }
+  let(:nsec_in_seconds) { Rational(nsec, 10**9)                                                           }
+  let(:object)          { described_class.new                                                             }
 
   context 'when the DateTime is UTC' do
     let(:offset) { 0 }

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Generator::Literal, '.dup_frozen' do
+describe SQL::Compiler::Generator::Literal, '.dup_frozen' do
   subject { object.dup_frozen(object_arg) }
 
-  let(:object) { Generator::Literal }
+  let(:object) { SQL::Compiler::Generator::Literal }
 
   context 'with a frozen object' do
     let(:object_arg) { Date.today.freeze }

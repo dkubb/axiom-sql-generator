@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Generator::Identifier, '#visit_identifier' do
+describe SQL::Compiler::Generator::Identifier, '#visit_identifier' do
   subject { object.visit_identifier(identifier) }
 
-  let(:described_class) { Class.new(Visitor) { include Generator::Identifier } }
-  let(:object)          { described_class.new                                  }
+  let(:described_class) { Class.new(SQL::Compiler::Visitor) { include SQL::Compiler::Generator::Identifier } }
+  let(:object)          { described_class.new                                                                }
 
   context 'with an identifier containing no quotes' do
     let(:identifier) { 'users' }
