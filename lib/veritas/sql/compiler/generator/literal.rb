@@ -65,14 +65,8 @@ module Veritas
           # @return [#to_s]
           #
           # @api private
-          if String.public_method_defined?(:force_encoding)
-            def visit_numeric(numeric)
-              numeric.to_s.force_encoding(Encoding::UTF_8)
-            end
-          else
-            def visit_numeric(numeric)
-              numeric.to_s
-            end
+          def visit_numeric(numeric)
+            numeric.to_s
           end
 
           # Visit a Class
