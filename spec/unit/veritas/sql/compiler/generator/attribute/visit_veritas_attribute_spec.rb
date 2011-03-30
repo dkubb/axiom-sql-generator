@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe SQL::Compiler::Generator::Attribute, '#visit_veritas_attribute' do

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe SQL::Compiler::Generator::Relation::Set, '#visit_veritas_algebra_difference' do

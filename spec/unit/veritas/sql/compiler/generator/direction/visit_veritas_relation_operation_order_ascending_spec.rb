@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe SQL::Compiler::Generator::Direction, '#visit_veritas_relation_operation_order_ascending' do

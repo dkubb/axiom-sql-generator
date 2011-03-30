@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module Veritas
 
   # A class that represents a base relation in an RDBMS

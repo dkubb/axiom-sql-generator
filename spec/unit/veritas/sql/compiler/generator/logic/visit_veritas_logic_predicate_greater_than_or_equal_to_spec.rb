@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe SQL::Compiler::Generator::Logic, '#visit_veritas_logic_predicate_greater_than_or_equal_to' do
