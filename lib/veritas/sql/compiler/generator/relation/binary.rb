@@ -10,8 +10,10 @@ module Veritas
           class Binary < Relation
             include Attribute
 
-            JOIN    = 'NATURAL JOIN'.freeze
-            PRODUCT = 'CROSS JOIN'.freeze
+            JOIN       = 'NATURAL JOIN'.freeze
+            PRODUCT    = 'CROSS JOIN'.freeze
+            LEFT_NAME  = 'left'.freeze
+            RIGHT_NAME = 'right'.freeze
 
             # Return the subquery for the generator and identifier
             #
@@ -95,7 +97,7 @@ module Veritas
             #
             # @api private
             def left_subquery
-              self.class.subquery(@left, 'left')
+              self.class.subquery(@left, LEFT_NAME)
             end
 
             # Return the right subquery
@@ -104,7 +106,7 @@ module Veritas
             #
             # @api private
             def right_subquery
-              self.class.subquery(@right, 'right')
+              self.class.subquery(@right, RIGHT_NAME)
             end
 
             # Set the operation
