@@ -158,7 +158,7 @@ module Veritas
             #
             # @api private
             def to_subquery
-              generate_sql(all_columns? ? '*' : @columns)
+              generate_sql(all_columns? ? ALL_COLUMNS : @columns)
             end
 
           private

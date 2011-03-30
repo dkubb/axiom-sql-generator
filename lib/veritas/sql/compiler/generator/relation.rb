@@ -11,6 +11,7 @@ module Veritas
 
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze
+          ALL_COLUMNS  = '*'.freeze
 
           # Return the alias name
           #

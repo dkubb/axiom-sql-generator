@@ -72,7 +72,7 @@ module Veritas
             #
             # @api private
             def to_subquery
-              generate_sql('*')
+              generate_sql(ALL_COLUMNS)
             end
 
           private
