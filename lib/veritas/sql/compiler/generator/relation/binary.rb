@@ -148,7 +148,7 @@ module Veritas
             #
             # @api private
             def set_name
-              @name = [ @left.name, @right.name ].uniq.join('_').freeze
+              @name = [ @left.name, @right.name ].uniq.join(UNDERSCORE).freeze
             end
 
             # Return a list of columns in a header
