@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-03-15}
+  s.date = %q{2011-03-30}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     "config/roodi.yml",
     "config/site.reek",
     "config/yardstick.yml",
+    "lib/veritas-sql-compiler.rb",
     "lib/veritas/base_relation.rb",
     "lib/veritas/sql/compiler.rb",
     "lib/veritas/sql/compiler/generator/attribute.rb",
