@@ -65,7 +65,7 @@ describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_algebra_rest
 
     context 'when the restriction does not include the renamed column' do
       let(:operand)     { base_relation.rename(:name => :other_name) }
-      let(:restriction) { operand.restrict { |r| r[:id].eq(1) } }
+      let(:restriction) { operand.restrict { |r| r[:id].eq(1) }      }
 
       it_should_behave_like 'a generated SQL SELECT query'
 

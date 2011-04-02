@@ -46,7 +46,7 @@ describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_algebra_proj
 
     context 'when the projection does not include the renamed column' do
       let(:operand)    { base_relation.rename(:id => :user_id) }
-      let(:projection) { operand.project([ :name, :age ])  }
+      let(:projection) { operand.project([ :name, :age ])      }
 
       it_should_behave_like 'a generated SQL SELECT query'
 

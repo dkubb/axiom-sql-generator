@@ -14,7 +14,7 @@ describe SQL::Compiler::Generator::Relation, '.subquery' do
   let(:object)        { described_class                                  }
 
   context 'when generator is a unary' do
-    let(:relation)  { base_relation.project([ :id ])                 }
+    let(:relation)  { base_relation.project([ :id ])                                }
     let(:generator) { SQL::Compiler::Generator::Relation::Unary.new.visit(relation) }
 
     it_should_behave_like 'a generated SQL expression'
@@ -23,7 +23,7 @@ describe SQL::Compiler::Generator::Relation, '.subquery' do
   end
 
   context 'when generator is a binary' do
-    let(:relation)  { base_relation.join(base_relation)               }
+    let(:relation)  { base_relation.join(base_relation)                              }
     let(:generator) { SQL::Compiler::Generator::Relation::Binary.new.visit(relation) }
 
     it_should_behave_like 'a generated SQL expression'
