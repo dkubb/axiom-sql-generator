@@ -13,7 +13,6 @@ begin
     gem.email       = 'dan.kubb@gmail.com'
     gem.homepage    = 'https://github.com/dkubb/veritas-sql-compiler'
     gem.authors     = [ 'Dan Kubb' ]
-    gem.has_rdoc    = 'yard'
 
     gem.version = Veritas::SQL::Compiler::VERSION
   end
