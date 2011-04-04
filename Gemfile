@@ -29,6 +29,6 @@ platforms :mri_18 do
     gem 'roodi',         '~> 2.1.0'
     gem 'ruby2ruby',     '=  1.2.2'
     gem 'yard',          '~> 0.6.4'
-    gem 'yardstick',     '~> 0.2.0'
+    gem 'yardstick',     '~> 0.3.0'
   end
 end
