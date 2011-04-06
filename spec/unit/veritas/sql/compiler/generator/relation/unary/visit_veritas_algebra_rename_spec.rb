@@ -43,15 +43,6 @@ describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_algebra_rena
       its(:to_subquery) { should eql('SELECT "id" AS "user_id", "other_name", "age" FROM (SELECT "id", "name" AS "other_name", "age" FROM "users") AS "users"') }
     end
 
-    context 'when the relation is optimized' do
-      subject { object.visit_veritas_algebra_rename(rename.optimize) }
-
-      it_should_behave_like 'a generated SQL SELECT query'
-
-      its(:to_s)        { should eql('SELECT "id" AS "user_id", "name" AS "other_name", "age" FROM "users"') }
-      its(:to_subquery) { should eql('SELECT "id" AS "user_id", "name" AS "other_name", "age" FROM "users"') }
-    end
-
     context 'when the operand is empty' do
       let(:operand) { base_relation.rename({}) }
 

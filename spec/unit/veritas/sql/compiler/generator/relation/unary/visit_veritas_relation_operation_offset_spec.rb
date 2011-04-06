@@ -81,21 +81,10 @@ describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_relation_ope
   context 'when the operand is an offset' do
     let(:operand) { base_relation.order.drop(1) }
 
-    context 'when the relation is not optimized' do
-      it_should_behave_like 'a generated SQL SELECT query'
+    it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" OFFSET 1') }
-      its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" OFFSET 1') }
-    end
-
-    context 'when the relation is optimized' do
-      subject { object.visit_veritas_relation_operation_offset(offset.optimize) }
-
-      it_should_behave_like 'a generated SQL SELECT query'
-
-      its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 2') }
-      its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 2') }
-    end
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" OFFSET 1') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" OFFSET 1') }
   end
 
   context 'when the operand is a difference' do

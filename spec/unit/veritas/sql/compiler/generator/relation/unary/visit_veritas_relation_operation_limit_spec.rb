@@ -72,21 +72,10 @@ describe SQL::Compiler::Generator::Relation::Unary, '#visit_veritas_relation_ope
   context 'when the operand is limited' do
     let(:operand) { base_relation.order.take(1) }
 
-    context 'when the relation is not optimized' do
-      it_should_behave_like 'a generated SQL SELECT query'
+    it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
-      its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
-    end
-
-    context 'when the relation is optimized' do
-      subject { object.visit_veritas_relation_operation_limit(limit.optimize) }
-
-      it_should_behave_like 'a generated SQL SELECT query'
-
-      its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
-      its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
-    end
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" LIMIT 1') }
   end
 
   context 'when the operand is an offset' do
