@@ -124,7 +124,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{https://github.com/dkubb/veritas-sql-compiler}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.7.1}
+  s.rubygems_version = %q{1.7.2}
   s.summary = %q{Ruby Relational Algebra to SQL}
   s.test_files = [
     "spec/shared/command_method_behavior.rb",
