@@ -109,7 +109,6 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/visitor/class_methods/handler_for_spec.rb",
     "spec/unit/veritas/sql/compiler/visitor/visit_spec.rb",
     "spec/unit/veritas/sql/compiler/visitor/visited_spec.rb",
-    "tasks/clean.rake",
     "tasks/quality/ci.rake",
     "tasks/quality/flay.rake",
     "tasks/quality/flog.rake",
