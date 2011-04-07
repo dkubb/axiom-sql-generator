@@ -7,8 +7,7 @@ module Veritas
 
         # Generates an SQL statement for a logic expression
         module Logic
-          include Attribute
-          include Literal
+          include Attribute, Literal
 
           EQUAL_TO                 = ' = '.freeze
           EQUAL_TO_NULL            = ' IS '.freeze
