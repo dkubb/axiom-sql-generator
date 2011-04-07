@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-04-06}
+  s.date = %q{2011-04-07}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -109,8 +109,8 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/compiler/visitor/class_methods/handler_for_spec.rb",
     "spec/unit/veritas/sql/compiler/visitor/visit_spec.rb",
     "spec/unit/veritas/sql/compiler/visitor/visited_spec.rb",
-    "tasks/ci.rake",
     "tasks/clean.rake",
+    "tasks/quality/ci.rake",
     "tasks/quality/flay.rake",
     "tasks/quality/flog.rake",
     "tasks/quality/heckle.rake",
