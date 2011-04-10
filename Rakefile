@@ -8,7 +8,7 @@ begin
 
   Jeweler::Tasks.new do |gem|
     gem.name        = 'veritas-sql-generator'
-    gem.summary     = 'Ruby Relational Algebra to SQL'
+    gem.summary     = 'Relational algebra SQL generator'
     gem.description = 'Generate SQL from a veritas relation'
     gem.email       = 'dan.kubb@gmail.com'
     gem.homepage    = 'https://github.com/dkubb/veritas-sql-generator'

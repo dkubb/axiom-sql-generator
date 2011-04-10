@@ -1,6 +1,6 @@
 = Veritas SQL Generator
 
-Generate SQL from a veritas relation
+Relational algebra SQL generator
 
 == Note on Patches/Pull Requests
 

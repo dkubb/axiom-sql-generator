@@ -124,7 +124,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{https://github.com/dkubb/veritas-sql-generator}
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.7.2}
-  s.summary = %q{Ruby Relational Algebra to SQL}
+  s.summary = %q{Relational algebra SQL generator}
   s.test_files = [
     "spec/shared/command_method_behavior.rb",
     "spec/shared/generated_sql_behavior.rb",
