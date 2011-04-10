@@ -8,7 +8,6 @@ module Veritas
 
           # Generates an SQL statement for a Binary relation
           class Binary < Relation
-            include Attribute
 
             JOIN       = 'NATURAL JOIN'.freeze
             PRODUCT    = 'CROSS JOIN'.freeze

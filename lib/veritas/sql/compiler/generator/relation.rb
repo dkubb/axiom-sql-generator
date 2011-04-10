@@ -8,6 +8,7 @@ module Veritas
         # Abstract base class for SQL generation from a relation
         class Relation < Visitor
           extend Identifier
+          include Attribute
 
           EMPTY_STRING = ''.freeze
           SEPARATOR    = ', '.freeze

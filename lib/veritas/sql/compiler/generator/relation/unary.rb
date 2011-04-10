@@ -9,7 +9,6 @@ module Veritas
           # Generates an SQL statement for a unary relation
           class Unary < Relation
             extend Aliasable
-            include Attribute
             include Direction
             include Literal
             include Logic
