@@ -23,7 +23,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" NATURAL JOIN "users"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" NATURAL JOIN "users"')                   }
   end
 
   context 'when the operands are projections' do
@@ -32,7 +32,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name" FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" NATURAL JOIN (SELECT DISTINCT "id", "name" FROM "users") AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" NATURAL JOIN (SELECT DISTINCT "id", "name" FROM "users") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" NATURAL JOIN (SELECT DISTINCT "id", "name" FROM "users") AS "right"')            }
   end
 
   context 'when the operands are rename' do
@@ -41,7 +41,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "user_id", "name", "age" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" NATURAL JOIN (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" NATURAL JOIN (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "left" NATURAL JOIN (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "right"')                        }
   end
 
   context 'when the operands are restrictions' do
@@ -50,7 +50,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" NATURAL JOIN (SELECT * FROM "users" WHERE "id" = 1) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" NATURAL JOIN (SELECT * FROM "users" WHERE "id" = 1) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "left" NATURAL JOIN (SELECT * FROM "users" WHERE "id" = 1) AS "right"')                   }
   end
 
   context 'when the operands are ordered' do
@@ -59,7 +59,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age") AS "right"')                   }
   end
 
   context 'when the operands are reversed' do
@@ -68,7 +68,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) AS "right"')                   }
   end
 
   context 'when the operands are limited' do
@@ -77,7 +77,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "right"')                   }
   end
 
   context 'when the operands are offsets' do
@@ -86,7 +86,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "left" NATURAL JOIN (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "right"')                   }
   end
 
   context 'when the operands are differences' do
@@ -95,7 +95,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "right"')                   }
   end
 
   context 'when the operands are intersections' do
@@ -104,7 +104,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "right"')                   }
   end
 
   context 'when the operands are unions' do
@@ -113,7 +113,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "left" NATURAL JOIN ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "right"')                   }
   end
 
   context 'when the operands are joins' do
@@ -122,7 +122,7 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "left" NATURAL JOIN (SELECT * FROM "users" NATURAL JOIN "users") AS "right"')                   }
   end
 
   context 'when the operands have different base relations' do
@@ -133,6 +133,6 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" NATURAL JOIN "others"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" NATURAL JOIN "others"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" NATURAL JOIN "others"')                   }
   end
 end

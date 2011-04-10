@@ -23,7 +23,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "users")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "users")')                                     }
   end
 
   context 'when the operands are projections' do
@@ -50,7 +50,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" WHERE "id" = 1) EXCEPT (SELECT "id", "name", "age" FROM "users" WHERE "id" = 1)') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users" WHERE "id" = 1) EXCEPT (SELECT * FROM "users" WHERE "id" = 1)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" WHERE "id" = 1) EXCEPT (SELECT * FROM "users" WHERE "id" = 1)')                                     }
   end
 
   context 'when the operand is ordered' do
@@ -59,7 +59,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age")') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age") EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age")')                                     }
   end
 
   context 'when the operand is reversed' do
@@ -68,7 +68,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) EXCEPT (SELECT "id", "name", "age" FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) EXCEPT (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC) EXCEPT (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC)')                                     }
   end
 
   context 'when the operand is limited' do
@@ -77,7 +77,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1) EXCEPT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1)')                                     }
   end
 
   context 'when the operands are offsets' do
@@ -86,7 +86,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1) EXCEPT (SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) EXCEPT (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)')                                     }
   end
 
   context 'when the operands are differences' do
@@ -95,7 +95,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")) EXCEPT ((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users"))') }
-    its(:to_subquery) { should eql('((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users"))') }
+    its(:to_subquery) { should eql('((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users"))')                                                                         }
   end
 
   context 'when the operands are intersections' do
@@ -104,7 +104,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")) EXCEPT ((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users"))') }
-    its(:to_subquery) { should eql('((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users"))') }
+    its(:to_subquery) { should eql('((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users"))')                                                                         }
   end
 
   context 'when the operands are unions' do
@@ -113,7 +113,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")) EXCEPT ((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users"))') }
-    its(:to_subquery) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))') }
+    its(:to_subquery) { should eql('((SELECT * FROM "users") UNION (SELECT * FROM "users")) EXCEPT ((SELECT * FROM "users") UNION (SELECT * FROM "users"))')                                                                         }
   end
 
   context 'when the operands are joins' do
@@ -122,7 +122,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users") EXCEPT (SELECT "id", "name", "age" FROM "users" NATURAL JOIN "users")') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users" NATURAL JOIN "users") EXCEPT (SELECT * FROM "users" NATURAL JOIN "users")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" NATURAL JOIN "users") EXCEPT (SELECT * FROM "users" NATURAL JOIN "users")')                                     }
   end
 
   context 'when the operands have different base relations' do
@@ -133,6 +133,6 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "others")') }
-    its(:to_subquery) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "others")') }
+    its(:to_subquery) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "others")')                                     }
   end
 end

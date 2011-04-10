@@ -21,7 +21,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is a projection' do
@@ -59,7 +59,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is ordered' do
@@ -68,7 +68,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is reversed' do
@@ -77,7 +77,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is limited' do
@@ -86,7 +86,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1) AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC LIMIT 1) AS "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is an offset' do
@@ -95,7 +95,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC OFFSET 1) AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC OFFSET 1) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id" DESC, "name" DESC, "age" DESC OFFSET 1) AS "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is a difference' do
@@ -104,7 +104,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is an intersection' do
@@ -113,7 +113,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is a union' do
@@ -122,7 +122,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" ORDER BY "id", "name", "age"')                   }
   end
 
   context 'when the operand is a join' do
@@ -131,6 +131,6 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" ORDER BY "id", "name", "age"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" ORDER BY "id", "name", "age"')                   }
   end
 end

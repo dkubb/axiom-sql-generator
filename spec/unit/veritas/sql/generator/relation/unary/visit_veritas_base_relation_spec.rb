@@ -17,5 +17,5 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_base_relation' do
   it_should_behave_like 'a generated SQL SELECT query'
 
   its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users"') }
-  its(:to_subquery) { should eql('SELECT * FROM "users"') }
+  its(:to_subquery) { should eql('SELECT * FROM "users"')                   }
 end
