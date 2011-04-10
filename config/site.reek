@@ -28,18 +28,18 @@ LongParameterList:
 FeatureEnvy:
   exclude: [
     # TODO: change these methods to be class methods
-    'Veritas::SQL::Compiler::Generator::Attribute#visit_veritas_attribute',
-    'Veritas::SQL::Compiler::Generator::Identifier#visit_identifier',
-    'Veritas::SQL::Compiler::Generator::Literal#visit_date_time',
-    'Veritas::SQL::Compiler::Generator::Literal#visit_numeric',
-    'Veritas::SQL::Compiler::Generator::Literal#visit_string',
-    'Veritas::SQL::Compiler::Generator::Literal#visit_time',
-    'Veritas::SQL::Compiler::Generator::Logic#visit_veritas_logic_predicate_inequality',
-    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
-    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
-    'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
-    'Veritas::SQL::Compiler::Generator::Logic#optional?',
-    'Veritas::SQL::Compiler::Generator::Relation::Unary#collapse_subquery_for?'
+    'Veritas::SQL::Generator::Attribute#visit_veritas_attribute',
+    'Veritas::SQL::Generator::Identifier#visit_identifier',
+    'Veritas::SQL::Generator::Literal#visit_date_time',
+    'Veritas::SQL::Generator::Literal#visit_numeric',
+    'Veritas::SQL::Generator::Literal#visit_string',
+    'Veritas::SQL::Generator::Literal#visit_time',
+    'Veritas::SQL::Generator::Logic#visit_veritas_logic_predicate_inequality',
+    'Veritas::SQL::Generator::Logic#exclusive_range_exclusion_sql',
+    'Veritas::SQL::Generator::Logic#exclusive_range_inclusion_sql',
+    'Veritas::SQL::Generator::Logic#new_from_enumerable_predicate',
+    'Veritas::SQL::Generator::Logic#optional?',
+    'Veritas::SQL::Generator::Relation::Unary#collapse_subquery_for?'
   ]
   enabled: true
 ClassVariable:
@@ -61,14 +61,14 @@ UncommunicativeModuleName:
 NestedIterators:
   ignore_iterators: []
   exclude: [
-    'Veritas::SQL::Compiler::Visitor#self.handlers'
+    'Veritas::SQL::Generator::Visitor#self.handlers'
   ]
   enabled: true
   max_allowed_nesting: 1
 LongMethod:
   max_statements: 7
   exclude: [
-    'Veritas::SQL::Compiler::Generator::Relation::Unary#to_s'
+    'Veritas::SQL::Generator::Relation::Unary#to_s'
   ]
   enabled: true
 Duplication:
@@ -80,16 +80,16 @@ UtilityFunction:
   max_helper_calls: 1
   exclude: [
     # TODO: change these methods to be class methods
-    'Veritas::SQL::Compiler::Generator::Attribute#visit_veritas_attribute',
-    'Veritas::SQL::Compiler::Generator::Identifier#visit_identifier',
-    'Veritas::SQL::Compiler::Generator::Literal#visit_numeric',
-    'Veritas::SQL::Compiler::Generator::Literal#visit_string',
-    'Veritas::SQL::Compiler::Generator::Logic#visit_veritas_logic_predicate_inequality',
-    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_exclusion_sql',
-    'Veritas::SQL::Compiler::Generator::Logic#exclusive_range_inclusion_sql',
-    'Veritas::SQL::Compiler::Generator::Logic#new_from_enumerable_predicate',
-    'Veritas::SQL::Compiler::Generator::Logic#optional?',
-    'Veritas::SQL::Compiler::Generator::Relation::Unary#collapse_subquery_for?'
+    'Veritas::SQL::Generator::Attribute#visit_veritas_attribute',
+    'Veritas::SQL::Generator::Identifier#visit_identifier',
+    'Veritas::SQL::Generator::Literal#visit_numeric',
+    'Veritas::SQL::Generator::Literal#visit_string',
+    'Veritas::SQL::Generator::Logic#visit_veritas_logic_predicate_inequality',
+    'Veritas::SQL::Generator::Logic#exclusive_range_exclusion_sql',
+    'Veritas::SQL::Generator::Logic#exclusive_range_inclusion_sql',
+    'Veritas::SQL::Generator::Logic#new_from_enumerable_predicate',
+    'Veritas::SQL::Generator::Logic#optional?',
+    'Veritas::SQL::Generator::Relation::Unary#collapse_subquery_for?'
   ]
   enabled: true
 Attribute:
@@ -110,7 +110,7 @@ SimulatedPolymorphism:
 DataClump:
   exclude: [
     # TODO: split Range handling methods into separate class/module
-    'Veritas::SQL::Compiler::Generator::Logic'
+    'Veritas::SQL::Generator::Logic'
   ]
   enabled: true
   max_copies: 1

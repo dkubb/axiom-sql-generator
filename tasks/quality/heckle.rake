@@ -30,8 +30,8 @@ begin
       raise "ruby2ruby version #{Ruby2Ruby::VERSION} may not work properly, 1.2.2 *only* is recommended for use with heckle"
     end
 
-    require 'veritas/sql/compiler'
-    root_module = 'Veritas::SQL::Compiler'
+    require 'veritas/sql/generator'
+    root_module = 'Veritas::SQL::Generator'
 
     spec_dir = Pathname('spec/unit')
 

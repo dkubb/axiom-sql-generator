@@ -1,4 +1,4 @@
-= Veritas SQL Compiler
+= Veritas SQL Generator
 
 Generate SQL from a veritas relation
 
