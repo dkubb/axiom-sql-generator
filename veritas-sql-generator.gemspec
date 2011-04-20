@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = %q{2011-04-10}
+  s.date = %q{2011-04-20}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -197,26 +197,26 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<veritas>, ["= 0.0.3"])
-      s.add_development_dependency(%q<backports>, ["~> 2.0.3"])
+      s.add_development_dependency(%q<backports>, ["~> 2.1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
-      s.add_development_dependency(%q<rspec>, ["~> 1.3.1"])
-      s.add_development_dependency(%q<yard>, ["~> 0.6.7"])
+      s.add_development_dependency(%q<rspec>, ["~> 1.3.2"])
+      s.add_development_dependency(%q<yard>, ["~> 0.6.8"])
     else
       s.add_dependency(%q<veritas>, ["= 0.0.3"])
-      s.add_dependency(%q<backports>, ["~> 2.0.3"])
+      s.add_dependency(%q<backports>, ["~> 2.1.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
       s.add_dependency(%q<rake>, ["~> 0.8.7"])
-      s.add_dependency(%q<rspec>, ["~> 1.3.1"])
-      s.add_dependency(%q<yard>, ["~> 0.6.7"])
+      s.add_dependency(%q<rspec>, ["~> 1.3.2"])
+      s.add_dependency(%q<yard>, ["~> 0.6.8"])
     end
   else
     s.add_dependency(%q<veritas>, ["= 0.0.3"])
-    s.add_dependency(%q<backports>, ["~> 2.0.3"])
+    s.add_dependency(%q<backports>, ["~> 2.1.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.5.2"])
     s.add_dependency(%q<rake>, ["~> 0.8.7"])
-    s.add_dependency(%q<rspec>, ["~> 1.3.1"])
-    s.add_dependency(%q<yard>, ["~> 0.6.7"])
+    s.add_dependency(%q<rspec>, ["~> 1.3.2"])
+    s.add_dependency(%q<yard>, ["~> 0.6.8"])
   end
 end
 
