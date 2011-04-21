@@ -158,25 +158,25 @@ module Veritas
           "NOT #{dispatch negation.operand}"
         end
 
-        # Visit a True proposition
+        # Visit a Tautology
         #
-        # @param [Logic::Proposition::True] _true
+        # @param [Logic::Proposition::Tautology] _tautology
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_proposition_true(_true)
+        def visit_veritas_logic_proposition_tautology(_tautology)
           MATCH_ALL
         end
 
-        # Visit a False proposition
+        # Visit a Contradiction
         #
-        # @param [Logic::Proposition::False] _false
+        # @param [Logic::Proposition::Contradiction] _contradiction
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_proposition_false(_false)
+        def visit_veritas_logic_proposition_contradiction(_contradiction)
           MATCH_NONE
         end
 
