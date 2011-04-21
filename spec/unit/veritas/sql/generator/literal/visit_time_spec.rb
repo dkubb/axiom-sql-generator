@@ -5,9 +5,9 @@ require 'spec_helper'
 describe SQL::Generator::Literal, '#visit_time' do
   subject { object.visit_time(time) }
 
-  # Time#iso8601 is currently broken in JRuby 1.6.0 when fractional seconds are not 0
-  def self.jruby_19?
-    RUBY_PLATFORM =~ /java/ && JRUBY_VERSION == '1.6.0' && RUBY_VERSION >= '1.9.2'
+  # Time#iso8601 is currently broken in JRuby 1.6.1 when fractional seconds are not 0
+  def self.time_iso8601_broken?
+    RUBY_PLATFORM =~ /java/ && JRUBY_VERSION <= '1.6.1' && RUBY_VERSION >= '1.9.2'
   end
 
   let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Literal } }
@@ -37,7 +37,7 @@ describe SQL::Generator::Literal, '#visit_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      unless jruby_19?
+      unless time_iso8601_broken?
         its(:to_s) { should eql("'2010-12-31T23:59:59.000001000Z'") }
       end
     end
@@ -63,7 +63,7 @@ describe SQL::Generator::Literal, '#visit_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      unless jruby_19?
+      unless time_iso8601_broken?
         its(:to_s) { should eql("'2010-12-31T23:59:59.000001000Z'") }
       end
     end
@@ -89,7 +89,7 @@ describe SQL::Generator::Literal, '#visit_time' do
 
       it_should_behave_like 'a generated SQL expression'
 
-      unless jruby_19?
+      unless time_iso8601_broken?
         its(:to_s) { should eql("'2010-12-31T23:59:59.000001000Z'") }
       end
     end
