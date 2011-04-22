@@ -1,6 +1,6 @@
 source :rubygems
 
-gem 'veritas', '0.0.3', :git => 'git://github.com/dkubb/veritas.git'
+gem 'veritas', '0.0.4', :git => 'git://github.com/dkubb/veritas.git'
 
 group :development do
   gem 'backports', '~> 2.1.0'
