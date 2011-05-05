@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Dan Kubb"]
-  s.date = %q{2011-04-22}
+  s.authors = [%q{Dan Kubb}]
+  s.date = %q{2011-05-05}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -122,8 +122,8 @@ Gem::Specification.new do |s|
     "veritas-sql-generator.gemspec"
   ]
   s.homepage = %q{https://github.com/dkubb/veritas-sql-generator}
-  s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.7.2}
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.0}
   s.summary = %q{Relational algebra SQL generator}
   s.test_files = [
     "spec/shared/command_method_behavior.rb",
