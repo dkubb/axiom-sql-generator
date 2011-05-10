@@ -81,7 +81,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.order([ id.desc, name.desc, age.desc ]).take(1) }
+    let(:operand) { base_relation.order { [ id.desc, name.desc, age.desc ] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -90,7 +90,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
   end
 
   context 'when the operand is an offset' do
-    let(:operand) { base_relation.order([ id.desc, name.desc, age.desc ]).drop(1) }
+    let(:operand) { base_relation.order { [ id.desc, name.desc, age.desc ] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
