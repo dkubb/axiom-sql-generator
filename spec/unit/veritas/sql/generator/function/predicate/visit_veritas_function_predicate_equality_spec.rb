@@ -2,12 +2,12 @@
 
 require 'spec_helper'
 
-describe SQL::Generator::Function, '#visit_veritas_function_predicate_equality' do
+describe SQL::Generator::Function::Predicate, '#visit_veritas_function_predicate_equality' do
   subject { object.visit_veritas_function_predicate_equality(equality) }
 
-  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function } }
-  let(:attribute)       { Attribute::Integer.new(:id)                                             }
-  let(:object)          { described_class.new                                                     }
+  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function::Predicate } }
+  let(:attribute)       { Attribute::Integer.new(:id)                                                        }
+  let(:object)          { described_class.new                                                                }
 
   context 'when the right operand is not nil' do
     let(:equality) { attribute.eq(1) }

@@ -54,7 +54,7 @@ module Veritas
         #
         # @api private
         def visit_string(string)
-          "#{QUOTE}#{string.gsub(QUOTE, ESCAPED_QUOTE)}#{QUOTE}"
+          string.gsub(QUOTE, ESCAPED_QUOTE).insert(0, QUOTE) << QUOTE
         end
 
         # Visit a Numeric

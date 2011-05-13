@@ -2,12 +2,16 @@
 
 require 'spec_helper'
 
-describe SQL::Generator::Function, '#visit_veritas_function_predicate_exclusion' do
+describe SQL::Generator::Function::Predicate, '#visit_veritas_function_predicate_exclusion' do
   subject { object.visit_veritas_function_predicate_exclusion(exclusion) }
 
-  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function } }
-  let(:attribute)       { Attribute::Integer.new(:id)                                             }
-  let(:object)          { described_class.new                                                     }
+  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function::Predicate } }
+  let(:attribute)       { Attribute::Integer.new(:id)                                                        }
+  let(:object)          { described_class.new                                                                }
+
+  before do
+    described_class.class_eval { include SQL::Generator::Function::Connective }
+  end
 
   context 'when right operand is an inclusive Range' do
     let(:exclusion) { attribute.exclude(1..10) }

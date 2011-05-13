@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-describe SQL::Generator::Function, '#visit_veritas_function_predicate_inequality' do
+describe SQL::Generator::Function::Predicate, '#visit_veritas_function_predicate_inequality' do
   subject { object.visit_veritas_function_predicate_inequality(inequality) }
 
-  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function } }
-  let(:object)          { described_class.new                                                     }
+  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function::Predicate } }
+  let(:object)          { described_class.new                                                                }
 
   context 'and the left attribute is optional' do
     let(:attribute)  { Attribute::Integer.new(:age, :required => false) }
