@@ -1,5 +1,5 @@
-* Replace some of the conditional logic with polymorphism, especially
-  where there is special case logic for certain types of generators
+* Replace some of the conditional function with polymorphism, especially
+  where there is special case function for certain types of generators
   within other generators.
   * Replace Equality/Inequality with classes that handle all of the
     special cases.

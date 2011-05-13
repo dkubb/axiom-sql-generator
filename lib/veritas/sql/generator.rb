@@ -13,7 +13,7 @@ require 'veritas/sql/generator/identifier'
 require 'veritas/sql/generator/attribute'
 require 'veritas/sql/generator/direction'
 require 'veritas/sql/generator/literal'
-require 'veritas/sql/generator/logic'
+require 'veritas/sql/generator/function'
 
 require 'veritas/sql/generator/relation'
 require 'veritas/sql/generator/relation/unary'

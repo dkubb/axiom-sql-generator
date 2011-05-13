@@ -2,12 +2,12 @@
 
 require 'spec_helper'
 
-describe SQL::Generator::Logic, '#visit_veritas_logic_predicate_inclusion' do
-  subject { object.visit_veritas_logic_predicate_inclusion(inclusion) }
+describe SQL::Generator::Function, '#visit_veritas_function_predicate_inclusion' do
+  subject { object.visit_veritas_function_predicate_inclusion(inclusion) }
 
-  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Logic } }
-  let(:attribute)       { Attribute::Integer.new(:id)                                          }
-  let(:object)          { described_class.new                                                  }
+  let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Function } }
+  let(:attribute)       { Attribute::Integer.new(:id)                                             }
+  let(:object)          { described_class.new                                                     }
 
   context 'when right operand is an inclusive Range' do
     let(:inclusion) { attribute.include(1..10) }

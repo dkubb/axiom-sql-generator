@@ -43,7 +43,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is a projection then a restriction, followed by another restriction' do
-    let(:tautology) { Logic::Proposition::Tautology.instance                                              }
+    let(:tautology) { Function::Proposition::Tautology.instance                                           }
     let(:operand)   { base_relation.project([ :id, :name ]).restrict { tautology }.restrict { tautology } }
 
     it_should_behave_like 'a generated SQL SELECT query'

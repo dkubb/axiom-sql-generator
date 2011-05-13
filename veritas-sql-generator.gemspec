@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Dan Kubb}]
-  s.date = %q{2011-05-05}
+  s.date = %q{2011-05-13}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -33,9 +33,9 @@ Gem::Specification.new do |s|
     "lib/veritas/sql/generator.rb",
     "lib/veritas/sql/generator/attribute.rb",
     "lib/veritas/sql/generator/direction.rb",
+    "lib/veritas/sql/generator/function.rb",
     "lib/veritas/sql/generator/identifier.rb",
     "lib/veritas/sql/generator/literal.rb",
-    "lib/veritas/sql/generator/logic.rb",
     "lib/veritas/sql/generator/relation.rb",
     "lib/veritas/sql/generator/relation/base.rb",
     "lib/veritas/sql/generator/relation/binary.rb",
@@ -53,6 +53,19 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/attribute/visit_veritas_attribute_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_ascending_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_descending_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_connective_conjunction_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_connective_disjunction_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_connective_negation_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_equality_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_exclusion_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_greater_than_or_equal_to_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_greater_than_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_inclusion_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_inequality_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_less_than_or_equal_to_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_less_than_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_proposition_contradiction_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_proposition_tautology_spec.rb",
     "spec/unit/veritas/sql/generator/identifier/visit_identifier_spec.rb",
     "spec/unit/veritas/sql/generator/literal/class_methods/dup_frozen_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_class_spec.rb",
@@ -65,19 +78,6 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/literal/visit_string_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_time_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_true_class_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_connective_conjunction_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_connective_disjunction_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_connective_negation_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_equality_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_exclusion_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_greater_than_or_equal_to_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_greater_than_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_inclusion_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_inequality_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_less_than_or_equal_to_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_less_than_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_proposition_contradiction_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_proposition_tautology_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/visit_veritas_base_relation_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/class_methods/subquery_spec.rb",
@@ -123,7 +123,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = %q{https://github.com/dkubb/veritas-sql-generator}
   s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.0}
+  s.rubygems_version = %q{1.8.2}
   s.summary = %q{Relational algebra SQL generator}
   s.test_files = [
     "spec/shared/command_method_behavior.rb",
@@ -134,6 +134,19 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/attribute/visit_veritas_attribute_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_ascending_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_descending_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_connective_conjunction_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_connective_disjunction_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_connective_negation_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_equality_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_exclusion_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_greater_than_or_equal_to_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_greater_than_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_inclusion_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_inequality_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_less_than_or_equal_to_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_predicate_less_than_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_proposition_contradiction_spec.rb",
+    "spec/unit/veritas/sql/generator/function/visit_veritas_function_proposition_tautology_spec.rb",
     "spec/unit/veritas/sql/generator/identifier/visit_identifier_spec.rb",
     "spec/unit/veritas/sql/generator/literal/class_methods/dup_frozen_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_class_spec.rb",
@@ -146,19 +159,6 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/literal/visit_string_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_time_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_true_class_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_connective_conjunction_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_connective_disjunction_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_connective_negation_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_equality_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_exclusion_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_greater_than_or_equal_to_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_greater_than_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_inclusion_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_inequality_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_less_than_or_equal_to_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_predicate_less_than_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_proposition_contradiction_spec.rb",
-    "spec/unit/veritas/sql/generator/logic/visit_veritas_logic_proposition_tautology_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/visit_veritas_base_relation_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/class_methods/subquery_spec.rb",

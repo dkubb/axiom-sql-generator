@@ -4,8 +4,8 @@ module Veritas
   module SQL
     module Generator
 
-      # Generates an SQL statement for a logic expression
-      module Logic
+      # Generates an SQL statement for a function expression
+      module Function
         include Attribute, Literal
 
         EQUAL_TO                 = ' = '.freeze
@@ -28,79 +28,79 @@ module Veritas
 
         # Visit an Equality predicate
         #
-        # @param [Logic::Predicate::Equality] equality
+        # @param [Function::Predicate::Equality] equality
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_equality(equality)
+        def visit_veritas_function_predicate_equality(equality)
           binary_operation_sql(equality.right.nil? ? EQUAL_TO_NULL : EQUAL_TO, equality)
         end
 
         # Visit an Inequality predicate
         #
-        # @param [Logic::Predicate::Inequality] inequality
+        # @param [Function::Predicate::Inequality] inequality
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_inequality(inequality)
+        def visit_veritas_function_predicate_inequality(inequality)
           expressions = inequality_expressions(inequality)
           expressions.one? ? expressions.first : "(#{expressions.join(OR)})"
         end
 
         # Visit an GreaterThan predicate
         #
-        # @param [Logic::Predicate::GreaterThan] greater_than
+        # @param [Function::Predicate::GreaterThan] greater_than
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_greater_than(greater_than)
+        def visit_veritas_function_predicate_greater_than(greater_than)
           binary_operation_sql(GREATER_THAN, greater_than)
         end
 
         # Visit an GreaterThanOrEqualTo predicate
         #
-        # @param [Logic::Predicate::GreaterThanOrEqualTo] greater_than_or_equal_to
+        # @param [Function::Predicate::GreaterThanOrEqualTo] greater_than_or_equal_to
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_greater_than_or_equal_to(greater_than_or_equal_to)
+        def visit_veritas_function_predicate_greater_than_or_equal_to(greater_than_or_equal_to)
           binary_operation_sql(GREATER_THAN_OR_EQUAL_TO, greater_than_or_equal_to)
         end
 
         # Visit an LessThan predicate
         #
-        # @param [Logic::Predicate::LessThan] less_than
+        # @param [Function::Predicate::LessThan] less_than
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_less_than(less_than)
+        def visit_veritas_function_predicate_less_than(less_than)
           binary_operation_sql(LESS_THAN, less_than)
         end
 
         # Visit an LessThanOrEqualTo predicate
         #
-        # @param [Logic::Predicate::LessThanOrEqualTo] less_than_or_equal_to
+        # @param [Function::Predicate::LessThanOrEqualTo] less_than_or_equal_to
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_less_than_or_equal_to(less_than_or_equal_to)
+        def visit_veritas_function_predicate_less_than_or_equal_to(less_than_or_equal_to)
           binary_operation_sql(LESS_THAN_OR_EQUAL_TO, less_than_or_equal_to)
         end
 
         # Visit an Inclusion predicate
         #
-        # @param [Logic::Predicate::Inclusion] inclusion
+        # @param [Function::Predicate::Inclusion] inclusion
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_inclusion(inclusion)
+        def visit_veritas_function_predicate_inclusion(inclusion)
           case inclusion.right
             when Range       then range_inclusion_sql(inclusion)
             when EMPTY_ARRAY then MATCH_NONE
@@ -111,12 +111,12 @@ module Veritas
 
         # Visit an Exclusion predicate
         #
-        # @param [Logic::Predicate::Exclusion] exclusion
+        # @param [Function::Predicate::Exclusion] exclusion
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_predicate_exclusion(exclusion)
+        def visit_veritas_function_predicate_exclusion(exclusion)
           case exclusion.right
             when Range       then range_exclusion_sql(exclusion)
             when EMPTY_ARRAY then MATCH_ALL
@@ -127,56 +127,56 @@ module Veritas
 
         # Visit an Conjunction connective
         #
-        # @param [Logic::Connective::Conjunction] conjunction
+        # @param [Function::Connective::Conjunction] conjunction
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_connective_conjunction(conjunction)
+        def visit_veritas_function_connective_conjunction(conjunction)
           binary_connective_sql(AND, conjunction)
         end
 
         # Visit an Disjunction connective
         #
-        # @param [Logic::Connective::Disjunction] disjunction
+        # @param [Function::Connective::Disjunction] disjunction
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_connective_disjunction(disjunction)
+        def visit_veritas_function_connective_disjunction(disjunction)
           binary_connective_sql(OR, disjunction)
         end
 
         # Visit an Negation connective
         #
-        # @param [Logic::Connective::Negation] negation
+        # @param [Function::Connective::Negation] negation
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_connective_negation(negation)
+        def visit_veritas_function_connective_negation(negation)
           "NOT #{dispatch negation.operand}"
         end
 
         # Visit a Tautology
         #
-        # @param [Logic::Proposition::Tautology] _tautology
+        # @param [Function::Proposition::Tautology] _tautology
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_proposition_tautology(_tautology)
+        def visit_veritas_function_proposition_tautology(_tautology)
           MATCH_ALL
         end
 
         # Visit a Contradiction
         #
-        # @param [Logic::Proposition::Contradiction] _contradiction
+        # @param [Function::Proposition::Contradiction] _contradiction
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_veritas_logic_proposition_contradiction(_contradiction)
+        def visit_veritas_function_proposition_contradiction(_contradiction)
           MATCH_NONE
         end
 
@@ -184,7 +184,7 @@ module Veritas
 
         # Return the SQL for an Inclusion using a Range
         #
-        # @param [Logic::Predicate::Inclusion] predicate
+        # @param [Function::Predicate::Inclusion] predicate
         #
         # @return [#to_s]
         #
@@ -199,7 +199,7 @@ module Veritas
 
         # Return the SQL for an Exclusion using a Range
         #
-        # @param [Logic::Predicate::Exclusion] exclusion
+        # @param [Function::Predicate::Exclusion] exclusion
         #
         # @return [#to_s]
         #
@@ -214,39 +214,39 @@ module Veritas
 
         # Return the SQL for an Inclusion using an exclusive Range
         #
-        # @param [Logic::Predicate::Inclusion] inclusion
+        # @param [Function::Predicate::Inclusion] inclusion
         #
         # @return [#to_s]
         #
         # @api private
         def exclusive_range_inclusion_sql(inclusion)
-          left  = new_from_enumerable_predicate(Veritas::Logic::Predicate::GreaterThanOrEqualTo, inclusion, :first)
-          right = new_from_enumerable_predicate(Veritas::Logic::Predicate::LessThan,             inclusion, :last)
+          left  = new_from_enumerable_predicate(Veritas::Function::Predicate::GreaterThanOrEqualTo, inclusion, :first)
+          right = new_from_enumerable_predicate(Veritas::Function::Predicate::LessThan,             inclusion, :last)
           dispatch left.and(right)
         end
 
         # Return the SQL for an Exclusion using an exclusive Range
         #
-        # @param [Logic::Predicate::Exclusion] exclusion
+        # @param [Function::Predicate::Exclusion] exclusion
         #
         # @return [#to_s]
         #
         # @api private
         def exclusive_range_exclusion_sql(exclusion)
-          left  = new_from_enumerable_predicate(Veritas::Logic::Predicate::LessThan,             exclusion, :first)
-          right = new_from_enumerable_predicate(Veritas::Logic::Predicate::GreaterThanOrEqualTo, exclusion, :last)
+          left  = new_from_enumerable_predicate(Veritas::Function::Predicate::LessThan,             exclusion, :first)
+          right = new_from_enumerable_predicate(Veritas::Function::Predicate::GreaterThanOrEqualTo, exclusion, :last)
           dispatch left.or(right)
         end
 
         # Instantiate a new Predicate object from an Enumerable Predicate
         #
-        # @param [Class<Logic::Predicate>] klass
+        # @param [Class<Function::Predicate>] klass
         #   the type of predicate to create
-        # @param [Logic::Predicate::Enumerable] predicate
+        # @param [Function::Predicate::Enumerable] predicate
         #   the enumerable predicate
         # @param [Symbol] method
         #   the method to call on the right operand of the predicate
-        # @return [Logic::Predicate]
+        # @return [Function::Predicate]
         #
         # @api private
         def new_from_enumerable_predicate(klass, predicate, method)
@@ -255,7 +255,7 @@ module Veritas
 
         # Return the expressions for an inequality
         #
-        # @param [Logic::Predicate::Inequality] inequality
+        # @param [Function::Predicate::Inequality] inequality
         #
         # @return [Array<#to_s>]
         #
@@ -272,7 +272,7 @@ module Veritas
 
         # Return the SQL for an inequality predicate
         #
-        # @param [Logic::Predicate::Inequality] inequality
+        # @param [Function::Predicate::Inequality] inequality
         #
         # @return [#to_s]
         #
@@ -285,7 +285,7 @@ module Veritas
         #
         # @param [#to_s] operator
         #
-        # @param [Logic::Connective::Binary] binary_connective
+        # @param [Function::Connective::Binary] binary_connective
         #
         # @return [#to_s]
         #
@@ -298,7 +298,7 @@ module Veritas
         #
         # @param [#to_s] operator
         #
-        # @param [Logic::Predicate] predicate
+        # @param [Function::Predicate] predicate
         #
         # @return [#to_s]
         #
@@ -311,7 +311,7 @@ module Veritas
         #
         # @param [#to_s] operator
         #
-        # @param [Logic::Predicate::Enumerable] predicate
+        # @param [Function::Predicate::Enumerable] predicate
         #
         # @return [#to_s]
         #
@@ -343,7 +343,7 @@ module Veritas
           operand.respond_to?(:required?) && !operand.required?
         end
 
-      end # module Logic
+      end # module Function
     end # module Generator
   end # module SQL
 end # module Veritas
