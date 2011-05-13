@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
     "TODO"
   ]
   s.files = [
+    ".gemtest",
     "Gemfile",
     "LICENSE",
     "README.rdoc",
