@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'rake'
 
 require File.expand_path('../lib/veritas/sql/generator/version', __FILE__)

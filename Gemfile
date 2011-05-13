@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 source :rubygems
 
 gem 'veritas', '0.0.4', :git => 'git://github.com/dkubb/veritas.git'
