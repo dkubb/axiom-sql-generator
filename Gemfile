@@ -4,7 +4,7 @@ gem 'veritas', '0.0.4', :git => 'git://github.com/dkubb/veritas.git'
 
 group :development do
   gem 'backports', '~> 2.1.0'
-  gem 'jeweler',   '~> 1.5.2'
+  gem 'jeweler',   '~> 1.6.0'
   gem 'rake',      '~> 0.8.7'
   gem 'rspec',     '~> 1.3.2'
   gem 'yard',      '~> 0.6.8'
@@ -12,7 +12,7 @@ end
 
 group :jruby do
   platform :jruby do
-    gem 'jruby-openssl', '~> 0.7.3'
+    gem 'jruby-openssl', '~> 0.7.4'
   end
 end
 
