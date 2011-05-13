@@ -46,7 +46,7 @@ module Veritas
 
         # Visit a String
         #
-        # @note The string must be utf-8 encoded
+        # @note The string must be UTF-8 encoded
         #
         # @param [String] string
         #
