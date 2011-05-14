@@ -15,3 +15,9 @@
   Negation wrapping an Equality/Inclusion) on an *optional* attribute.
   * Add "OR attribute IS NULL" to the statement to ensure cases when
     the value is NULL still matches.
+
+* Handle cases where WHERE clause does and does not reference a function
+  in the SELECT list.
+  * It should collapse the inner subquery when there is no reference, and
+    keep the subquery when it is referenced.
+  * This will likely apply to projection and rename operators too.
