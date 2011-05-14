@@ -268,7 +268,8 @@ module Veritas
           #
           # @api private
           def all_columns?
-            !@scope.include?(Algebra::Projection) && !@scope.include?(Algebra::Rename)
+            !@scope.include?(Algebra::Projection) &&
+            !@scope.include?(Algebra::Rename)
           end
 
           # Test if the relation should be collapsed
