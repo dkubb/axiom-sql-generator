@@ -19,13 +19,14 @@ module Veritas
 
           DISTINCT     = 'DISTINCT '.freeze
           COLLAPSIBLE  = {
-            Algebra::Projection                   => Set[ Algebra::Projection, Algebra::Restriction,                                                                                                                                                                        ].freeze,
-            Algebra::Restriction                  => Set[ Algebra::Projection,                       Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
-            Veritas::Relation::Operation::Order   => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-            Veritas::Relation::Operation::Reverse => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-            Veritas::Relation::Operation::Offset  => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-            Veritas::Relation::Operation::Limit   => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                      Algebra::Rename ].freeze,
-            Algebra::Rename                       => Set[ Algebra::Projection, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit                  ].freeze,
+            Algebra::Projection                   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction,                                                                                                                                                                        ].freeze,
+            Algebra::Restriction                  => Set[ Algebra::Projection,                                           Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
+            Veritas::Relation::Operation::Order   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+            Veritas::Relation::Operation::Reverse => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+            Veritas::Relation::Operation::Offset  => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
+            Veritas::Relation::Operation::Limit   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                      Algebra::Rename ].freeze,
+            Algebra::Rename                       => Set[ Algebra::Projection,                     Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit                  ].freeze,
+            Algebra::Extension                    => Set[ Algebra::Projection,                     Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit, Algebra::Rename ].freeze
           }.freeze
 
           # Initialize a Unary relation SQL generator
@@ -64,6 +65,21 @@ module Veritas
             @distinct = DISTINCT
             @columns  = columns_for(projection)
             scope_query(projection)
+            self
+          end
+
+          # Visit an Extension
+          #
+          # @param [Algebra::Extension] extension
+          #
+          # @return [self]
+          #
+          # @api private
+          def visit_veritas_algebra_extension(extension)
+            @from         = subquery_for(extension)
+            @columns    ||= columns_for(extension.operand)
+            @extensions   = extensions_for(extension.extensions)
+            scope_query(extension)
             self
           end
 
@@ -150,7 +166,7 @@ module Veritas
           #
           # @api public
           def to_s
-            generate_sql(@columns)
+            generate_sql(select_list)
           end
 
           # Return the SQL suitable for an subquery
@@ -159,7 +175,7 @@ module Veritas
           #
           # @api private
           def to_subquery
-            generate_sql(all_columns? ? ALL_COLUMNS : @columns)
+            generate_sql(all_columns? ? ALL_COLUMNS : select_list)
           end
 
         private
@@ -173,12 +189,21 @@ module Veritas
           # @api private
           def generate_sql(columns)
             return EMPTY_STRING unless visited?
-            sql = "SELECT #{@distinct}#{columns} FROM #{@from}"
+            sql = "SELECT #{columns}#{@extensions} FROM #{@from}"
             sql << " WHERE #{@where}"    if @where
             sql << " ORDER BY #{@order}" if @order
             sql << " LIMIT #{@limit}"    if @limit
             sql << " OFFSET #{@offset}"  if @offset
             sql
+          end
+
+          # Return the columns for the SELECT query
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def select_list
+            "#{@distinct}#{@columns}"
           end
 
           # Return a list of columns in a header
@@ -226,6 +251,21 @@ module Veritas
           # @api private
           def alias_for(column, alias_attribute)
             "#{column} AS #{visit_identifier(alias_attribute.name)}"
+          end
+
+          # Return the SQL extensions for the select list
+          #
+          # @param [Hash{Function => Attribute}] extensions
+          #
+          # @return [#to_s]
+          #
+          # @api private
+          def extensions_for(extensions)
+            sql = ''
+            extensions.each do |attribute, function|
+              sql << "#{SEPARATOR}#{dispatch(function)} AS #{dispatch(attribute)}"
+            end
+            sql
           end
 
           # Return a list of columns for ordering
@@ -322,7 +362,7 @@ module Veritas
           # @api private
           def reset_query_state
             @scope.clear
-            @distinct = @columns = @where = @order = @limit = @offset = nil
+            @distinct = @columns = @extensions = @where = @order = @limit = @offset = nil
           end
 
         end # class Unary

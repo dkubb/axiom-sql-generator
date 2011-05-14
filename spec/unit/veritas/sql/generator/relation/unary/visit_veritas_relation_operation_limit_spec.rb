@@ -33,6 +33,15 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
     its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name" LIMIT 1') }
   end
 
+  context 'when the operand is an extension' do
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) }.order }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('SELECT "id", "name", "age", 1 AS "one" FROM "users" ORDER BY "id", "name", "age", "one" LIMIT 1') }
+    its(:to_subquery) { should eql('SELECT *, 1 AS "one" FROM "users" ORDER BY "id", "name", "age", "one" LIMIT 1')                   }
+  end
+
   context 'when the operand is a rename' do
     let(:operand) { base_relation.order.rename(:id => :user_id) }
 

@@ -33,6 +33,15 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_rename' do
     its(:to_subquery) { should eql('SELECT DISTINCT "id" AS "user_id", "name" FROM "users"') }
   end
 
+  context 'when the operand is an extension' do
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) } }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { pending { should eql('SELECT "id" AS "user_id", "name", "age", 1 AS "one" FROM "users"') } }
+    its(:to_subquery) { pending { should eql('SELECT "id" AS "user_id", "name", "age", 1 AS "one" FROM "users"') } }
+  end
+
   context 'when the operand is a rename' do
     let(:operand) { base_relation.rename(:name => :other_name) }
 

@@ -33,6 +33,15 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
   end
 
+  context 'when the operand is an extension' do
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) } }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "one" FROM (SELECT *, 1 AS "one" FROM "users") AS "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT *, 1 AS "one" FROM "users") AS "users" WHERE "id" = 1')                          }
+  end
+
   context 'when the operand is a projection then a restriction' do
     let(:operand) { base_relation.project([ :id, :name ]).restrict { |r| r[:id].ne(2) } }
 
