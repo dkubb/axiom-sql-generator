@@ -30,7 +30,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age", "two", 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"') }
-    its(:to_subquery) { should eql('SELECT *, 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"') }
+    its(:to_subquery) { should eql('SELECT *, 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"')                          }
   end
 
   context 'when the operand is a projection' do
