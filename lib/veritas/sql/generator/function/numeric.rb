@@ -16,7 +16,6 @@ module Veritas
           DIVIDE      = '/'.freeze
           POWER       = 'POWER'.freeze
           MOD         = 'MOD'.freeze
-          RANDOM      = 'RANDOM ()'.freeze
           SQUARE_ROOT = 'SQRT'.freeze
 
           # Visit an Absolute function
@@ -83,17 +82,6 @@ module Veritas
           # @api private
           def visit_veritas_function_numeric_multiplication(multiplication)
             Generator.parenthesize!(binary_infix_operation_sql(MULTIPLY, multiplication))
-          end
-
-          # Visit a Random function
-          #
-          # @param [Function::Numeric::Random] random
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def visit_veritas_function_numeric_random(_random)
-            RANDOM
           end
 
           # Visit a Square Root function

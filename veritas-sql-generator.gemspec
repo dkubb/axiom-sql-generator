@@ -69,7 +69,6 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_exponentiation_spec.rb",
     "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_modulo_spec.rb",
     "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_multiplication_spec.rb",
-    "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_random_spec.rb",
     "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_square_root_spec.rb",
     "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_subtraction_spec.rb",
     "spec/unit/veritas/sql/generator/function/numeric/visit_veritas_function_numeric_unary_minus_spec.rb",
