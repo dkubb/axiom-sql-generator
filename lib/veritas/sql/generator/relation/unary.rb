@@ -203,7 +203,7 @@ module Veritas
           #
           # @api private
           def select_list
-            "#{@distinct}#{@columns}"
+            @distinct.to_s + @columns.to_s
           end
 
           # Return a list of columns in a header

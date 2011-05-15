@@ -18,8 +18,8 @@ module Veritas
         #
         # @api private
         def visit_identifier(identifier)
-          sql = identifier.to_s.gsub(QUOTE, ESCAPED_QUOTE)
-          sql.insert(0, QUOTE) << QUOTE
+          escaped = identifier.to_s.gsub(QUOTE, ESCAPED_QUOTE)
+          escaped.insert(0, QUOTE) << QUOTE
         end
 
       end # module Identifier
