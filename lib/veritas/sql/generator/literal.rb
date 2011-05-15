@@ -41,7 +41,9 @@ module Veritas
         #
         # @api private
         def visit_enumerable(enumerable)
-          "(#{enumerable.map { |entry| dispatch entry }.join(SEPARATOR)})"
+          Generator.parenthesize!(
+            enumerable.map { |entry| dispatch entry }.join(SEPARATOR)
+          )
         end
 
         # Visit a String

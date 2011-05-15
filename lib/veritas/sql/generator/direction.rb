@@ -8,6 +8,8 @@ module Veritas
       module Direction
         include Attribute
 
+        DESC = ' DESC'.freeze
+
         # Visit an Ascending Direction
         #
         # @param [Relation::Operation::Order::Ascending] direction
@@ -27,7 +29,7 @@ module Veritas
         #
         # @api private
         def visit_veritas_relation_operation_order_descending(direction)
-          "#{dispatch direction.attribute} DESC"
+          dispatch(direction.attribute) << DESC
         end
 
       end # module Direction
