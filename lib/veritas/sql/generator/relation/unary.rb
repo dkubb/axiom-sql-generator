@@ -41,12 +41,12 @@ module Veritas
 
           # Visit a Base Relation
           #
-          # @param [BaseRelation] base_relation
+          # @param [Relation::Base] base_relation
           #
           # @return [self]
           #
           # @api private
-          def visit_veritas_base_relation(base_relation)
+          def visit_veritas_relation_base(base_relation)
             @name    = base_relation.name
             @from    = visit_identifier(@name)
             @columns = columns_for(base_relation)

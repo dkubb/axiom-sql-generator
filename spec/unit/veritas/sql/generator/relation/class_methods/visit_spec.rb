@@ -10,7 +10,7 @@ describe SQL::Generator::Relation, '.visit' do
   let(:age)           { Attribute::Integer.new(:age, :required => false) }
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { BaseRelation.new('users', header, body)          }
+  let(:base_relation) { Relation::Base.new('users', header, body)        }
   let(:object)        { described_class                                  }
 
   context 'when the relation is a set operation' do

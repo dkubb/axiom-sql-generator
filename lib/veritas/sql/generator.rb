@@ -5,8 +5,6 @@ require 'time'
 
 require 'veritas'
 
-require 'veritas/base_relation'
-
 require 'veritas/sql/generator/visitor'
 
 require 'veritas/sql/generator/identifier'

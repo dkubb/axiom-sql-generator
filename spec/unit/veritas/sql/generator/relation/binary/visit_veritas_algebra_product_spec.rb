@@ -12,8 +12,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   let(:header)        { [ id, name, age ]                                                          }
   let(:other_header)  { [ id.rename(:other_id), name.rename(:other_name), age.rename(:other_age) ] }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                                             }
-  let(:users)         { BaseRelation.new('users', header, body)                                    }
-  let(:other)         { BaseRelation.new('other', other_header, body)                              }
+  let(:users)         { Relation::Base.new('users', header, body)                                  }
+  let(:other)         { Relation::Base.new('other', other_header, body)                            }
   let(:product)       { left.product(right)                                                        }
   let(:object)        { described_class.new                                                        }
 

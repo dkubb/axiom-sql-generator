@@ -11,7 +11,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
   let(:age)           { Attribute::Integer.new(:age, :required => false) }
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { BaseRelation.new(relation_name, header, body)    }
+  let(:base_relation) { Relation::Base.new(relation_name, header, body)  }
   let(:extension)     { operand.extend { |r| r.add(:one, 1) }            }
   let(:object)        { described_class.new                              }
 

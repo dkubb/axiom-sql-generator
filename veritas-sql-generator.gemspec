@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Dan Kubb}]
-  s.date = %q{2011-05-14}
+  s.date = %q{2011-05-15}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
     "config/site.reek",
     "config/yardstick.yml",
     "lib/veritas-sql-generator.rb",
-    "lib/veritas/base_relation.rb",
     "lib/veritas/sql/generator.rb",
     "lib/veritas/sql/generator/attribute.rb",
     "lib/veritas/sql/generator/direction.rb",
@@ -55,7 +54,6 @@ Gem::Specification.new do |s|
     "spec/shared/idempotent_method_behavior.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb",
-    "spec/unit/veritas/base_relation/name_spec.rb",
     "spec/unit/veritas/sql/generator/attribute/visit_veritas_attribute_spec.rb",
     "spec/unit/veritas/sql/generator/class_methods/parenthesize_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_ascending_spec.rb",
@@ -97,7 +95,7 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/literal/visit_time_spec.rb",
     "spec/unit/veritas/sql/generator/literal/visit_true_class_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/to_subquery_spec.rb",
-    "spec/unit/veritas/sql/generator/relation/binary/base/visit_veritas_base_relation_spec.rb",
+    "spec/unit/veritas/sql/generator/relation/binary/base/visit_veritas_relation_base_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/class_methods/subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/to_s_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/to_subquery_spec.rb",
@@ -118,7 +116,7 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_projection_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_rename_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_restriction_spec.rb",
-    "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_base_relation_spec.rb",
+    "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_base_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_operation_limit_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_operation_offset_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_operation_order_spec.rb",

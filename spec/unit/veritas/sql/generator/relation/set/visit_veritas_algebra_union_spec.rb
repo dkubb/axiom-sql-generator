@@ -11,7 +11,7 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_union' do
   let(:age)           { Attribute::Integer.new(:age, :required => false) }
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { BaseRelation.new(relation_name, header, body)    }
+  let(:base_relation) { Relation::Base.new(relation_name, header, body)  }
   let(:left)          { operand                                          }
   let(:right)         { operand                                          }
   let(:union)         { left.union(right)                                }
@@ -126,9 +126,9 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_union' do
   end
 
   context 'when the operands have different base relations' do
-    let(:relation_name) { 'users_others'                           }
-    let(:left)          { BaseRelation.new('users',  header, body) }
-    let(:right)         { BaseRelation.new('others', header, body) }
+    let(:relation_name) { 'users_others'                             }
+    let(:left)          { Relation::Base.new('users',  header, body) }
+    let(:right)         { Relation::Base.new('others', header, body) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
