@@ -19,7 +19,7 @@ module Veritas
 
           DISTINCT     = 'DISTINCT '.freeze
           COLLAPSIBLE  = {
-            Algebra::Projection                   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction,                                                                                                                                                                        ].freeze,
+            Algebra::Projection                   => Set[ Algebra::Projection,                     Algebra::Restriction,                                                                                                                                                                        ].freeze,
             Algebra::Restriction                  => Set[ Algebra::Projection,                                           Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
             Veritas::Relation::Operation::Order   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
             Veritas::Relation::Operation::Reverse => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
