@@ -6,6 +6,7 @@ require 'time'
 require 'veritas'
 
 require 'veritas/sql/generator/core_ext/date'
+require 'veritas/sql/generator/core_ext/date_time'
 
 require 'veritas/sql/generator/visitor'
 
