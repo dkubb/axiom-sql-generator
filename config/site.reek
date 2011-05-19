@@ -14,7 +14,10 @@ LargeClass:
   max_instance_variables: 10  # TODO: reduce this in UnaryRelation
 UncommunicativeMethodName:
   accept: []
-  exclude: []
+  exclude: [
+    'Date#iso8601',
+    'DateTime#iso8601'
+  ]
   enabled: true
   reject:
   - !ruby/regexp /^[a-z]$/
