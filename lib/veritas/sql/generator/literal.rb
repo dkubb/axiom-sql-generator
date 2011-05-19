@@ -7,15 +7,13 @@ module Veritas
       # Generates an SQL statement for a literal
       module Literal
 
-        TRUE            = 'TRUE'.freeze
-        FALSE           = 'FALSE'.freeze
-        NULL            = 'NULL'.freeze
-        QUOTE           = "'".freeze
-        ESCAPED_QUOTE   = "''".freeze
-        SEPARATOR       = ', '.freeze
-        DATE_FORMAT     = '%F'.freeze
-        DATETIME_FORMAT = "#{DATE_FORMAT}T%T.%N%Z".freeze
-        TIME_SCALE      = 9
+        TRUE          = 'TRUE'.freeze
+        FALSE         = 'FALSE'.freeze
+        NULL          = 'NULL'.freeze
+        QUOTE         = "'".freeze
+        ESCAPED_QUOTE = "''".freeze
+        SEPARATOR     = ', '.freeze
+        TIME_SCALE    = 9
 
         # Returns an unfrozen object
         #
@@ -89,11 +87,9 @@ module Veritas
         #
         # @return [#to_s]
         #
-        # @todo use Date#iso8601 when added to 1.8.7 by backports
-        #
         # @api private
         def visit_date(date)
-          dispatch Literal.dup_frozen(date).strftime(DATE_FORMAT)
+          dispatch date.iso8601
         end
 
         # Visit a DateTime and return in ISO 8601 date-time format
@@ -104,11 +100,9 @@ module Veritas
         #
         # @return [#to_s]
         #
-        # @todo use DateTime#iso8601(TIME_SCALE) when added to 1.8.7 by backports
-        #
         # @api private
         def visit_date_time(date_time)
-          dispatch date_time.new_offset.strftime(DATETIME_FORMAT)
+          dispatch date_time.new_offset.iso8601(TIME_SCALE)
         end
 
         # Visit a Time
