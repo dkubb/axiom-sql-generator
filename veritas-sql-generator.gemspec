@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".gemtest",
     ".rvmrc",
+    ".travis.yml",
     "Gemfile",
     "Guardfile",
     "LICENSE",
