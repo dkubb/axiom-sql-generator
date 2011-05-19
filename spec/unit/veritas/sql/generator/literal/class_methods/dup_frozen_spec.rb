@@ -8,7 +8,7 @@ describe SQL::Generator::Literal, '.dup_frozen' do
   let(:object) { SQL::Generator::Literal }
 
   context 'with a frozen object' do
-    let(:object_arg) { Date.today.freeze }
+    let(:object_arg) { Time.now.freeze }
 
     it { should_not equal(object_arg) }
 
@@ -16,7 +16,7 @@ describe SQL::Generator::Literal, '.dup_frozen' do
   end
 
   context 'with a non-frozen object' do
-    let(:object_arg) { Date.today }
+    let(:object_arg) { Time.now }
 
     it { should equal(object_arg) }
   end
