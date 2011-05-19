@@ -27,7 +27,7 @@ group :jruby do
 end
 
 platforms :mri_18 do
-  group :quality do
+  group :metrics do
     gem 'flay',      '~> 1.4.2'
     gem 'flog',      '~> 2.5.1'
     gem 'heckle',    '~> 1.4.3'
