@@ -2,6 +2,8 @@
 
 Relational algebra SQL generator
 
+http://travis-ci.org/dkubb/veritas-sql-generator.png
+
 == Note on Patches/Pull Requests
 
 * If you want your code merged into the mainline, please discuss
