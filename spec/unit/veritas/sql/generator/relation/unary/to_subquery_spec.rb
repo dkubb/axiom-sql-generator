@@ -30,7 +30,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT DISTINCT "id", "name" FROM "users"') }
+    its(:to_s) { should eql('(SELECT DISTINCT "id", "name" FROM "users")') }
   end
 
   context 'when a rename is visited' do
@@ -40,7 +40,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT "id" AS "user_id", "name", "age" FROM "users"') }
+    its(:to_s) { should eql('(SELECT "id" AS "user_id", "name", "age" FROM "users")') }
   end
 
   context 'when a restriction is visited' do
@@ -50,7 +50,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT * FROM "users" WHERE "id" = 1') }
+    its(:to_s) { should eql('(SELECT * FROM "users" WHERE "id" = 1)') }
   end
 
   context 'when a limit is visited' do
@@ -60,7 +60,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1') }
+    its(:to_s) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1)') }
   end
 
   context 'when an offset is visited' do
@@ -70,6 +70,6 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1') }
+    its(:to_s) { should eql('(SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1)') }
   end
 end

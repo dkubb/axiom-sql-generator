@@ -21,7 +21,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" WHERE "id" = 1')                   }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" WHERE "id" = 1)')                 }
   end
 
   context 'when the operand is a projection' do
@@ -29,8 +29,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1') }
+    its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1')   }
+    its(:to_subquery) { should eql('(SELECT DISTINCT "id", "name" FROM "users" WHERE "id" = 1)') }
   end
 
   context 'when the operand is an extension' do
@@ -39,7 +39,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age", "one" FROM (SELECT *, 1 AS "one" FROM "users") AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT *, 1 AS "one" FROM "users") AS "users" WHERE "id" = 1')                          }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT *, 1 AS "one" FROM "users") AS "users" WHERE "id" = 1)')                        }
   end
 
   context 'when the operand is a projection then a restriction' do
@@ -48,7 +48,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name" FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1')            }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE "id" <> 2) AS "users" WHERE "id" = 1)')          }
   end
 
   context 'when the operand is a projection then a restriction, followed by another restriction' do
@@ -58,7 +58,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name" FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1')            }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1)')          }
   end
 
   context 'when the operand is a rename' do
@@ -89,7 +89,40 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" WHERE "id" = 1')                   }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" WHERE "id" = 1)')                 }
+  end
+
+  context 'when the operand is a summarization' do
+    context 'summarize per table dee' do
+      let(:summarize_per) { TABLE_DEE                                                                  }
+      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r[:id].count) } }
+      let(:restriction)   { operand.restrict { |r| r[:count].eq(1) }                                   }
+
+      it_should_behave_like 'a generated SQL SELECT query'
+
+      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "users" WHERE "count" = 1') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "users" WHERE "count" = 1)')     }
+    end
+
+    context 'summarize per table dum' do
+      let(:summarize_per) { TABLE_DUM                                                                  }
+      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r[:id].count) } }
+      let(:restriction)   { operand.restrict { |r| r[:count].eq(1) }                                   }
+
+      it_should_behave_like 'a generated SQL SELECT query'
+
+      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "users" WHERE "count" = 1') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "users" WHERE "count" = 1)')     }
+    end
+
+    context 'summarize by a subset of the operand header' do
+      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r[:id].count) } }
+
+      it_should_behave_like 'a generated SQL SELECT query'
+
+      its(:to_s)        { should eql('SELECT "id", "name", "count" FROM (SELECT "id", "name", COALESCE (COUNT ("id"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users" WHERE "id" = 1') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COALESCE (COUNT ("id"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users" WHERE "id" = 1)')                   }
+    end
   end
 
   context 'when the operand is ordered' do
@@ -98,7 +131,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age"')                   }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id", "name", "age")')                 }
   end
 
   context 'when the operand is reversed' do
@@ -107,7 +140,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC') }
-    its(:to_subquery) { should eql('SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC')                   }
+    its(:to_subquery) { should eql('(SELECT * FROM "users" WHERE "id" = 1 ORDER BY "id" DESC, "name" DESC, "age" DESC)')                 }
   end
 
   context 'when the operand is limited' do
@@ -116,7 +149,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" WHERE "id" = 1')                   }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" LIMIT 1) AS "users" WHERE "id" = 1)')                 }
   end
 
   context 'when the operand is an offset' do
@@ -125,7 +158,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     it_should_behave_like 'a generated SQL SELECT query'
 
     its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" WHERE "id" = 1')                   }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM "users" ORDER BY "id", "name", "age" OFFSET 1) AS "users" WHERE "id" = 1)')                 }
   end
 
   context 'when the operand is a difference' do
@@ -133,8 +166,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") EXCEPT (SELECT * FROM "users")) AS "users" WHERE "id" = 1')                   }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")) AS "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('(SELECT * FROM ((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users")) AS "users" WHERE "id" = 1)')                 }
   end
 
   context 'when the operand is an intersection' do
@@ -142,8 +175,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") INTERSECT (SELECT * FROM "users")) AS "users" WHERE "id" = 1')                   }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")) AS "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('(SELECT * FROM ((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users")) AS "users" WHERE "id" = 1)')                 }
   end
 
   context 'when the operand is a union' do
@@ -151,8 +184,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM ((SELECT * FROM "users") UNION (SELECT * FROM "users")) AS "users" WHERE "id" = 1')                   }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM ((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")) AS "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('(SELECT * FROM ((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users")) AS "users" WHERE "id" = 1)')                 }
   end
 
   context 'when the operand is a join' do
@@ -160,7 +193,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('SELECT * FROM (SELECT * FROM "users" NATURAL JOIN "users") AS "users" WHERE "id" = 1')                   }
+    its(:to_s)        { should eql('SELECT "id", "name", "age" FROM (SELECT * FROM "users" AS "left" NATURAL JOIN "users" AS "right") AS "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM "users" AS "left" NATURAL JOIN "users" AS "right") AS "users" WHERE "id" = 1)')                 }
   end
 end

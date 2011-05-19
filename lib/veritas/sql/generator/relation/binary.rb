@@ -13,17 +13,6 @@ module Veritas
           LEFT_NAME  = 'left'.freeze
           RIGHT_NAME = 'right'.freeze
 
-          # Return the subquery for the generator and identifier
-          #
-          # @param [#to_subquery] generator
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def self.subquery(generator, *)
-            generator.kind_of?(Base) ? generator.to_subquery : super
-          end
-
           # Visit an Join
           #
           # @param [Algebra::Join] join
@@ -32,6 +21,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_join(join)
+            @header = join.header
             set_operation(JOIN)
             set_columns(join)
             set_operands(join)
@@ -47,32 +37,12 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_product(product)
+            @header = product.header
             set_operation(PRODUCT)
             set_columns(product)
             set_operands(product)
             set_name
             self
-          end
-
-          # Return the SQL for the binary relation
-          #
-          # @example
-          #   sql = binary_relation.to_s
-          #
-          # @return [#to_s]
-          #
-          # @api public
-          def to_s
-            generate_sql(@columns)
-          end
-
-          # Return the SQL suitable for an subquery
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def to_subquery
-            generate_sql(ALL_COLUMNS)
           end
 
         private
@@ -85,26 +55,7 @@ module Veritas
           #
           # @api private
           def generate_sql(columns)
-            return EMPTY_STRING unless visited?
-            "SELECT #{columns} FROM #{left_subquery} #{@operation} #{right_subquery}"
-          end
-
-          # Return the left subquery
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def left_subquery
-            self.class.subquery(@left, LEFT_NAME)
-          end
-
-          # Return the right subquery
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def right_subquery
-            self.class.subquery(@right, RIGHT_NAME)
+            "SELECT #{columns} FROM #{@left.to_subquery} AS #{visit_identifier(LEFT_NAME)} #{@operation} #{@right.to_subquery} AS #{visit_identifier(RIGHT_NAME)}"
           end
 
           # Set the operation
@@ -151,19 +102,20 @@ module Veritas
             @name = [ @left.name, @right.name ].uniq.join(UNDERSCORE).freeze
           end
 
-          # Return a list of columns in a header
-          #
-          # @param [Veritas::Relation] relation
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def columns_for(relation)
-            relation.header.map { |attribute| dispatch(attribute) }.join(SEPARATOR)
-          end
-
           # Generates an SQL statement for base relation binary operands
           class Base < Relation::Base
+
+            # Return the SQL suitable for an subquery
+            #
+            # Does not parenthesize the query
+            #
+            # @return [#to_s]
+            #
+            # @api private
+            def to_subquery
+              return EMPTY_STRING unless visited?
+              generate_sql
+            end
 
           private
 
@@ -173,7 +125,7 @@ module Veritas
             #
             # @api private
             def generate_sql(*)
-              visited? ? @from : EMPTY_STRING
+              @from
             end
 
           end # class Base

@@ -10,6 +10,7 @@ module Veritas
           extend Aliasable
           include Direction,
                   Literal,
+                  Function::Aggregate,
                   Function::Connective,
                   Function::Predicate,
                   Function::Proposition,
@@ -17,16 +18,19 @@ module Veritas
 
           inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
-          DISTINCT     = 'DISTINCT '.freeze
-          COLLAPSIBLE  = {
-            Algebra::Projection                   => Set[ Algebra::Projection,                     Algebra::Restriction,                                                                                                                                                                        ].freeze,
-            Algebra::Restriction                  => Set[ Algebra::Projection,                                           Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                                            ].freeze,
-            Veritas::Relation::Operation::Order   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-            Veritas::Relation::Operation::Reverse => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-            Veritas::Relation::Operation::Offset  => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                            Algebra::Rename ].freeze,
-            Veritas::Relation::Operation::Limit   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                      Algebra::Rename ].freeze,
-            Algebra::Rename                       => Set[ Algebra::Projection,                     Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit                  ].freeze,
-            Algebra::Extension                    => Set[ Algebra::Projection,                     Algebra::Restriction, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit, Algebra::Rename ].freeze
+          DISTINCT    = 'DISTINCT '.freeze
+          NO_ROWS     = ' HAVING 1 = 0'.freeze
+          ANY_ROWS    = ' HAVING COUNT (*) > 0'
+          COLLAPSIBLE = {
+            Algebra::Summarization                => Set[                                                                                                                                                                                                                                                               ].freeze,
+            Algebra::Projection                   => Set[ Algebra::Projection,                                      Algebra::Restriction,                                                                                                                                                                               ].freeze,
+            Algebra::Extension                    => Set[ Algebra::Projection,                     Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit ].freeze,
+            Algebra::Rename                       => Set[ Algebra::Projection,                                      Algebra::Restriction,                         Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset, Veritas::Relation::Operation::Limit ].freeze,
+            Algebra::Restriction                  => Set[ Algebra::Projection,                                                                                    Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                           ].freeze,
+            Veritas::Relation::Operation::Order   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                           ].freeze,
+            Veritas::Relation::Operation::Reverse => Set[ Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                           ].freeze,
+            Veritas::Relation::Operation::Offset  => Set[ Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse,                                                                           ].freeze,
+            Veritas::Relation::Operation::Limit   => Set[ Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Veritas::Relation::Operation::Order, Veritas::Relation::Operation::Reverse, Veritas::Relation::Operation::Offset,                                     ].freeze,
           }.freeze
 
           # Initialize a Unary relation SQL generator
@@ -49,6 +53,7 @@ module Veritas
           def visit_veritas_relation_base(base_relation)
             @name    = base_relation.name
             @from    = visit_identifier(@name)
+            @header  = base_relation.header
             @columns = columns_for(base_relation)
             self
           end
@@ -63,6 +68,7 @@ module Veritas
           def visit_veritas_algebra_projection(projection)
             @from     = subquery_for(projection)
             @distinct = DISTINCT
+            @header   = projection.header
             @columns  = columns_for(projection)
             scope_query(projection)
             self
@@ -76,9 +82,10 @@ module Veritas
           #
           # @api private
           def visit_veritas_algebra_extension(extension)
-            @from         = subquery_for(extension)
-            @columns    ||= columns_for(extension.operand)
-            @extensions   = extensions_for(extension.extensions)
+            @from      = subquery_for(extension)
+            @header    = extension.header
+            @columns ||= columns_for(extension.operand)
+            add_extensions(extension.extensions)
             scope_query(extension)
             self
           end
@@ -92,6 +99,7 @@ module Veritas
           # @api private
           def visit_veritas_algebra_rename(rename)
             @from    = subquery_for(rename)
+            @header  = rename.header
             @columns = columns_for(rename.operand, rename.aliases.to_hash)
             scope_query(rename)
             self
@@ -106,9 +114,29 @@ module Veritas
           # @api private
           def visit_veritas_algebra_restriction(restriction)
             @from      = subquery_for(restriction)
-            @where     = dispatch(restriction.predicate)
+            @where     = " WHERE #{dispatch(restriction.predicate)}"
+            @header    = restriction.header
             @columns ||= columns_for(restriction)
             scope_query(restriction)
+            self
+          end
+
+          # Visit a Summarization
+          #
+          # @param [Algebra::Summarization] summarization
+          #
+          # @return [self]
+          #
+          # @api private
+          def visit_veritas_algebra_summarization(summarization)
+            summarize_per = summarization.summarize_per
+            @from         = subquery_for(summarization)
+            @header       = summarization.header
+            @columns      = columns_for(summarize_per)
+            summarize_per(summarize_per)
+            group_by_columns
+            add_extensions(summarization.summarizers)
+            scope_query(summarization)
             self
           end
 
@@ -121,7 +149,8 @@ module Veritas
           # @api private
           def visit_veritas_relation_operation_order(order)
             @from      = subquery_for(order)
-            @order     = order_for(order.directions)
+            @order     = " ORDER BY #{order_for(order.directions)}"
+            @header    = order.header
             @columns ||= columns_for(order)
             scope_query(order)
             self
@@ -136,7 +165,8 @@ module Veritas
           # @api private
           def visit_veritas_relation_operation_limit(limit)
             @from      = subquery_for(limit)
-            @limit     = limit.limit
+            @limit     = " LIMIT #{limit.limit}"
+            @header    = limit.header
             @columns ||= columns_for(limit)
             scope_query(limit)
             self
@@ -151,31 +181,11 @@ module Veritas
           # @api private
           def visit_veritas_relation_operation_offset(offset)
             @from      = subquery_for(offset)
-            @offset    = offset.offset
+            @offset    = " OFFSET #{offset.offset}"
+            @header    = offset.header
             @columns ||= columns_for(offset)
             scope_query(offset)
             self
-          end
-
-          # Return the SQL for the unary relation
-          #
-          # @example
-          #   sql = unary_relation.to_s
-          #
-          # @return [#to_s]
-          #
-          # @api public
-          def to_s
-            generate_sql(select_list)
-          end
-
-          # Return the SQL suitable for an subquery
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def to_subquery
-            generate_sql(all_columns? ? ALL_COLUMNS : select_list)
           end
 
         private
@@ -188,84 +198,36 @@ module Veritas
           #
           # @api private
           def generate_sql(columns)
-            return EMPTY_STRING unless visited?
-            sql = "SELECT #{columns}#{@extensions} FROM #{@from}"
-            sql << " WHERE #{@where}"    if @where
-            sql << " ORDER BY #{@order}" if @order
-            sql << " LIMIT #{@limit}"    if @limit
-            sql << " OFFSET #{@offset}"  if @offset
-            sql
+            [ "SELECT #{columns} FROM #{@from}", @where, @group, @having, @order, @limit, @offset ].join
           end
 
-          # Return the columns for the SELECT query
+          # Return the columns to use in a query
           #
           # @return [#to_s]
           #
           # @api private
-          def select_list
-            @distinct.to_s + @columns.to_s
+          def query_columns
+            explicit_columns
           end
 
-          # Return a list of columns in a header
-          #
-          # @param [Veritas::Relation] relation
-          #
-          # @param [#[]] aliases
-          #   optional aliases for the columns
+          # Return the columns to use in a subquery
           #
           # @return [#to_s]
           #
           # @api private
-          def columns_for(relation, aliases = {})
-            relation.header.map { |attribute| column_for(attribute, aliases) }.join(SEPARATOR)
+          def subquery_columns
+            explicit_columns_in_subquery? ? explicit_columns : super
           end
 
-          # Return the column for an attribute
+          # Test if the subquery should use "*" and not specify columns explicitly
           #
-          # @param [Attribute] attribute
-          #
-          # @param [#[]] aliases
-          #   aliases for the columns
-          #
-          # @return [#to_s]
+          # @return [Boolean]
           #
           # @api private
-          def column_for(attribute, aliases)
-            column = dispatch(attribute)
-            if aliases.key?(attribute)
-              alias_for(column, aliases[attribute])
-            else
-              column
-            end
-          end
-
-          # Return the column alias for an attribute
-          #
-          # @param [#to_s] column
-          #
-          # @param [Attribute, nil] alias_attribute
-          #   attribute to use for the alias
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def alias_for(column, alias_attribute)
-            "#{column} AS #{visit_identifier(alias_attribute.name)}"
-          end
-
-          # Return the SQL extensions for the select list
-          #
-          # @param [Hash{Function => Attribute}] extensions
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def extensions_for(extensions)
-            sql = ''
-            extensions.each do |attribute, function|
-              sql << "#{SEPARATOR}#{dispatch(function)} AS #{dispatch(attribute)}"
-            end
-            sql
+          def explicit_columns_in_subquery?
+            @scope.include?(Algebra::Projection) ||
+            @scope.include?(Algebra::Rename)     ||
+            @scope.include?(Algebra::Summarization)
           end
 
           # Return a list of columns for ordering
@@ -277,6 +239,59 @@ module Veritas
           # @api private
           def order_for(directions)
             directions.map { |direction| dispatch(direction) }.join(SEPARATOR)
+          end
+
+          # Summarize the operand over the provided relation
+          #
+          # @param [Relation] relation
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def summarize_per(relation)
+            return if relation.eql?(TABLE_DEE)
+
+            if    relation.eql?(TABLE_DUM)                             then summarize_per_table_dum
+            elsif (generator = Binary.visit(relation)).name.eql?(name) then summarize_per_subset
+            else
+              summarize_per_relation(generator)
+            end
+          end
+
+          # Summarize the operand using table dee
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def summarize_per_table_dum
+            @having = NO_ROWS
+          end
+
+          # Summarize the operand using a subset
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def summarize_per_subset
+            @having = ANY_ROWS
+          end
+
+          # Summarize the operand using another relation
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def summarize_per_relation(generator)
+            @from = "#{generator.to_subquery} AS #{visit_identifier(generator.name)} NATURAL LEFT JOIN #{@from}"
+          end
+
+          # Group by the columns
+          #
+          # @return [undefined]
+          #
+          # @api private
+          def group_by_columns
+            @group = " GROUP BY #{column_list_for(@columns)}" if @columns.any?
           end
 
           # Return an expression that can be used for the FROM
@@ -307,16 +322,6 @@ module Veritas
             @scope << operand.class
           end
 
-          # Test if the query should use "*" and not specify columns explicitly
-          #
-          # @return [Boolean]
-          #
-          # @api private
-          def all_columns?
-            !@scope.include?(Algebra::Projection) &&
-            !@scope.include?(Algebra::Rename)
-          end
-
           # Test if the relation should be collapsed
           #
           # @param [Relation] relation
@@ -336,7 +341,7 @@ module Veritas
           #
           # @api private
           def aliased_subquery(subquery)
-            self.class.subquery(subquery)
+            "#{subquery.to_subquery} AS #{visit_identifier(subquery.name)}"
           ensure
             reset_query_state
           end
@@ -362,7 +367,8 @@ module Veritas
           # @api private
           def reset_query_state
             @scope.clear
-            @distinct = @columns = @extensions = @where = @order = @limit = @offset = nil
+            @extensions.clear
+            @distinct = @columns = @where = @order = @limit = @offset = @group = @having = nil
           end
 
         end # class Unary

@@ -30,7 +30,7 @@ describe SQL::Generator::Relation::Set, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('(SELECT * FROM "users") EXCEPT (SELECT * FROM "users")') }
+    its(:to_s) { should eql('((SELECT "id", "name", "age" FROM "users") EXCEPT (SELECT "id", "name", "age" FROM "users"))') }
   end
 
   context 'when an intersection is visited' do
@@ -40,7 +40,7 @@ describe SQL::Generator::Relation::Set, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('(SELECT * FROM "users") INTERSECT (SELECT * FROM "users")') }
+    its(:to_s) { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "users"))') }
   end
 
   context 'when a union is visited' do
@@ -50,6 +50,6 @@ describe SQL::Generator::Relation::Set, '#to_subquery' do
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('(SELECT * FROM "users") UNION (SELECT * FROM "users")') }
+    its(:to_s) { should eql('((SELECT "id", "name", "age" FROM "users") UNION (SELECT "id", "name", "age" FROM "users"))') }
   end
 end

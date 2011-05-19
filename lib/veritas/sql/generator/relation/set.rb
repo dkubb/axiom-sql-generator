@@ -54,39 +54,15 @@ module Veritas
             self
           end
 
-          # Return the SQL for the set relation
-          #
-          # @example
-          #   sql = set_relation.to_s
-          #
-          # @return [#to_s]
-          #
-          # @api public
-          def to_s
-            generate_sql(:to_s)
-          end
-
-          # Return the SQL suitable for an subquery
-          #
-          # @return [#to_s]
-          #
-          # @api private
-          def to_subquery
-            generate_sql(:to_subquery)
-          end
-
         private
 
           # Generate the SQL using the supplied method
           #
-          # @param [Symbol] method
-          #
           # @return [#to_s]
           #
           # @api private
-          def generate_sql(method)
-            return EMPTY_STRING unless visited?
-            "(#{@left.send(method)}) #{@operation} (#{@right.send(method)})"
+          def generate_sql(*)
+            "(#{@left}) #{@operation} (#{@right})"
           end
 
           # Generates an SQL statement for base relation set operands

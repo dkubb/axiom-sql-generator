@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Dan Kubb}]
-  s.date = %q{2011-05-22}
+  s.date = %q{2011-05-25}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
     "lib/veritas/sql/generator/core_ext/date_time.rb",
     "lib/veritas/sql/generator/direction.rb",
     "lib/veritas/sql/generator/function.rb",
+    "lib/veritas/sql/generator/function/aggregate.rb",
     "lib/veritas/sql/generator/function/connective.rb",
     "lib/veritas/sql/generator/function/numeric.rb",
     "lib/veritas/sql/generator/function/predicate.rb",
@@ -65,6 +66,13 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/class_methods/parenthesize_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_ascending_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_descending_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_count_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_maximum_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_mean_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_minimum_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_standard_deviation_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_sum_spec.rb",
+    "spec/unit/veritas/sql/generator/function/aggregate/visit_veritas_aggregate_variance_spec.rb",
     "spec/unit/veritas/sql/generator/function/connective/visit_veritas_function_connective_conjunction_spec.rb",
     "spec/unit/veritas/sql/generator/function/connective/visit_veritas_function_connective_disjunction_spec.rb",
     "spec/unit/veritas/sql/generator/function/connective/visit_veritas_function_connective_negation_spec.rb",
@@ -103,12 +111,10 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/literal/visit_true_class_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/base/visit_veritas_relation_base_spec.rb",
-    "spec/unit/veritas/sql/generator/relation/binary/class_methods/subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/to_s_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/visit_veritas_algebra_join_spec.rb",
     "spec/unit/veritas/sql/generator/relation/binary/visit_veritas_algebra_product_spec.rb",
-    "spec/unit/veritas/sql/generator/relation/class_methods/subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/class_methods/visit_spec.rb",
     "spec/unit/veritas/sql/generator/relation/name_spec.rb",
     "spec/unit/veritas/sql/generator/relation/set/to_s_spec.rb",
@@ -116,13 +122,16 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/relation/set/visit_veritas_algebra_difference_spec.rb",
     "spec/unit/veritas/sql/generator/relation/set/visit_veritas_algebra_intersection_spec.rb",
     "spec/unit/veritas/sql/generator/relation/set/visit_veritas_algebra_union_spec.rb",
+    "spec/unit/veritas/sql/generator/relation/to_s_spec.rb",
     "spec/unit/veritas/sql/generator/relation/to_sql_spec.rb",
+    "spec/unit/veritas/sql/generator/relation/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/to_s_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_extension_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_projection_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_rename_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_restriction_spec.rb",
+    "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_algebra_summarization_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_base_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_operation_limit_spec.rb",
     "spec/unit/veritas/sql/generator/relation/unary/visit_veritas_relation_operation_offset_spec.rb",

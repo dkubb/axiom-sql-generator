@@ -16,6 +16,7 @@ require 'veritas/sql/generator/direction'
 require 'veritas/sql/generator/literal'
 
 require 'veritas/sql/generator/function'
+require 'veritas/sql/generator/function/aggregate'
 require 'veritas/sql/generator/function/connective'
 require 'veritas/sql/generator/function/numeric'
 require 'veritas/sql/generator/function/predicate'
