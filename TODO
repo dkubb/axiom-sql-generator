@@ -21,3 +21,7 @@
   * It should collapse the inner subquery when there is no reference, and
     keep the subquery when it is referenced.
   * This will likely apply to projection and rename operators too.
+
+* When Restriction wraps a Summarization, and it would normally wrap the
+  statement and apply a WHERE clause, it should apply the clause using
+  HAVING instead.
