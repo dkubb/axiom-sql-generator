@@ -37,6 +37,16 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
     its(:to_subquery) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" CROSS JOIN (SELECT DISTINCT "other_id", "other_name" FROM "other") AS "right"')                                      }
   end
 
+  context 'when the operand is an extension' do
+    let(:left)  { users.extend { |r| r.add(:one, 1) } }
+    let(:right) { other.extend { |r| r.add(:two, 2) } }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "one", "other_id", "other_name", "other_age", "two" FROM (SELECT *, 1 AS "one" FROM "users") AS "left" CROSS JOIN (SELECT *, 2 AS "two" FROM "other") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT *, 1 AS "one" FROM "users") AS "left" CROSS JOIN (SELECT *, 2 AS "two" FROM "other") AS "right"')                                                                        }
+  end
+
   context 'when the operand is a rename' do
     let(:left)  { users.rename(:id => :user_id)             }
     let(:right) { other.rename(:other_id => :other_user_id) }

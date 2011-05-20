@@ -35,6 +35,15 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
     its(:to_subquery) { should eql('SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users") AS "left" NATURAL JOIN (SELECT DISTINCT "id", "name" FROM "users") AS "right"')            }
   end
 
+  context 'when the operand is an extension' do
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) } }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "one" FROM (SELECT *, 1 AS "one" FROM "users") AS "left" NATURAL JOIN (SELECT *, 1 AS "one" FROM "users") AS "right"') }
+    its(:to_subquery) { should eql('SELECT * FROM (SELECT *, 1 AS "one" FROM "users") AS "left" NATURAL JOIN (SELECT *, 1 AS "one" FROM "users") AS "right"')                          }
+  end
+
   context 'when the operands are rename' do
     let(:operand) { base_relation.rename(:id => :user_id) }
 

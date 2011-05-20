@@ -24,15 +24,6 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
     its(:to_subquery) { should eql('SELECT *, 1 AS "one" FROM "users"')                   }
   end
 
-  context 'when the operand is an extension' do
-    let(:operand) { base_relation.extend { |r| r.add(:two, 2) } }
-
-    it_should_behave_like 'a generated SQL SELECT query'
-
-    its(:to_s)        { should eql('SELECT "id", "name", "age", "two", 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"') }
-    its(:to_subquery) { should eql('SELECT *, 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"')                          }
-  end
-
   context 'when the operand is a projection' do
     let(:operand) { base_relation.project([ :id, :name ]) }
 
@@ -40,6 +31,15 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
 
     its(:to_s)        { should eql('SELECT DISTINCT "id", "name", 1 AS "one" FROM "users"') }
     its(:to_subquery) { should eql('SELECT DISTINCT "id", "name", 1 AS "one" FROM "users"') }
+  end
+
+  context 'when the operand is an extension' do
+    let(:operand) { base_relation.extend { |r| r.add(:two, 2) } }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('SELECT "id", "name", "age", "two", 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"') }
+    its(:to_subquery) { should eql('SELECT *, 1 AS "one" FROM (SELECT *, 2 AS "two" FROM "users") AS "users"')                          }
   end
 
   context 'when the operand is a rename' do

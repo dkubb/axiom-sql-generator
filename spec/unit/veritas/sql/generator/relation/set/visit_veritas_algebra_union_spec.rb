@@ -35,6 +35,15 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_union' do
     its(:to_subquery) { should eql('(SELECT DISTINCT "id", "name" FROM "users") UNION (SELECT DISTINCT "id", "name" FROM "users")') }
   end
 
+  context 'when the operand is an extension' do
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) } }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('(SELECT "id", "name", "age", 1 AS "one" FROM "users") UNION (SELECT "id", "name", "age", 1 AS "one" FROM "users")') }
+    its(:to_subquery) { should eql('(SELECT *, 1 AS "one" FROM "users") UNION (SELECT *, 1 AS "one" FROM "users")')                                     }
+  end
+
   context 'when the operands are renames' do
     let(:operand) { base_relation.rename(:id => :user_id) }
 
