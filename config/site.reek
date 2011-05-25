@@ -8,10 +8,10 @@ UncommunicativeParameterName:
   - !ruby/regexp /[0-9]$/
   - !ruby/regexp /[A-Z]/
 LargeClass:
-  max_methods: 25  # TODO: reduce this in UnaryRelation
+  max_methods: 26  # TODO: reduce this in UnaryRelation
   exclude: []
   enabled: true
-  max_instance_variables: 10  # TODO: reduce this in UnaryRelation
+  max_instance_variables: 12  # TODO: reduce this in UnaryRelation
 UncommunicativeMethodName:
   accept: []
   exclude: [
@@ -40,7 +40,8 @@ FeatureEnvy:
     'Veritas::SQL::Generator::Function::Predicate#exclusive_range_inclusion_sql',
     'Veritas::SQL::Generator::Function::Predicate#new_from_enumerable_predicate',
     'Veritas::SQL::Generator::Function::Predicate#optional?',
-    'Veritas::SQL::Generator::Relation::Unary#collapse_subquery_for?'
+    'Veritas::SQL::Generator::Relation::Unary#collapse_subquery_for?',
+    'Veritas::SQL::Generator::Relation#column_list_for'
   ]
   enabled: true
 ClassVariable:
@@ -67,7 +68,7 @@ NestedIterators:
   enabled: true
   max_allowed_nesting: 1
 LongMethod:
-  max_statements: 7
+  max_statements: 9
   exclude: [
     'Veritas::SQL::Generator::Relation::Unary#to_s'
   ]
@@ -107,7 +108,7 @@ UncommunicativeVariableName:
 SimulatedPolymorphism:
   exclude: []
   enabled: true
-  max_ifs: 1
+  max_ifs: 2
 DataClump:
   exclude: [
     # TODO: split Range handling methods into separate class/module

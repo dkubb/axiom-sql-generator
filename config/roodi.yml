@@ -1,8 +1,8 @@
 ---
-AbcMetricMethodCheck:            { score: 7.1 }
+AbcMetricMethodCheck:            { score: 9.1 }
 AssignmentInConditionalCheck:    { }
 CaseMissingElseCheck:            { }
-ClassLineCountCheck:             { line_count: 362 }
+ClassLineCountCheck:             { line_count: 368 }
 ClassNameCheck:                  { pattern: !ruby/regexp /\A(?:[A-Z]+|[A-Z][a-z](?:[A-Z]?[a-z])+)\z/ }
 ClassVariableCheck:              { }
 CyclomaticComplexityBlockCheck:  { complexity: 2 }
@@ -11,6 +11,6 @@ EmptyRescueBodyCheck:            { }
 ForLoopCheck:                    { }
 MethodLineCountCheck:            { line_count: 10 }
 MethodNameCheck:                 { pattern: !ruby/regexp /\A(?:[a-z\d](?:_?[a-z\d])+[?!=]?|\[\]=?|==|<=>|[+*&|-])\z/ }
-ModuleLineCountCheck:            { line_count: 368 }
+ModuleLineCountCheck:            { line_count: 374 }
 ModuleNameCheck:                 { pattern: !ruby/regexp /\A(?:[A-Z]+|[A-Z][a-z](?:[A-Z]?[a-z])+)\z/ }
 ParameterNumberCheck:            { parameter_count: 3 }
