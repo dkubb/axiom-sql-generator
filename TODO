@@ -1,3 +1,10 @@
+* Handle case where two relations have a Set operation applied to them,
+  but their headers are in different orders.
+  * Will need a way to specify the order I would like the headers to be
+    in when generating the output.
+
+* Try to use Generate.parenthesize! in #to_subquery when possible
+
 * Replace some of the conditional function with polymorphism, especially
   where there is special case function for certain types of generators
   within other generators.
