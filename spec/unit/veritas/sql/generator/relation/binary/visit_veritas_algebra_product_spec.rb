@@ -91,13 +91,13 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:left)  { users.summarize([ :id, :name ]) { |r| r.add(:count, r[:id].count) }                         }
-      let(:right) { other.summarize([ :other_id, :other_name ]) { |r| r.add(:other_count, r[:other_id].count) } }
+      let(:left)  { users.summarize([ :id, :name ]) { |r| r.add(:count, r[:age].count) }                         }
+      let(:right) { other.summarize([ :other_id, :other_name ]) { |r| r.add(:other_count, r[:other_age].count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", "count", "other_id", "other_name", "other_count" FROM (SELECT "id", "name", COALESCE (COUNT ("id"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COALESCE (COUNT ("id"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right")')                                                            }
+      its(:to_s)        { should eql('SELECT "id", "name", "count", "other_id", "other_name", "other_count" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COALESCE (COUNT ("other_age"), 0) AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COALESCE (COUNT ("other_age"), 0) AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right")')                                                            }
     end
   end
 

@@ -110,12 +110,12 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r[:id].count) } }
+      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r[:age].count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT "id", "name", COALESCE (COUNT ("id"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users"')   }
-      its(:to_subquery) { should eql('(SELECT DISTINCT "id", "name" FROM (SELECT "id", "name", COALESCE (COUNT ("id"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users")') }
+      its(:to_s)        { should eql('SELECT DISTINCT "id", "name" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users"')   }
+      its(:to_subquery) { should eql('(SELECT DISTINCT "id", "name" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users")') }
     end
   end
 
