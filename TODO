@@ -32,3 +32,7 @@
 * When Restriction wraps a Summarization, and it would normally wrap the
   statement and apply a WHERE clause, it should apply the clause using
   HAVING instead.
+
+* Handle case where Extension does not reference a column in the
+  wrapped Summarization or Rename. It should be safe to collapse the query
+  in those cases.
