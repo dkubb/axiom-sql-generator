@@ -77,8 +77,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users" HAVING 1 = 0')   }
-      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users" HAVING 1 = 0)') }
+      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users" HAVING FALSE')   }
+      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users" HAVING FALSE)') }
     end
 
     context 'summarize by a subset of the operand header' do

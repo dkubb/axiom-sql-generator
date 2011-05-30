@@ -42,6 +42,6 @@ describe SQL::Generator::Function::Predicate, '#visit_veritas_function_predicate
 
     it_should_behave_like 'a generated SQL expression'
 
-    its(:to_s) { should eql('1 = 0') }
+    its(:to_s) { should eql('FALSE') }
   end
 end

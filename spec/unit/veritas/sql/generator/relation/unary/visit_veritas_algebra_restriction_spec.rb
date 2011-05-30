@@ -57,8 +57,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id", "name" FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1') }
-    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE 1 = 1) AS "users" WHERE 1 = 1) AS "users" WHERE "id" = 1)')          }
+    its(:to_s)        { should eql('SELECT "id", "name" FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE TRUE) AS "users" WHERE TRUE) AS "users" WHERE "id" = 1') }
+    its(:to_subquery) { should eql('(SELECT * FROM (SELECT * FROM (SELECT DISTINCT "id", "name" FROM "users" WHERE TRUE) AS "users" WHERE TRUE) AS "users" WHERE "id" = 1)')          }
   end
 
   context 'when the operand is a rename' do
@@ -111,8 +111,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "users" WHERE "count" = 1') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "users" WHERE "count" = 1)')     }
+      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "users" WHERE "count" = 1') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "users" WHERE "count" = 1)')     }
     end
 
     context 'summarize by a subset of the operand header' do

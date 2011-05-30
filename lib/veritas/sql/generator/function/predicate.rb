@@ -100,7 +100,7 @@ module Veritas
           def visit_veritas_function_predicate_inclusion(inclusion)
             case inclusion.right
               when Range       then range_inclusion_sql(inclusion)
-              when EMPTY_ARRAY then MATCH_NONE
+              when EMPTY_ARRAY then FALSE
               else
                 binary_infix_operation_sql(IN, inclusion)
             end
@@ -116,7 +116,7 @@ module Veritas
           def visit_veritas_function_predicate_exclusion(exclusion)
             case exclusion.right
               when Range       then range_exclusion_sql(exclusion)
-              when EMPTY_ARRAY then MATCH_ALL
+              when EMPTY_ARRAY then TRUE
               else
                 binary_infix_operation_sql(NOT_IN, exclusion)
             end

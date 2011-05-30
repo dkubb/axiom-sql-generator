@@ -11,5 +11,5 @@ describe SQL::Generator::Function::Proposition, '#visit_veritas_function_proposi
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('1 = 0') }
+  its(:to_s) { should eql('FALSE') }
 end

@@ -79,8 +79,8 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) INTERSECT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0)')   }
-      its(:to_subquery) { should eql('((SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) INTERSECT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0))') }
+      its(:to_s)        { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) INTERSECT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE)')   }
+      its(:to_subquery) { should eql('((SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) INTERSECT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE))') }
     end
 
     context 'summarize by a subset of the operand header' do

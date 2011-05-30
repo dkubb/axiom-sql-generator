@@ -8,9 +8,6 @@ module Veritas
       module Function
         include Attribute, Literal
 
-        MATCH_ALL  = '1 = 1'.freeze
-        MATCH_NONE = '1 = 0'.freeze
-
       private
         # Return the SQL for a umary prefix operation
         #

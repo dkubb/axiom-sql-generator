@@ -86,8 +86,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "count", "other_count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" HAVING 1 = 0) AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" HAVING 1 = 0) AS "right")')                    }
+      its(:to_s)        { should eql('SELECT "count", "other_count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" HAVING FALSE) AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" HAVING FALSE) AS "right")')                    }
     end
 
     context 'summarize by a subset of the operand header' do

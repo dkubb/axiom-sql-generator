@@ -19,7 +19,7 @@ module Veritas
           inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
           DISTINCT    = 'DISTINCT '.freeze
-          NO_ROWS     = ' HAVING 1 = 0'.freeze
+          NO_ROWS     = ' HAVING FALSE'.freeze
           ANY_ROWS    = ' HAVING COUNT (*) > 0'
           COLLAPSIBLE = {
             Algebra::Summarization                => Set[                                                                                                                                                                                                                                                               ].freeze,

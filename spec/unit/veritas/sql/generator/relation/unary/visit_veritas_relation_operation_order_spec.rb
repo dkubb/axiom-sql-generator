@@ -88,8 +88,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0 ORDER BY "count"')   }
-      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0 ORDER BY "count")') }
+      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE ORDER BY "count"')   }
+      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE ORDER BY "count")') }
     end
 
     context 'summarize by a subset of the operand header' do

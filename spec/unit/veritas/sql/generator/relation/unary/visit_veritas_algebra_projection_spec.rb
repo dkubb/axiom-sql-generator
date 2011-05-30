@@ -105,8 +105,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_projection' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT DISTINCT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "users"')   }
-      its(:to_subquery) { should eql('(SELECT DISTINCT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING 1 = 0) AS "users")') }
+      its(:to_s)        { should eql('SELECT DISTINCT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "users"')   }
+      its(:to_subquery) { should eql('(SELECT DISTINCT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "users")') }
     end
 
     context 'summarize by a subset of the operand header' do

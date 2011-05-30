@@ -17,7 +17,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_function_proposition_tautology(_tautology)
-            MATCH_ALL
+            TRUE
           end
 
           # Visit a Contradiction
@@ -28,7 +28,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_function_proposition_contradiction(_contradiction)
-            MATCH_NONE
+            FALSE
           end
 
         end # module Proposition
