@@ -14,7 +14,8 @@ module Veritas
                   Function::Connective,
                   Function::Predicate,
                   Function::Proposition,
-                  Function::String
+                  Function::String,
+                  Function::Numeric
 
           inheritable_alias(:visit_veritas_relation_operation_reverse => :visit_veritas_relation_operation_order)
 
