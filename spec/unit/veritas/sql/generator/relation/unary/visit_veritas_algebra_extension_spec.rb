@@ -47,8 +47,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
 
     it_should_behave_like 'a generated SQL SELECT query'
 
-    its(:to_s)        { should eql('SELECT "id" AS "user_id", "name", "age", 1 AS "one" FROM "users"')   }
-    its(:to_subquery) { should eql('(SELECT "id" AS "user_id", "name", "age", 1 AS "one" FROM "users")') }
+    its(:to_s)        { should eql('SELECT "user_id", "name", "age", 1 AS "one" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users"') }
+    its(:to_subquery) { should eql('(SELECT *, 1 AS "one" FROM (SELECT "id" AS "user_id", "name", "age" FROM "users") AS "users")')                      }
   end
 
   context 'when the operand is a restriction' do
@@ -67,8 +67,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users"')   }
-      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users")') }
+      its(:to_s)        { should eql('SELECT "count", 1 AS "one" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "users"') }
+      its(:to_subquery) { should eql('(SELECT *, 1 AS "one" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "users")')     }
     end
 
     context 'summarize per table dum' do
@@ -77,8 +77,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users" HAVING FALSE')   }
-      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count", 1 AS "one" FROM "users" HAVING FALSE)') }
+      its(:to_s)        { should eql('SELECT "count", 1 AS "one" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "users"') }
+      its(:to_subquery) { should eql('(SELECT *, 1 AS "one" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "users")')     }
     end
 
     context 'summarize by a subset of the operand header' do
@@ -86,8 +86,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_extension' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count", 1 AS "one" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0')   }
-      its(:to_subquery) { should eql('(SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count", 1 AS "one" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0)') }
+      its(:to_s)        { should eql('SELECT "id", "name", "count", 1 AS "one" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users"') }
+      its(:to_subquery) { should eql('(SELECT *, 1 AS "one" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "users")')                   }
     end
   end
 
