@@ -52,7 +52,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_rev
   end
 
   context 'when the operand is a restriction' do
-    let(:operand) { base_relation.order.restrict { |r| r[:id].eq(1) } }
+    let(:operand) { base_relation.restrict { |r| r[:id].eq(1) }.order }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
