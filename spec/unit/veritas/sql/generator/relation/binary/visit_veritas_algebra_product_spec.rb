@@ -75,8 +75,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "count", "other_count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other") AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other") AS "right")')                    }
+      its(:to_s)        { should eql('SELECT "count", "other_count" FROM (SELECT COUNT ("id") AS "count" FROM "users") AS "left" CROSS JOIN (SELECT COUNT ("other_id") AS "other_count" FROM "other") AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COUNT ("id") AS "count" FROM "users") AS "left" CROSS JOIN (SELECT COUNT ("other_id") AS "other_count" FROM "other") AS "right")')                    }
     end
 
     context 'summarize per table dum' do
@@ -86,8 +86,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "count", "other_count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" HAVING FALSE) AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "left" CROSS JOIN (SELECT COALESCE (COUNT ("other_id"), 0) AS "other_count" FROM "other" HAVING FALSE) AS "right")')                    }
+      its(:to_s)        { should eql('SELECT "count", "other_count" FROM (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) AS "left" CROSS JOIN (SELECT COUNT ("other_id") AS "other_count" FROM "other" HAVING FALSE) AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) AS "left" CROSS JOIN (SELECT COUNT ("other_id") AS "other_count" FROM "other" HAVING FALSE) AS "right")')                    }
     end
 
     context 'summarize by a subset of the operand header' do
@@ -96,8 +96,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", "count", "other_id", "other_name", "other_count" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COALESCE (COUNT ("other_age"), 0) AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COALESCE (COUNT ("other_age"), 0) AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right")')                                                            }
+      its(:to_s)        { should eql('SELECT "id", "name", "count", "other_id", "other_name", "other_count" FROM (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COUNT ("other_age") AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" CROSS JOIN (SELECT "other_id", "other_name", COUNT ("other_age") AS "other_count" FROM "other" GROUP BY "other_id", "other_name" HAVING COUNT (*) > 0) AS "right")')                                                            }
     end
   end
 

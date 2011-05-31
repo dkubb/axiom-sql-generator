@@ -78,8 +78,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" ORDER BY "count"')   }
-      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" ORDER BY "count")') }
+      its(:to_s)        { should eql('SELECT COUNT ("id") AS "count" FROM "users" ORDER BY "count"')   }
+      its(:to_subquery) { should eql('(SELECT COUNT ("id") AS "count" FROM "users" ORDER BY "count")') }
     end
 
     context 'summarize per table dum' do
@@ -88,8 +88,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE ORDER BY "count"')   }
-      its(:to_subquery) { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE ORDER BY "count")') }
+      its(:to_s)        { should eql('SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE ORDER BY "count"')   }
+      its(:to_subquery) { should eql('(SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE ORDER BY "count")') }
     end
 
     context 'summarize by a subset of the operand header' do
@@ -97,8 +97,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_ord
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0 ORDER BY "id", "name", "count"')   }
-      its(:to_subquery) { should eql('(SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0 ORDER BY "id", "name", "count")') }
+      its(:to_s)        { should eql('SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0 ORDER BY "id", "name", "count"')   }
+      its(:to_subquery) { should eql('(SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0 ORDER BY "id", "name", "count")') }
     end
   end
 

@@ -72,8 +72,8 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") EXCEPT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users")')   }
-      its(:to_subquery) { should eql('((SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") EXCEPT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users"))') }
+      its(:to_s)        { should eql('(SELECT COUNT ("id") AS "count" FROM "users") EXCEPT (SELECT COUNT ("id") AS "count" FROM "users")')   }
+      its(:to_subquery) { should eql('((SELECT COUNT ("id") AS "count" FROM "users") EXCEPT (SELECT COUNT ("id") AS "count" FROM "users"))') }
     end
 
     context 'summarize per table dum' do
@@ -82,8 +82,8 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('(SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) EXCEPT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE)')   }
-      its(:to_subquery) { should eql('((SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) EXCEPT (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE))') }
+      its(:to_s)        { should eql('(SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) EXCEPT (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE)')   }
+      its(:to_subquery) { should eql('((SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) EXCEPT (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE))') }
     end
 
     context 'summarize by a subset of the operand header' do
@@ -91,8 +91,8 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_difference' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('(SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) EXCEPT (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0)')   }
-      its(:to_subquery) { should eql('((SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) EXCEPT (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0))') }
+      its(:to_s)        { should eql('(SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) EXCEPT (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0)')   }
+      its(:to_subquery) { should eql('((SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) EXCEPT (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0))') }
     end
   end
 

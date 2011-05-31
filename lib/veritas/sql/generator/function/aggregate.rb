@@ -25,7 +25,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_aggregate_count(count)
-            aggregate_function_sql(COUNT, count)
+            unary_prefix_operation_sql(COUNT, count)
           end
 
           # Visit a sum aggregate function
@@ -47,6 +47,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_aggregate_minimum(minimum)
+            # TODO: wrap this in a coalesce operation once the default can be made sane
             unary_prefix_operation_sql(MINIMUM, minimum)
           end
 
@@ -58,6 +59,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_aggregate_maximum(maximum)
+            # TODO: wrap this in a coalesce operation once the default can be made sane
             unary_prefix_operation_sql(MAXIMUM, maximum)
           end
 
@@ -80,7 +82,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_aggregate_variance(variance)
-            aggregate_function_sql(VARIANCE, variance)
+            unary_prefix_operation_sql(VARIANCE, variance)
           end
 
           # Visit a standard deviation aggregate function
@@ -91,7 +93,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_aggregate_standard_deviation(standard_deviation)
-            aggregate_function_sql(STANDARD_DEVIATION, standard_deviation)
+            unary_prefix_operation_sql(STANDARD_DEVIATION, standard_deviation)
           end
 
         private

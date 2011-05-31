@@ -12,5 +12,5 @@ describe SQL::Generator::Function::Aggregate, '#visit_veritas_aggregate_count' d
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('COALESCE (COUNT ("id"), 0)') }
+  its(:to_s) { should eql('COUNT ("id")') }
 end

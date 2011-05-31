@@ -70,8 +70,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "left" NATURAL JOIN (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "left" NATURAL JOIN (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users") AS "right")')     }
+      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COUNT ("id") AS "count" FROM "users") AS "left" NATURAL JOIN (SELECT COUNT ("id") AS "count" FROM "users") AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COUNT ("id") AS "count" FROM "users") AS "left" NATURAL JOIN (SELECT COUNT ("id") AS "count" FROM "users") AS "right")')     }
     end
 
     context 'summarize per table dum' do
@@ -80,8 +80,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "left" NATURAL JOIN (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "left" NATURAL JOIN (SELECT COALESCE (COUNT ("id"), 0) AS "count" FROM "users" HAVING FALSE) AS "right")')     }
+      its(:to_s)        { should eql('SELECT "count" FROM (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) AS "left" NATURAL JOIN (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) AS "left" NATURAL JOIN (SELECT COUNT ("id") AS "count" FROM "users" HAVING FALSE) AS "right")')     }
     end
 
     context 'summarize by a subset of the operand header' do
@@ -89,8 +89,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_join' do
 
       it_should_behave_like 'a generated SQL SELECT query'
 
-      its(:to_s)        { should eql('SELECT "id", "name", "count" FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" NATURAL JOIN (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "right"') }
-      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" NATURAL JOIN (SELECT "id", "name", COALESCE (COUNT ("age"), 0) AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "right")')                   }
+      its(:to_s)        { should eql('SELECT "id", "name", "count" FROM (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" NATURAL JOIN (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "right"') }
+      its(:to_subquery) { should eql('(SELECT * FROM (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "left" NATURAL JOIN (SELECT "id", "name", COUNT ("age") AS "count" FROM "users" GROUP BY "id", "name" HAVING COUNT (*) > 0) AS "right")')                   }
     end
   end
 

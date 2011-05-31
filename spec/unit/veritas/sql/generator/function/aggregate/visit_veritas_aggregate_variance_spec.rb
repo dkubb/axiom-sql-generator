@@ -12,5 +12,5 @@ describe SQL::Generator::Function::Aggregate, '#visit_veritas_aggregate_variance
 
   it_should_behave_like 'a generated SQL expression'
 
-  its(:to_s) { should eql('COALESCE (VAR_POP ("id"), 0.0)') }
+  its(:to_s) { should eql('VAR_POP ("id")') }
 end
