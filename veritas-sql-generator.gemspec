@@ -167,14 +167,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<veritas>, ["= 0.0.5"])
       s.add_development_dependency(%q<backports>, ["~> 2.2.1"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.0"])
-      s.add_development_dependency(%q<rake>, ["~> 0.9.0"])
+      s.add_development_dependency(%q<rake>, ["~> 0.9.1"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3.2"])
       s.add_development_dependency(%q<yard>, ["~> 0.7.1"])
     else
       s.add_dependency(%q<veritas>, ["= 0.0.5"])
       s.add_dependency(%q<backports>, ["~> 2.2.1"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.0"])
-      s.add_dependency(%q<rake>, ["~> 0.9.0"])
+      s.add_dependency(%q<rake>, ["~> 0.9.1"])
       s.add_dependency(%q<rspec>, ["~> 1.3.2"])
       s.add_dependency(%q<yard>, ["~> 0.7.1"])
     end
@@ -182,7 +182,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<veritas>, ["= 0.0.5"])
     s.add_dependency(%q<backports>, ["~> 2.2.1"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.0"])
-    s.add_dependency(%q<rake>, ["~> 0.9.0"])
+    s.add_dependency(%q<rake>, ["~> 0.9.1"])
     s.add_dependency(%q<rspec>, ["~> 1.3.2"])
     s.add_dependency(%q<yard>, ["~> 0.7.1"])
   end
