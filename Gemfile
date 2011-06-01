@@ -6,7 +6,7 @@ gem 'veritas', '0.0.5', :git => 'git://github.com/dkubb/veritas.git'
 
 group :development do
   gem 'backports', '~> 2.2.1'
-  gem 'jeweler',   '~> 1.6.0'
+  gem 'jeweler',   '~> 1.6.2'
   gem 'rake',      '~> 0.9.1'
   gem 'rspec',     '~> 1.3.2'
   gem 'yard',      '~> 0.7.1'
