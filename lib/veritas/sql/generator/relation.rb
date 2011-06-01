@@ -101,7 +101,7 @@ module Veritas
         # @api private
         def to_subquery
           return EMPTY_STRING unless visited?
-          "(#{generate_sql(subquery_columns)})"
+          Generator.parenthesize!(generate_sql(subquery_columns))
         end
 
         # Test if a visitable object has been visited
