@@ -2,7 +2,7 @@
 
 source :rubygems
 
-gem 'veritas', '0.0.4', :git => 'git://github.com/dkubb/veritas.git'
+gem 'veritas', '0.0.5', :git => 'git://github.com/dkubb/veritas.git'
 
 group :development do
   gem 'backports', '~> 2.2.1'
