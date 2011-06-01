@@ -175,4 +175,14 @@ describe SQL::Generator::Relation::Set, '#visit_veritas_algebra_intersection' do
     its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "others")')   }
     its(:to_subquery) { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT "id", "name", "age" FROM "others"))') }
   end
+
+  context 'when the operands have headers sorted in different orders' do
+    let(:left)  { Relation::Base.new(relation_name, header,         body) }
+    let(:right) { Relation::Base.new(relation_name, header.reverse, body) }
+
+    it_should_behave_like 'a generated SQL SELECT query'
+
+    its(:to_s)        { should eql('(SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT DISTINCT "id", "name", "age" FROM "users")')   }
+    its(:to_subquery) { should eql('((SELECT "id", "name", "age" FROM "users") INTERSECT (SELECT DISTINCT "id", "name", "age" FROM "users"))') }
+  end
 end

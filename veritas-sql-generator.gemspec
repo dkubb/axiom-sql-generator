@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Dan Kubb}]
-  s.date = %q{2011-05-26}
+  s.date = %q{2011-06-01}
   s.description = %q{Generate SQL from a veritas relation}
   s.email = %q{dan.kubb@gmail.com}
   s.extra_rdoc_files = [
@@ -117,6 +117,7 @@ Gem::Specification.new do |s|
     "spec/unit/veritas/sql/generator/relation/binary/visit_veritas_algebra_product_spec.rb",
     "spec/unit/veritas/sql/generator/relation/class_methods/visit_spec.rb",
     "spec/unit/veritas/sql/generator/relation/name_spec.rb",
+    "spec/unit/veritas/sql/generator/relation/set/class_methods/normalize_operand_headers_spec.rb",
     "spec/unit/veritas/sql/generator/relation/set/to_s_spec.rb",
     "spec/unit/veritas/sql/generator/relation/set/to_subquery_spec.rb",
     "spec/unit/veritas/sql/generator/relation/set/visit_veritas_algebra_difference_spec.rb",
