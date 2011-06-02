@@ -9,10 +9,10 @@ http://travis-ci.org/dkubb/veritas-sql-generator.png
   # visit every node in the relation AST
   generator = Veritas::SQL::Generator::Relation.visit(relation)
 
-  # generate the SQL string
+  # generate an SQL string
   sql = generator.to_sql
 
-  # generate the SQL string suitable for a subquery
+  # generate an SQL subquery string
   subquery_sql = generator.to_subquery
 
 == Description
