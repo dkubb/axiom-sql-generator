@@ -4,6 +4,23 @@ Relational algebra SQL generator
 
 http://travis-ci.org/dkubb/veritas-sql-generator.png
 
+== Usage
+
+  # visit every node in the relation AST
+  generator = Veritas::SQL::Generator::Relation.visit(relation)
+
+  # generate the SQL string
+  sql = generator.to_sql
+
+  # generate the SQL string suitable for a subquery
+  subquery_sql = generator.to_subquery
+
+== Description
+
+The purpose of this gem is to produce valid SQL from a veritas[https://github.com/dkubb/veritas] relation. A relation is a representation of a query constructed using relational algebra organized into an AST. Each node in the AST corresponds to an operation defined in the algebra.
+
+The SQL produced has been verified and tested against PostgreSQL 9.0.4. Dialects for MySQL, SQLite3, Oracle and SQL Server are planned.
+
 == Note on Patches/Pull Requests
 
 * If you want your code merged into the mainline, please discuss
