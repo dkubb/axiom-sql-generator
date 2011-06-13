@@ -102,8 +102,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is ordered' do
-    let(:left)  { users.order }
-    let(:right) { other.order }
+    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }                   }
+    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -112,8 +112,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is reversed' do
-    let(:left)  { users.order.reverse }
-    let(:right) { other.order.reverse }
+    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.reverse                   }
+    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -122,8 +122,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is limited' do
-    let(:left)  { users.order.take(1) }
-    let(:right) { other.order.take(1) }
+    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.take(1)                   }
+    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -132,8 +132,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is an offset' do
-    let(:left)  { users.order.drop(1) }
-    let(:right) { other.order.drop(1) }
+    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.drop(1)                   }
+    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

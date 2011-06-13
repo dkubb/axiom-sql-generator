@@ -126,7 +126,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is ordered' do
-    let(:operand) { base_relation.order }
+    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -135,7 +135,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is reversed' do
-    let(:operand) { base_relation.order.reverse }
+    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -144,7 +144,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.order.take(1) }
+    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -153,7 +153,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is an offset' do
-    let(:operand) { base_relation.order.drop(1) }
+    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
