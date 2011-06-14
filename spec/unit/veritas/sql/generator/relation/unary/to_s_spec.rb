@@ -25,7 +25,7 @@ describe SQL::Generator::Relation::Unary, '#to_s' do
 
   context 'when a restriction is visited' do
     before do
-      object.visit(base_relation.restrict { |r| r[:id].eq(1) })
+      object.visit(base_relation.restrict { |r| r.id.eq(1) })
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -35,7 +35,7 @@ describe SQL::Generator::Relation::Unary, '#to_s' do
 
   context 'when a limit is visited' do
     before do
-      object.visit(base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.take(1))
+      object.visit(base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1))
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -45,7 +45,7 @@ describe SQL::Generator::Relation::Unary, '#to_s' do
 
   context 'when an offset is visited' do
     before do
-      object.visit(base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.drop(1))
+      object.visit(base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1))
     end
 
     it_should_behave_like 'a generated SQL expression'

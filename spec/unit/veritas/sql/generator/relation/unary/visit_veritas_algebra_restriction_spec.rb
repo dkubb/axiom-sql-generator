@@ -12,7 +12,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   let(:header)        { [ id, name, age ]                                }
   let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
   let(:base_relation) { Relation::Base.new(relation_name, header, body)  }
-  let(:restriction)   { operand.restrict { |r| r[:id].eq(1) }            }
+  let(:restriction)   { operand.restrict { |r| r.id.eq(1) }              }
   let(:object)        { described_class.new                              }
 
   context 'when the operand is a base relation' do
@@ -43,7 +43,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is a projection then a restriction' do
-    let(:operand) { base_relation.project([ :id, :name ]).restrict { |r| r[:id].ne(2) } }
+    let(:operand) { base_relation.project([ :id, :name ]).restrict { |r| r.id.ne(2) } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -63,8 +63,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
   context 'when the operand is a rename' do
     context 'when the restriction includes the renamed column' do
-      let(:operand)     { base_relation.rename(:id => :user_id)      }
-      let(:restriction) { operand.restrict { |r| r[:user_id].eq(1) } }
+      let(:operand)     { base_relation.rename(:id => :user_id)    }
+      let(:restriction) { operand.restrict { |r| r.user_id.eq(1) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -74,7 +74,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
     context 'when the restriction does not include the renamed column' do
       let(:operand)     { base_relation.rename(:name => :other_name) }
-      let(:restriction) { operand.restrict { |r| r[:id].eq(1) }      }
+      let(:restriction) { operand.restrict { |r| r.id.eq(1) }        }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -84,7 +84,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is a restriction' do
-    let(:operand) { base_relation.restrict { |r| r[:id].eq(1) } }
+    let(:operand) { base_relation.restrict { |r| r.id.eq(1) } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -94,9 +94,9 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
 
   context 'when the operand is a summarization' do
     context 'summarize per table dee' do
-      let(:summarize_per) { TABLE_DEE                                                                  }
-      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r[:id].count) } }
-      let(:restriction)   { operand.restrict { |r| r[:count].eq(1) }                                   }
+      let(:summarize_per) { TABLE_DEE                                                                }
+      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r.id.count) } }
+      let(:restriction)   { operand.restrict { |r| r.count.eq(1) }                                   }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -105,9 +105,9 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     end
 
     context 'summarize per table dum' do
-      let(:summarize_per) { TABLE_DUM                                                                  }
-      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r[:id].count) } }
-      let(:restriction)   { operand.restrict { |r| r[:count].eq(1) }                                   }
+      let(:summarize_per) { TABLE_DUM                                                                }
+      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r.id.count) } }
+      let(:restriction)   { operand.restrict { |r| r.count.eq(1) }                                   }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -116,7 +116,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r[:age].count) } }
+      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r.age.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -126,7 +126,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is ordered' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -135,7 +135,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is reversed' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.reverse }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -144,7 +144,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.take(1) }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -153,7 +153,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_algebra_restriction' d
   end
 
   context 'when the operand is an offset' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.drop(1) }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

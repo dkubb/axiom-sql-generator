@@ -58,8 +58,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is a restriction' do
-    let(:left)  { users.restrict { |r| r[:id].eq(1) }       }
-    let(:right) { other.restrict { |r| r[:other_id].eq(1) } }
+    let(:left)  { users.restrict { |r| r.id.eq(1) }       }
+    let(:right) { other.restrict { |r| r.other_id.eq(1) } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -69,9 +69,9 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
 
   context 'when the operand is a summarization' do
     context 'summarize per table dee' do
-      let(:summarize_per) { TABLE_DEE                                                                      }
-      let(:left)          { users.summarize(summarize_per) { |r| r.add(:count, r[:id].count) }             }
-      let(:right)         { other.summarize(summarize_per) { |r| r.add(:other_count, r[:other_id].count) } }
+      let(:summarize_per) { TABLE_DEE                                                                    }
+      let(:left)          { users.summarize(summarize_per) { |r| r.add(:count, r.id.count) }             }
+      let(:right)         { other.summarize(summarize_per) { |r| r.add(:other_count, r.other_id.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -80,9 +80,9 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
     end
 
     context 'summarize per table dum' do
-      let(:summarize_per) { TABLE_DUM                                                                      }
-      let(:left)          { users.summarize(summarize_per) { |r| r.add(:count, r[:id].count) }             }
-      let(:right)         { other.summarize(summarize_per) { |r| r.add(:other_count, r[:other_id].count) } }
+      let(:summarize_per) { TABLE_DUM                                                                    }
+      let(:left)          { users.summarize(summarize_per) { |r| r.add(:count, r.id.count) }             }
+      let(:right)         { other.summarize(summarize_per) { |r| r.add(:other_count, r.other_id.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -91,8 +91,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:left)  { users.summarize([ :id, :name ]) { |r| r.add(:count, r[:age].count) }                         }
-      let(:right) { other.summarize([ :other_id, :other_name ]) { |r| r.add(:other_count, r[:other_age].count) } }
+      let(:left)  { users.summarize([ :id, :name ]) { |r| r.add(:count, r.age.count) }                         }
+      let(:right) { other.summarize([ :other_id, :other_name ]) { |r| r.add(:other_count, r.other_age.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -102,8 +102,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is ordered' do
-    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }                   }
-    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] } }
+    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }                   }
+    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -112,8 +112,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is reversed' do
-    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.reverse                   }
-    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] }.reverse }
+    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }.reverse                   }
+    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -122,8 +122,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is limited' do
-    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.take(1)                   }
-    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] }.take(1) }
+    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }.take(1)                   }
+    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -132,8 +132,8 @@ describe SQL::Generator::Relation::Binary, '#visit_veritas_algebra_product' do
   end
 
   context 'when the operand is an offset' do
-    let(:left)  { users.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.drop(1)                   }
-    let(:right) { other.sort_by { |r| [ r[:other_id], r[:other_name], r[:other_age] ] }.drop(1) }
+    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1)                   }
+    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

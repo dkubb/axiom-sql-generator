@@ -16,7 +16,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   let(:object)        { described_class.new                              }
 
   context 'when the operand is a base relation' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -25,7 +25,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is a projection' do
-    let(:operand) { base_relation.project([ :id, :name ]).sort_by { |r| [ r[:id], r[:name] ] } }
+    let(:operand) { base_relation.project([ :id, :name ]).sort_by { |r| [ r.id, r.name ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -34,7 +34,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is an extension' do
-    let(:operand) { base_relation.extend { |r| r.add(:one, 1) }.sort_by { |r| [ r[:id], r[:name], r[:age], r[:one] ] } }
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) }.sort_by { |r| [ r.id, r.name, r.age, r.one ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -43,7 +43,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is a rename' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.rename(:id => :user_id) }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.rename(:id => :user_id) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -52,7 +52,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is a restriction' do
-    let(:operand) { base_relation.restrict { |r| r[:id].eq(1) }.sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.restrict { |r| r.id.eq(1) }.sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -62,8 +62,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
 
   context 'when the operand is a summarization' do
     context 'summarize per table dee' do
-      let(:summarize_per) { TABLE_DEE                                                                                            }
-      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r[:id].count) }.sort_by { |r| r[:count] } }
+      let(:summarize_per) { TABLE_DEE                                                                                        }
+      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r.id.count) }.sort_by { |r| r.count } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -72,8 +72,8 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
     end
 
     context 'summarize per table dum' do
-      let(:summarize_per) { TABLE_DUM                                                                                            }
-      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r[:id].count) }.sort_by { |r| r[:count] } }
+      let(:summarize_per) { TABLE_DUM                                                                                        }
+      let(:operand)       { base_relation.summarize(summarize_per) { |r| r.add(:count, r.id.count) }.sort_by { |r| r.count } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -82,7 +82,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r[:age].count) }.sort_by { |r| [ r[:id], r[:name], r[:count] ] } }
+      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r.age.count) }.sort_by { |r| [ r.id, r.name, r.count ] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -92,7 +92,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is ordered' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -101,7 +101,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is reversed' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.reverse }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -110,7 +110,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.take(1) }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -119,7 +119,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is an offset' do
-    let(:operand) { base_relation.sort_by { |r| [ r[:id], r[:name], r[:age] ] }.drop(1) }
+    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -128,7 +128,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is a difference' do
-    let(:operand) { base_relation.difference(base_relation).sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.difference(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -137,7 +137,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is an intersection' do
-    let(:operand) { base_relation.intersect(base_relation).sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.intersect(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -146,7 +146,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is a union' do
-    let(:operand) { base_relation.union(base_relation).sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.union(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -155,7 +155,7 @@ describe SQL::Generator::Relation::Unary, '#visit_veritas_relation_operation_lim
   end
 
   context 'when the operand is a join' do
-    let(:operand) { base_relation.join(base_relation).sort_by { |r| [ r[:id], r[:name], r[:age] ] } }
+    let(:operand) { base_relation.join(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

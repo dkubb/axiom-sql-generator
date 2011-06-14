@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'backports'
+require 'backports/basic_object'
 require 'veritas/sql/generator'
 require 'spec'
 require 'spec/autorun'
