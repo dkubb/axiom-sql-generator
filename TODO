@@ -9,8 +9,6 @@
     * Create Veritas::Literal::Range::Inclusive
     * Create Veritas::Literal::Range::Exclusive
 
-* Adjust reek and roodi scores down to lower thresholds
-
 * Handle cases where an Inequality/Exclusion predicate is used (or a
   Negation wrapping an Equality/Inclusion) on an *optional* attribute.
   * Add "OR attribute IS NULL" to the statement to ensure cases when
