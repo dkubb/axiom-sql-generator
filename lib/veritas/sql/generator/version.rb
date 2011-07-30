@@ -3,7 +3,7 @@
 module Veritas
   module SQL
     module Generator
-      VERSION = '0.0.5'
+      VERSION = '0.0.6'
     end # module Generator
   end # module SQL
 end # module Veritas
