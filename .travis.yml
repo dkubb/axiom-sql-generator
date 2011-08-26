@@ -8,6 +8,6 @@ rvm:
   - ree
   - jruby
   - rbx
-  # - rbx-2.0
+  - rbx-2.0
 notifications:
   irc: "irc.freenode.org#veritas"
