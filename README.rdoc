@@ -2,7 +2,7 @@
 
 Relational algebra SQL generator
 
-http://travis-ci.org/dkubb/veritas-sql-generator.png
+{<img src="https://secure.travis-ci.org/dkubb/veritas-sql-generator.png" />}[http://travis-ci.org/dkubb/veritas-sql-generator]
 
 == Installation
 
