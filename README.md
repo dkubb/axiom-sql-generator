@@ -58,7 +58,7 @@ subquery_sql = generator.to_subquery
 
 The purpose of this gem is to produce valid SQL from a [veritas](https://github.com/dkubb/veritas) relation. A relation is a representation of a query constructed using relational algebra organized into an AST. Each node in the AST corresponds to an operation defined in the algebra.
 
-The SQL produced has been verified and tested against [PostgreSQL](http://www.postgresql.org/) 9.0.4. Dialects for [MySQL](http://www.mysql.com/), [SQLite3](http://www.sqlite.org/), [Oracle](http://www.oracle.com/) and [SQL Server](http://www.microsoft.com/sqlserver/) are planned.
+The SQL produced has been verified and tested against [PostgreSQL](http://www.postgresql.org/) 9.0.4. Dialects for [MySQL](http://www.mysql.com/), [SQLite](http://www.sqlite.org/), [Oracle](http://www.oracle.com/) and [SQL Server](http://www.microsoft.com/sqlserver/) are planned.
 
 ## Note on Patches/Pull Requests
 
