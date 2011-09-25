@@ -13,9 +13,9 @@ group :development do
 end
 
 group :guard do
-  gem 'guard',         '~> 0.5.1'
+  gem 'guard',         '~> 0.7.0'
   gem 'guard-bundler', '~> 0.1.3'
-  gem 'guard-rspec',   '~> 0.4.0'
+  gem 'guard-rspec',   '~> 0.4.5'
 end
 
 platform :jruby do
@@ -29,9 +29,9 @@ platforms :mri_18 do
     gem 'arrayfields', '~> 4.7.4'
     gem 'fattr',       '~> 2.2.0'
     gem 'flay',        '~> 1.4.2'
-    gem 'flog',        '~> 2.5.1'
+    gem 'flog',        '~> 2.5.3'
     gem 'heckle',      '~> 1.4.3'
-    gem 'json',        '~> 1.5.3'
+    gem 'json',        '~> 1.6.1'
     gem 'map',         '~> 4.4.0'
     gem 'metric_fu',   '~> 2.1.1'
     gem 'mspec',       '~> 1.5.17'
