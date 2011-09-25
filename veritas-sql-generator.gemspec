@@ -4,17 +4,17 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{veritas-sql-generator}
+  s.name = "veritas-sql-generator"
   s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Dan Kubb}]
-  s.date = %q{2011-08-26}
-  s.description = %q{Generate SQL from a veritas relation}
-  s.email = %q{dan.kubb@gmail.com}
+  s.authors = ["Dan Kubb"]
+  s.date = "2011-09-25"
+  s.description = "Generate SQL from a veritas relation"
+  s.email = "dan.kubb@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.rdoc",
+    "README.md",
     "TODO"
   ]
   s.files = [
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
     "Gemfile",
     "Guardfile",
     "LICENSE",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "TODO",
     "config/flay.yml",
@@ -155,10 +155,10 @@ Gem::Specification.new do |s|
     "tasks/yard.rake",
     "veritas-sql-generator.gemspec"
   ]
-  s.homepage = %q{https://github.com/dkubb/veritas-sql-generator}
-  s.require_paths = [%q{lib}]
-  s.rubygems_version = %q{1.8.9}
-  s.summary = %q{Relational algebra SQL generator}
+  s.homepage = "https://github.com/dkubb/veritas-sql-generator"
+  s.require_paths = ["lib"]
+  s.rubygems_version = "1.8.10"
+  s.summary = "Relational algebra SQL generator"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
