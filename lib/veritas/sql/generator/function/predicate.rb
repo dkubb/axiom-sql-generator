@@ -99,10 +99,10 @@ module Veritas
           # @api private
           def visit_veritas_function_predicate_inclusion(inclusion)
             case inclusion.right
-              when Range       then range_inclusion_sql(inclusion)
-              when EMPTY_ARRAY then FALSE
-              else
-                binary_infix_operation_sql(IN, inclusion)
+            when Range       then range_inclusion_sql(inclusion)
+            when EMPTY_ARRAY then FALSE
+            else
+              binary_infix_operation_sql(IN, inclusion)
             end
           end
 
@@ -115,10 +115,10 @@ module Veritas
           # @api private
           def visit_veritas_function_predicate_exclusion(exclusion)
             case exclusion.right
-              when Range       then range_exclusion_sql(exclusion)
-              when EMPTY_ARRAY then TRUE
-              else
-                binary_infix_operation_sql(NOT_IN, exclusion)
+            when Range       then range_exclusion_sql(exclusion)
+            when EMPTY_ARRAY then TRUE
+            else
+              binary_infix_operation_sql(NOT_IN, exclusion)
             end
           end
 
@@ -256,7 +256,7 @@ module Veritas
           #
           # @api private
           def optional?(operand)
-            operand.respond_to?(:required?) && !operand.required?
+            operand.respond_to?(:required?) && ! operand.required?
           end
 
         end # module Predicate
