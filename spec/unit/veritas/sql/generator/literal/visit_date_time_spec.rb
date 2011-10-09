@@ -21,8 +21,8 @@ describe SQL::Generator::Literal, '#visit_date_time' do
       its(:to_s) { should eql("'2010-12-31T23:59:59.000000000+00:00'") }
     end
 
-    # rubinius 1.2.3 has problems with fractional seconds above 59
-    unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && Rubinius::VERSION <= '1.2.3'
+    # rubinius 2.0.0dev has problems with fractional seconds above 59
+    unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && Rubinius::VERSION <= '2.0.0dev'
       context 'and the nanoseconds are greater than 0' do
         let(:nsec)      { 1                                                                       }
         let(:date_time) { DateTime.new(2010, 12, 31, 23, 59, 59 + nsec_in_seconds, offset).freeze }
@@ -46,8 +46,8 @@ describe SQL::Generator::Literal, '#visit_date_time' do
       its(:to_s) { should eql("'2010-12-31T23:59:59.000000000+00:00'") }
     end
 
-    # rubinius 1.2.3 has problems with fractional seconds above 59
-    unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && Rubinius::VERSION <= '1.2.3'
+    # rubinius 2.0.0dev has problems with fractional seconds above 59
+    unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && Rubinius::VERSION <= '2.0.0dev'
       context 'and the nanoseconds are greater than 0' do
         let(:nsec)      { 1                                                                       }
         let(:date_time) { DateTime.new(2010, 12, 31, 15, 59, 59 + nsec_in_seconds, offset).freeze }

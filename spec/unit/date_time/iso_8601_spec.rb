@@ -16,8 +16,8 @@ describe DateTime, '#iso8601' do
   let(:object)          { described_class.new(2010, 12, 31, 23, 59, 59 + nsec_in_seconds) }
   let(:nsec_in_seconds) { 1 - Rational(1, 10**9)                                          }
 
-  # rubinius 1.2.3 has problems with fractional seconds above 59
-  unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && Rubinius::VERSION <= '1.2.3'
+  # rubinius 2.0.0dev has problems with fractional seconds above 59
+  unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && Rubinius::VERSION <= '2.0.0dev'
     context 'with no arguments' do
       subject { object.iso8601 }
 
