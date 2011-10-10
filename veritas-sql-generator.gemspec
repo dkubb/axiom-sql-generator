@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = "2011-10-04"
+  s.date = "2011-10-10"
   s.description = "Generate SQL from a veritas relation"
   s.email = "dan.kubb@gmail.com"
   s.extra_rdoc_files = [
@@ -61,7 +61,7 @@ Gem::Specification.new do |s|
     "spec/spec.opts",
     "spec/spec_helper.rb",
     "spec/unit/date/iso8601_spec.rb",
-    "spec/unit/date_time/iso_8601_spec.rb",
+    "spec/unit/date_time/iso8601_spec.rb",
     "spec/unit/veritas/sql/generator/attribute/visit_veritas_attribute_spec.rb",
     "spec/unit/veritas/sql/generator/class_methods/parenthesize_spec.rb",
     "spec/unit/veritas/sql/generator/direction/visit_veritas_relation_operation_order_ascending_spec.rb",
