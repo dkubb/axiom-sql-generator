@@ -3,7 +3,8 @@
 # Extend DateTime with methods available in ruby 1.9
 class DateTime
 
-  SEC_FRACTION_MULTIPLIER = RUBY_VERSION < '1.9' ? 60 * 60 * 24 : 1
+  # TODO: remove the rbx guard when fractional seconds are handled properly in 1.9 mode
+  SEC_FRACTION_MULTIPLIER = RUBY_VERSION < '1.9' || RUBY_ENGINE == 'rbx' ? 60 * 60 * 24 : 1
 
   # Return the DateTime in ISO8601 date-time format
   #
