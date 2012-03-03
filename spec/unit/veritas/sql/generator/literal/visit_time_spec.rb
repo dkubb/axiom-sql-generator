@@ -5,9 +5,9 @@ require 'spec_helper'
 describe SQL::Generator::Literal, '#visit_time' do
   subject { object.visit_time(time) }
 
-  # Time#iso8601 is currently broken in JRuby 1.6.2 when fractional seconds are not 0
+  # Time#iso8601 is currently broken in JRuby 1.7.0.dev when fractional seconds are not 0
   def self.time_iso8601_broken?
-    RUBY_PLATFORM.include?('java') && JRUBY_VERSION <= '1.6.5' && RUBY_VERSION >= '1.9.2'
+    RUBY_PLATFORM.include?('java') && JRUBY_VERSION <= '1.7.0.dev' && RUBY_VERSION >= '1.9.2'
   end
 
   let(:described_class) { Class.new(SQL::Generator::Visitor) { include SQL::Generator::Literal } }
