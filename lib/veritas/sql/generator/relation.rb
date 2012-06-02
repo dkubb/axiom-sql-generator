@@ -30,11 +30,12 @@ module Veritas
         # @api private
         def self.visit(relation)
           klass = case relation
-          when Veritas::Relation::Operation::Set    then self::Set
-          when Veritas::Relation::Operation::Binary then self::Binary
-          when Veritas::Relation::Operation::Unary  then self::Unary
-          when Veritas::Relation::Base              then self::Base
-          when Veritas::Relation::Materialized      then self::Materialized
+          when Veritas::Relation::Operation::Insertion then self::Insertion
+          when Veritas::Relation::Operation::Set       then self::Set
+          when Veritas::Relation::Operation::Binary    then self::Binary
+          when Veritas::Relation::Operation::Unary     then self::Unary
+          when Veritas::Relation::Base                 then self::Base
+          when Veritas::Relation::Materialized         then self::Materialized
           else
             raise InvalidRelationError, "#{relation.class} is not a visitable relation"
           end

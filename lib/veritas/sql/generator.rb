@@ -30,6 +30,8 @@ require 'veritas/sql/generator/relation/binary'
 require 'veritas/sql/generator/relation/materialized'
 require 'veritas/sql/generator/relation/set'
 
+require 'veritas/sql/generator/relation/insertion'
+
 require 'veritas/sql/generator/version'
 
 module Veritas
