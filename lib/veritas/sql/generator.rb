@@ -27,6 +27,7 @@ require 'veritas/sql/generator/relation'
 require 'veritas/sql/generator/relation/unary'
 require 'veritas/sql/generator/relation/base'
 require 'veritas/sql/generator/relation/binary'
+require 'veritas/sql/generator/relation/materialized'
 require 'veritas/sql/generator/relation/set'
 
 require 'veritas/sql/generator/version'

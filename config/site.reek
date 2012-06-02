@@ -63,7 +63,8 @@ UncommunicativeModuleName:
 NestedIterators:
   ignore_iterators: []
   exclude: [
-    'Veritas::SQL::Generator::Visitor#self.handlers'
+    'Veritas::SQL::Generator::Visitor#self.handlers',
+    'Veritas::SQL::Generator::Relation::Materialized#visit_veritas_relation_materialized'
   ]
   enabled: true
   max_allowed_nesting: 1
