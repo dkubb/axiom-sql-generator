@@ -114,7 +114,7 @@ module Veritas
         #
         # @api public
         def visited?
-          ! @name.nil?
+          instance_variable_defined?(:@name)
         end
 
       private
