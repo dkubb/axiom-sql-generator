@@ -9,6 +9,7 @@ module Veritas
         include Attribute, Literal
 
       private
+
         # Return the SQL for a umary prefix operation
         #
         # @param [#to_s] operator
