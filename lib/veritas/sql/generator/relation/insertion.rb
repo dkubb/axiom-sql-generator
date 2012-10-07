@@ -19,9 +19,10 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_insertion(insertion)
-            @header = insertion.header
+            @header = insertion.header.reject(&:key?)
             set_columns(insertion)
             set_operands(insertion)
+            set_returning(insertion)
             set_name
             self
           end
@@ -34,7 +35,9 @@ module Veritas
           #
           # @api private
           def generate_sql(*)
-            "INSERT INTO #{@name} #{column_list} #{@right}"
+            sql = "INSERT INTO #{@name} #{column_list} #{@right}"
+            sql << " RETURNING #{@returning}" if @returning
+            sql
           end
 
           # Generate the list of columns to insert into
@@ -44,6 +47,29 @@ module Veritas
           # @api private
           def column_list
             Generator.parenthesize!(column_list_for(@columns))
+          end
+
+          # @api private
+          def set_operands(relation)
+            if relation.right.materialized?
+              normalized = self.class.normalize_operand_headers(relation)
+
+              util   = self.class
+              left   = normalized.left
+              right  = normalized.right
+              header = left.header.reject(&:key?)
+
+              @left  = util.visit(left.class.new(left.name, header))
+              @right = util.visit(right.project(header).materialize)
+            else
+              super
+            end
+          end
+
+          # @api private
+          def set_returning(relation)
+            keys       = relation.header.select(&:key?)
+            @returning = column_list_for(@columns, keys) if keys.any?
           end
 
           # Set the name using the left operands' name
