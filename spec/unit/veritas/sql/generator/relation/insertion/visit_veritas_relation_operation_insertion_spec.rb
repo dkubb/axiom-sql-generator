@@ -15,6 +15,17 @@ describe SQL::Generator::Relation::Insertion, '#visit_veritas_relation_operation
   let(:name)          { Attribute::String.new(:name)                     }
   let(:age)           { Attribute::Integer.new(:age, :required => false) }
 
+  context 'inserting a non-empty materialized relation and returning key attributes' do
+    let(:other) { operand.materialize                       }
+    let(:id)    { Attribute::Integer.new(:id, :key => true) }
+    let(:body)  { [ [ nil, 'Dan Kubb', 36 ] ].each          }
+
+    it_should_behave_like 'a generated SQL expression'
+
+    its(:to_s)        { should eql('INSERT INTO users ("name", "age") VALUES (\'Dan Kubb\', 36) RETURNING "id"') }
+    its(:to_subquery) { should eql('INSERT INTO users ("name", "age") VALUES (\'Dan Kubb\', 36) RETURNING "id"') }
+  end
+
   context 'inserting a non-empty materialized relation' do
     let(:other) { operand.materialize            }
     let(:body)  { [ [ 1, 'Dan Kubb', 36 ] ].each }

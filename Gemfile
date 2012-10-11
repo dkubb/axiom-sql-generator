@@ -2,7 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'veritas', '~> 0.0.7',  :github => 'dkubb/veritas'
+gem 'veritas-sql-generator', :path => '.'
+
+gem 'veritas', '~> 0.0.7',  :github => 'solnic/veritas', :branch => 'key-attributes'
 
 group :development do
   gem 'jeweler', '~> 1.8.3'
