@@ -19,7 +19,7 @@ module Veritas
           #
           # @api private
           def visit_veritas_relation_operation_insertion(insertion)
-            @header = insertion.header.reject(&:key?)
+            @header = insertion.header - insertion.header.keys
             set_columns(insertion)
             set_operands(insertion)
             set_returning(insertion)
@@ -57,7 +57,7 @@ module Veritas
               util   = self.class
               left   = normalized.left
               right  = normalized.right
-              header = left.header.reject(&:key?)
+              header = left.header - left.header.keys
 
               @left  = util.visit(left.class.new(left.name, header))
               @right = util.visit(right.project(header).materialize)
@@ -68,7 +68,7 @@ module Veritas
 
           # @api private
           def set_returning(relation)
-            keys       = relation.header.select(&:key?)
+            keys       = relation.header.keys
             @returning = column_list_for(@columns, keys) if keys.any?
           end
 

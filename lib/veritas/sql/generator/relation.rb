@@ -165,8 +165,8 @@ module Veritas
         # @return [#to_s]
         #
         # @api private
-        def column_list_for(columns, header = nil)
-          sql = columns.values_at(*(header || @header))
+        def column_list_for(columns, header = @header)
+          sql = columns.values_at(*header)
           sql.compact!
           sql.join(SEPARATOR)
         end
