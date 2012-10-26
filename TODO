@@ -14,6 +14,11 @@
   * Add "OR attribute IS NULL" to the statement to ensure cases when
     the value is NULL still matches.
 
+* Handle case where Inclusion/Exclusion predicate enumerable contains a nil value.
+  * Remove the nil value from the enumerable.
+  * If the attribute is *optional*, change query so that "OR attribute IS * NULL"
+    is added to the output statement.
+
 * Handle cases where WHERE clause does and does not reference a function
   in the SELECT list.
   * It should collapse the inner subquery when there is no reference, and
