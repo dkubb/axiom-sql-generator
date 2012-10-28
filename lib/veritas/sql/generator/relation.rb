@@ -23,7 +23,7 @@ module Veritas
 
         # Factory method to instantiate the generator for the relation
         #
-        # @param [Veritas::Relation]
+        # @param [Veritas::Relation] relation
         #
         # @return [Generator::Relation]
         #

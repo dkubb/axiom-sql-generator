@@ -120,7 +120,7 @@ module Veritas
 
         # Visit a true value
         #
-        # @param [true]
+        # @param [true] _true
         #
         # @return [#to_s]
         #
@@ -131,7 +131,7 @@ module Veritas
 
         # Visit a false value
         #
-        # @param [false]
+        # @param [false] _false
         #
         # @return [#to_s]
         #
@@ -142,7 +142,7 @@ module Veritas
 
         # Visit a nil value
         #
-        # @param [nil]
+        # @param [nil] _nil
         #
         # @return [#to_s]
         #

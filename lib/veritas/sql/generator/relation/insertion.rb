@@ -13,7 +13,7 @@ module Veritas
 
           # Visit an Insertion
           #
-          # @param [Relation::Operation::Insertion]
+          # @param [Relation::Operation::Insertion] insertion
           #
           # @return [self]
           #

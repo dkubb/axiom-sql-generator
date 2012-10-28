@@ -126,7 +126,7 @@ module Veritas
 
           # Return the SQL for an Inclusion using a Range
           #
-          # @param [Function::Predicate::Inclusion] predicate
+          # @param [Function::Predicate::Inclusion] inclusion
           #
           # @return [#to_s]
           #

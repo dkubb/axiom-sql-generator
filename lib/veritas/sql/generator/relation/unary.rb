@@ -349,7 +349,7 @@ module Veritas
 
           # Visit a Binary Relation
           #
-          # @param [Relation::Operation::Binary] set
+          # @param [Relation::Operation::Binary] binary
           #
           # @return [Relation::Binary]
           #

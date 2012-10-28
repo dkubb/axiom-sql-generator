@@ -11,7 +11,7 @@ module Veritas
 
           # Visit a Materialized relation
           #
-          # @param [Relation::Materialized]
+          # @param [Relation::Materialized] materialized
           #
           # @return [self]
           #
