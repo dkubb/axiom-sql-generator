@@ -32,7 +32,7 @@ begin
         raise "ruby2ruby version #{Ruby2Ruby::VERSION} may not work properly, 1.2.2 *only* is recommended for use with heckle"
       end
 
-      require 'ice_nine'
+      require 'veritas-sql-generator'
 
       root_module_regexp = Regexp.union('Veritas::SQL::Generator')
 
