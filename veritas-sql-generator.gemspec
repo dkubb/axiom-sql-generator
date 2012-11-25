@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dan Kubb"]
-  s.date = "2012-06-02"
+  s.date = "2012-11-25"
   s.description = "Generate SQL from a veritas relation"
   s.email = "dan.kubb@gmail.com"
   s.extra_rdoc_files = [
@@ -62,6 +62,7 @@ Gem::Specification.new do |s|
     "spec/shared/idempotent_method_behavior.rb",
     "spec/spec.opts",
     "spec/spec_helper.rb",
+    "spec/support/config_alias.rb",
     "spec/unit/date/iso8601_spec.rb",
     "spec/unit/date_time/iso8601_spec.rb",
     "spec/unit/veritas/sql/generator/attribute/visit_veritas_attribute_spec.rb",
@@ -174,19 +175,19 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.3"])
       s.add_development_dependency(%q<rake>, ["~> 0.9.2"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3.2"])
-      s.add_development_dependency(%q<yard>, ["~> 0.7.2"])
+      s.add_development_dependency(%q<yard>, ["~> 0.8.3"])
     else
       s.add_dependency(%q<veritas>, ["~> 0.0.7"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
       s.add_dependency(%q<rake>, ["~> 0.9.2"])
       s.add_dependency(%q<rspec>, ["~> 1.3.2"])
-      s.add_dependency(%q<yard>, ["~> 0.7.2"])
+      s.add_dependency(%q<yard>, ["~> 0.8.3"])
     end
   else
     s.add_dependency(%q<veritas>, ["~> 0.0.7"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.3"])
     s.add_dependency(%q<rake>, ["~> 0.9.2"])
     s.add_dependency(%q<rspec>, ["~> 1.3.2"])
-    s.add_dependency(%q<yard>, ["~> 0.7.2"])
+    s.add_dependency(%q<yard>, ["~> 0.8.3"])
   end
 end
