@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-gem 'veritas', '~> 0.0.7',  :github => 'dkubb/veritas'
+gem 'veritas', '~> 0.0.7', :github => 'dkubb/veritas'
 
 group :development do
   gem 'jeweler', '~> 1.8.3'
