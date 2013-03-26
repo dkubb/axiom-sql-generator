@@ -15,6 +15,6 @@ class Date
   def iso8601
     date = frozen? ? dup : self
     date.strftime(ISO_8601_FORMAT)
-  end unless method_defined? :iso8601
+  end
 
 end # class Date

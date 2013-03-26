@@ -29,7 +29,7 @@ describe SQL::Generator::Relation, '#to_subquery' do
 
     before do
       described_class.class_eval do
-        def visit_spec_mocks_mock(mock)
+        def visit_rspec_mocks_mock(mock)
           @name  = mock.instance_variable_get(:@name)
           @scope = Set.new
         end
