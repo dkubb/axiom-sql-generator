@@ -13,6 +13,16 @@ describe SQL::Generator::Relation, '.visit' do
   let(:base_relation) { Relation::Base.new('users', header, body)        }
   let(:object)        { described_class                                  }
 
+  context 'when the relation is an insertion operation' do
+    let(:relation) { base_relation.insert(base_relation) }
+
+    it { should be_kind_of(SQL::Generator::Relation::Insertion) }
+
+    its(:name) { should == 'users' }
+
+    it { should be_frozen }
+  end
+
   context 'when the relation is a set operation' do
     let(:relation) { base_relation.union(base_relation) }
 

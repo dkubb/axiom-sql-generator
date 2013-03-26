@@ -75,7 +75,7 @@ module Veritas
         # @example
         #   generator.visit(visitable)
         #
-        # @param [Visitable] visitable
+        # @param [Visitable] _visitable
         #
         # @return [self]
         #
@@ -83,7 +83,7 @@ module Veritas
         #   raised when the visitable object has no handler
         #
         # @api public
-        def visit(visitable)
+        def visit(_visitable)
           raise NotImplementedError, "#{self.class}#visit must be implemented"
         end
 

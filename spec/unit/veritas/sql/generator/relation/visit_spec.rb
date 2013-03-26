@@ -13,7 +13,7 @@ describe SQL::Generator::Relation, '#visit' do
 
     before do
       described_class.class_eval do
-        def visit_spec_mocks_mock(mock)
+        def visit_rspec_mocks_mock(mock)
           mock
         end
       end
@@ -29,7 +29,7 @@ describe SQL::Generator::Relation, '#visit' do
 
     before do
       described_class.class_eval do
-        def visit_spec_mocks_mock(mock)
+        def visit_rspec_mocks_mock(mock)
           mock
         end
       end

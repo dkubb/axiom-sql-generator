@@ -18,7 +18,7 @@ class DateTime
   # @api private
   def iso8601(time_scale = 0)
     super() + iso8601_timediv(time_scale)
-  end unless method_defined?(:iso8601) && instance_method(:iso8601).arity == 1
+  end
 
 private
 
@@ -41,6 +41,6 @@ private
     end
 
     date_time.strftime("T%T#{fractional_seconds}%Z")
-  end unless method_defined? :iso8601_timediv
+  end
 
-end # class Date
+end # class DateTime
