@@ -5,8 +5,8 @@ require 'spec_helper'
 describe SQL::Generator, '.parenthesize!' do
   subject { object.parenthesize!(string) }
 
-  let(:string) { '1 + 1'                   }
-  let(:object) { self.class.described_type }
+  let(:string) { '1 + 1'                    }
+  let(:object) { self.class.described_class }
 
   it_should_behave_like 'a generated SQL expression'
 
