@@ -5,9 +5,9 @@
     special cases.
   * Use different classes for inclusive/exclusive Range literals so that
     they can be serialized to SQL differently.
-    * Create Veritas::Literal::Range proxy object w/factory method
-    * Create Veritas::Literal::Range::Inclusive
-    * Create Veritas::Literal::Range::Exclusive
+    * Create Axiom::Literal::Range proxy object w/factory method
+    * Create Axiom::Literal::Range::Inclusive
+    * Create Axiom::Literal::Range::Exclusive
 
 * Handle cases where an Inequality/Exclusion predicate is used (or a
   Negation wrapping an Equality/Inclusion) on an *optional* attribute.

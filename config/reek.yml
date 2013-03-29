@@ -2,7 +2,7 @@
 Attribute:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Relation
+  - Axiom::SQL::Generator::Relation
 BooleanParameter:
   enabled: true
   exclude: []
@@ -15,7 +15,7 @@ ControlParameter:
 DataClump:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Function
+  - Axiom::SQL::Generator::Function
   max_copies: 2
   min_clump_size: 2
 DuplicateMethodCall:
@@ -26,22 +26,22 @@ DuplicateMethodCall:
 FeatureEnvy:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
-  - Veritas::SQL::Generator::Function::Predicate#optional?
-  - Veritas::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_inequality
-  - Veritas::SQL::Generator::Identifier#visit_identifier
-  - Veritas::SQL::Generator::Identifier#visit_identifier
-  - Veritas::SQL::Generator::Literal#visit_numeric
-  - Veritas::SQL::Generator::Literal#visit_string
-  - Veritas::SQL::Generator::Literal#visit_string
-  - Veritas::SQL::Generator::Relation#column_list_for
+  - Axiom::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
+  - Axiom::SQL::Generator::Function::Predicate#optional?
+  - Axiom::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_inequality
+  - Axiom::SQL::Generator::Identifier#visit_identifier
+  - Axiom::SQL::Generator::Identifier#visit_identifier
+  - Axiom::SQL::Generator::Literal#visit_numeric
+  - Axiom::SQL::Generator::Literal#visit_string
+  - Axiom::SQL::Generator::Literal#visit_string
+  - Axiom::SQL::Generator::Relation#column_list_for
 IrresponsibleModule:
   enabled: true
   exclude: []
 LongParameterList:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
+  - Axiom::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
   max_params: 2
   overrides:
     initialize:
@@ -53,69 +53,69 @@ LongYieldList:
 NestedIterators:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Relation::Materialized#visit_veritas_relation_materialized
-  - Veritas::SQL::Generator::Visitor#self.handlers
+  - Axiom::SQL::Generator::Relation::Materialized#visit_veritas_relation_materialized
+  - Axiom::SQL::Generator::Visitor#self.handlers
   max_allowed_nesting: 1
   ignore_iterators: []
 NilCheck:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Function::Predicate#inequality_sql
-  - Veritas::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_equality
+  - Axiom::SQL::Generator::Function::Predicate#inequality_sql
+  - Axiom::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_equality
 RepeatedConditional:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Relation
+  - Axiom::SQL::Generator::Relation
   max_ifs: 1
 TooManyInstanceVariables:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Relation::Binary
-  - Veritas::SQL::Generator::Relation::Unary
+  - Axiom::SQL::Generator::Relation::Binary
+  - Axiom::SQL::Generator::Relation::Unary
   max_instance_variables: 3
 TooManyMethods:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Relation
-  - Veritas::SQL::Generator::Relation::Unary
+  - Axiom::SQL::Generator::Relation
+  - Axiom::SQL::Generator::Relation::Unary
   max_methods: 10
 TooManyStatements:
   enabled: true
   exclude:
   - Date#iso8601
   - DateTime#iso8601_timediv
-  - Veritas::SQL::Generator::Function::Predicate#exclusive_range_exclusion_sql
-  - Veritas::SQL::Generator::Function::Predicate#exclusive_range_inclusion_sql
-  - Veritas::SQL::Generator::Function::Predicate#inequality_expressions
-  - Veritas::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_inequality
-  - Veritas::SQL::Generator::Literal#visit_class
-  - Veritas::SQL::Generator::Relation#column_list_for
-  - Veritas::SQL::Generator::Relation#columns_for
-  - Veritas::SQL::Generator::Relation#implicit_columns
-  - Veritas::SQL::Generator::Relation#self.visit
-  - Veritas::SQL::Generator::Relation::Binary#set_operands
-  - Veritas::SQL::Generator::Relation::Binary#visit_veritas_algebra_join
-  - Veritas::SQL::Generator::Relation::Binary#visit_veritas_algebra_product
-  - Veritas::SQL::Generator::Relation::Insertion#visit_veritas_relation_operation_insertion
-  - Veritas::SQL::Generator::Relation::Materialized#generate_sql
-  - Veritas::SQL::Generator::Relation::Set#self.normalize_operand_headers
-  - Veritas::SQL::Generator::Relation::Set#visit_veritas_algebra_difference
-  - Veritas::SQL::Generator::Relation::Set#visit_veritas_algebra_intersection
-  - Veritas::SQL::Generator::Relation::Set#visit_veritas_algebra_union
-  - Veritas::SQL::Generator::Relation::Unary#reset_query_state
-  - Veritas::SQL::Generator::Relation::Unary#subquery_for
-  - Veritas::SQL::Generator::Relation::Unary#summarize_per
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_algebra_extension
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_algebra_projection
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_algebra_rename
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_algebra_restriction
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_algebra_summarization
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_relation_base
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_binary
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_limit
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_offset
-  - Veritas::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_order
-  - Veritas::SQL::Generator::Visitor#self.method_for
+  - Axiom::SQL::Generator::Function::Predicate#exclusive_range_exclusion_sql
+  - Axiom::SQL::Generator::Function::Predicate#exclusive_range_inclusion_sql
+  - Axiom::SQL::Generator::Function::Predicate#inequality_expressions
+  - Axiom::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_inequality
+  - Axiom::SQL::Generator::Literal#visit_class
+  - Axiom::SQL::Generator::Relation#column_list_for
+  - Axiom::SQL::Generator::Relation#columns_for
+  - Axiom::SQL::Generator::Relation#implicit_columns
+  - Axiom::SQL::Generator::Relation#self.visit
+  - Axiom::SQL::Generator::Relation::Binary#set_operands
+  - Axiom::SQL::Generator::Relation::Binary#visit_veritas_algebra_join
+  - Axiom::SQL::Generator::Relation::Binary#visit_veritas_algebra_product
+  - Axiom::SQL::Generator::Relation::Insertion#visit_veritas_relation_operation_insertion
+  - Axiom::SQL::Generator::Relation::Materialized#generate_sql
+  - Axiom::SQL::Generator::Relation::Set#self.normalize_operand_headers
+  - Axiom::SQL::Generator::Relation::Set#visit_veritas_algebra_difference
+  - Axiom::SQL::Generator::Relation::Set#visit_veritas_algebra_intersection
+  - Axiom::SQL::Generator::Relation::Set#visit_veritas_algebra_union
+  - Axiom::SQL::Generator::Relation::Unary#reset_query_state
+  - Axiom::SQL::Generator::Relation::Unary#subquery_for
+  - Axiom::SQL::Generator::Relation::Unary#summarize_per
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_extension
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_projection
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_rename
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_restriction
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_summarization
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_base
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_binary
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_limit
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_offset
+  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_order
+  - Axiom::SQL::Generator::Visitor#self.method_for
   - each
   max_statements: 2
 UncommunicativeMethodName:
@@ -157,9 +157,9 @@ UnusedParameters:
 UtilityFunction:
   enabled: true
   exclude:
-  - Veritas::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
-  - Veritas::SQL::Generator::Function::Predicate#optional?
-  - Veritas::SQL::Generator::Identifier#visit_identifier
-  - Veritas::SQL::Generator::Literal#visit_numeric
-  - Veritas::SQL::Generator::Literal#visit_string
+  - Axiom::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
+  - Axiom::SQL::Generator::Function::Predicate#optional?
+  - Axiom::SQL::Generator::Identifier#visit_identifier
+  - Axiom::SQL::Generator::Literal#visit_numeric
+  - Axiom::SQL::Generator::Literal#visit_string
   max_helper_calls: 0
