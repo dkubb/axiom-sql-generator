@@ -20,9 +20,9 @@ if ENV['COVERAGE'] == 'true'
   end
 end
 
-require 'veritas-sql-generator'
+require 'axiom-sql-generator'
 
-include Veritas
+include Axiom
 
 # require spec support files and shared behavior
 Dir[File.expand_path('../{support,shared}/**/*.rb', __FILE__)].each do |file|
