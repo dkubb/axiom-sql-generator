@@ -28,7 +28,7 @@ FeatureEnvy:
   exclude:
   - Axiom::SQL::Generator::Function::Predicate#new_from_enumerable_predicate
   - Axiom::SQL::Generator::Function::Predicate#optional?
-  - Axiom::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_inequality
+  - Axiom::SQL::Generator::Function::Predicate#visit_axiom_function_predicate_inequality
   - Axiom::SQL::Generator::Identifier#visit_identifier
   - Axiom::SQL::Generator::Identifier#visit_identifier
   - Axiom::SQL::Generator::Literal#visit_numeric
@@ -53,7 +53,7 @@ LongYieldList:
 NestedIterators:
   enabled: true
   exclude:
-  - Axiom::SQL::Generator::Relation::Materialized#visit_veritas_relation_materialized
+  - Axiom::SQL::Generator::Relation::Materialized#visit_axiom_relation_materialized
   - Axiom::SQL::Generator::Visitor#self.handlers
   max_allowed_nesting: 1
   ignore_iterators: []
@@ -61,7 +61,7 @@ NilCheck:
   enabled: true
   exclude:
   - Axiom::SQL::Generator::Function::Predicate#inequality_sql
-  - Axiom::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_equality
+  - Axiom::SQL::Generator::Function::Predicate#visit_axiom_function_predicate_equality
 RepeatedConditional:
   enabled: true
   exclude:
@@ -87,34 +87,34 @@ TooManyStatements:
   - Axiom::SQL::Generator::Function::Predicate#exclusive_range_exclusion_sql
   - Axiom::SQL::Generator::Function::Predicate#exclusive_range_inclusion_sql
   - Axiom::SQL::Generator::Function::Predicate#inequality_expressions
-  - Axiom::SQL::Generator::Function::Predicate#visit_veritas_function_predicate_inequality
+  - Axiom::SQL::Generator::Function::Predicate#visit_axiom_function_predicate_inequality
   - Axiom::SQL::Generator::Literal#visit_class
   - Axiom::SQL::Generator::Relation#column_list_for
   - Axiom::SQL::Generator::Relation#columns_for
   - Axiom::SQL::Generator::Relation#implicit_columns
   - Axiom::SQL::Generator::Relation#self.visit
   - Axiom::SQL::Generator::Relation::Binary#set_operands
-  - Axiom::SQL::Generator::Relation::Binary#visit_veritas_algebra_join
-  - Axiom::SQL::Generator::Relation::Binary#visit_veritas_algebra_product
-  - Axiom::SQL::Generator::Relation::Insertion#visit_veritas_relation_operation_insertion
+  - Axiom::SQL::Generator::Relation::Binary#visit_axiom_algebra_join
+  - Axiom::SQL::Generator::Relation::Binary#visit_axiom_algebra_product
+  - Axiom::SQL::Generator::Relation::Insertion#visit_axiom_relation_operation_insertion
   - Axiom::SQL::Generator::Relation::Materialized#generate_sql
   - Axiom::SQL::Generator::Relation::Set#self.normalize_operand_headers
-  - Axiom::SQL::Generator::Relation::Set#visit_veritas_algebra_difference
-  - Axiom::SQL::Generator::Relation::Set#visit_veritas_algebra_intersection
-  - Axiom::SQL::Generator::Relation::Set#visit_veritas_algebra_union
+  - Axiom::SQL::Generator::Relation::Set#visit_axiom_algebra_difference
+  - Axiom::SQL::Generator::Relation::Set#visit_axiom_algebra_intersection
+  - Axiom::SQL::Generator::Relation::Set#visit_axiom_algebra_union
   - Axiom::SQL::Generator::Relation::Unary#reset_query_state
   - Axiom::SQL::Generator::Relation::Unary#subquery_for
   - Axiom::SQL::Generator::Relation::Unary#summarize_per
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_extension
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_projection
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_rename
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_restriction
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_algebra_summarization
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_base
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_binary
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_limit
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_offset
-  - Axiom::SQL::Generator::Relation::Unary#visit_veritas_relation_operation_order
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_algebra_extension
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_algebra_projection
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_algebra_rename
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_algebra_restriction
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_algebra_summarization
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_base
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_binary
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_limit
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_offset
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_order
   - Axiom::SQL::Generator::Visitor#self.method_for
   - each
   max_statements: 2
