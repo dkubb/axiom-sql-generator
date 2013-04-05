@@ -14,10 +14,10 @@ Gem::Specification.new do |gem|
 
   gem.require_paths    = %w[lib]
   gem.files            = `git ls-files`.split($/)
-  gem.test_files       = `git ls-files -- spec/{unit,integration}`.split($/)
-  gem.extra_rdoc_files = %w[LICENSE README.md TODO]
+  gem.test_files       = `git ls-files -- spec/unit`.split($/)
+  gem.extra_rdoc_files = %w[LICENSE README.md CONTRIBUTING.md TODO]
 
-  gem.add_runtime_dependency('axiom', '~> 0.0.7')
+  gem.add_runtime_dependency('axiom', '~> 0.1.0')
 
   gem.add_development_dependency('rake',  '~> 10.0.4')
   gem.add_development_dependency('rspec', '~> 2.13.0')
