@@ -5,7 +5,7 @@ module Axiom
     module Generator
 
       # Gem version
-      VERSION = '0.1.0'.freeze
+      VERSION = '0.1.1'.freeze
 
     end # module Generator
   end # module SQL
