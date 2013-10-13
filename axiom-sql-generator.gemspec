@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.description = 'Generate SQL from a axiom relation'
   gem.summary     = 'Relational algebra SQL generator'
   gem.homepage    = 'https://github.com/dkubb/axiom-sql-generator'
-  gem.licenses    = %w[MIT]
+  gem.license     = 'MIT'
 
   gem.require_paths    = %w[lib]
   gem.files            = `git ls-files`.split($/)
