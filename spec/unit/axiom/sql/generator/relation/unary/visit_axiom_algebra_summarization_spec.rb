@@ -5,15 +5,15 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' do
   subject { object.visit_axiom_algebra_summarization(summarization) }
 
-  let(:relation_name)  { 'users'                                          }
-  let(:id)             { Attribute::Integer.new(:id)                      }
-  let(:name)           { Attribute::String.new(:name)                     }
-  let(:age)            { Attribute::Integer.new(:age, :required => false) }
-  let(:header)         { [ id, name, age ]                                }
-  let(:body)           { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation)  { Relation::Base.new(relation_name, header, body)  }
-  let(:other_relation) { Relation::Base.new('other', [ id ], [ [ 1 ] ])   }
-  let(:object)         { described_class.new                              }
+  let(:relation_name)  { 'users'                                         }
+  let(:id)             { Attribute::Integer.new(:id)                     }
+  let(:name)           { Attribute::String.new(:name)                    }
+  let(:age)            { Attribute::Integer.new(:age, required: false)   }
+  let(:header)         { [id, name, age]                                 }
+  let(:body)           { [[1, 'Dan Kubb', 35]].each                      }
+  let(:base_relation)  { Relation::Base.new(relation_name, header, body) }
+  let(:other_relation) { Relation::Base.new('other', [id], [[1]])        }
+  let(:object)         { described_class.new                             }
 
   context 'summarize per table dee' do
     let(:summarize_per) { TABLE_DEE                                                           }
@@ -38,7 +38,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a projection' do
-      let(:operand)       { base_relation.project([ :id, :name ])                              }
+      let(:operand)       { base_relation.project([:id, :name])                                }
       let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.id.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -48,7 +48,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a rename' do
-      let(:operand) { base_relation.rename(:name => :other_name) }
+      let(:operand) { base_relation.rename(name: :other_name) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -66,7 +66,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a summarization' do
-      let(:operand)       { base_relation.summarize([ :id ]) { |r| r.add(:count, r.age.count) }   }
+      let(:operand)       { base_relation.summarize([:id]) { |r| r.add(:count, r.age.count) }     }
       let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.count.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -76,7 +76,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is ordered' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -85,7 +85,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is reversed' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -94,7 +94,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is limited' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -103,7 +103,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is an offset' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -171,7 +171,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a projection' do
-      let(:operand)       { base_relation.project([ :id, :name ])                              }
+      let(:operand)       { base_relation.project([:id, :name])                                }
       let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.id.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -181,7 +181,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a rename' do
-      let(:operand) { base_relation.rename(:name => :other_name) }
+      let(:operand) { base_relation.rename(name: :other_name) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -199,7 +199,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a summarization' do
-      let(:operand)       { base_relation.summarize([ :id ]) { |r| r.add(:count, r.age.count) }   }
+      let(:operand)       { base_relation.summarize([:id]) { |r| r.add(:count, r.age.count) }     }
       let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.count.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -209,7 +209,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is ordered' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -218,7 +218,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is reversed' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -227,7 +227,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is limited' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -236,7 +236,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is an offset' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -282,7 +282,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
   end
 
   context 'summarize by a subset of the operand header' do
-    let(:summarize_by)  { [ :id ]                                                            }
+    let(:summarize_by)  { [:id]                                                              }
     let(:summarization) { operand.summarize(summarize_by) { |r| r.add(:count, r.age.count) } }
 
     context 'when the operand is a base relation' do
@@ -295,7 +295,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a projection' do
-      let(:operand)       { base_relation.project([ :id, :name ])                               }
+      let(:operand)       { base_relation.project([:id, :name])                                 }
       let(:summarization) { operand.summarize(summarize_by) { |r| r.add(:count, r.name.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -314,7 +314,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a rename' do
-      let(:operand) { base_relation.rename(:name => :other_name) }
+      let(:operand) { base_relation.rename(name: :other_name) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -332,7 +332,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is ordered' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -341,7 +341,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is reversed' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -350,7 +350,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is limited' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -359,7 +359,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is an offset' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -418,7 +418,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a projection' do
-      let(:operand)       { base_relation.project([ :id, :name ])                                }
+      let(:operand)       { base_relation.project([:id, :name])                                  }
       let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.name.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -437,7 +437,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a rename' do
-      let(:operand) { base_relation.rename(:name => :other_name) }
+      let(:operand) { base_relation.rename(name: :other_name) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -455,7 +455,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is ordered' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -464,7 +464,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is reversed' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -473,7 +473,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is limited' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -482,7 +482,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is an offset' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -528,7 +528,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
   end
 
   context 'summarize per another projected relation' do
-    let(:summarize_per) { other_relation.project([ :id ])                                     }
+    let(:summarize_per) { other_relation.project([:id])                                       }
     let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.age.count) } }
 
     context 'when the operand is a base relation' do
@@ -541,7 +541,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a projection' do
-      let(:operand)       { base_relation.project([ :id, :name ])                                }
+      let(:operand)       { base_relation.project([:id, :name])                                  }
       let(:summarization) { operand.summarize(summarize_per) { |r| r.add(:count, r.name.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -560,7 +560,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is a rename' do
-      let(:operand) { base_relation.rename(:name => :other_name) }
+      let(:operand) { base_relation.rename(name: :other_name) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -578,7 +578,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is ordered' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -587,7 +587,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is reversed' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -596,7 +596,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is limited' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -605,7 +605,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
     end
 
     context 'when the operand is an offset' do
-      let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+      let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
       it_should_behave_like 'a generated SQL SELECT query'
 

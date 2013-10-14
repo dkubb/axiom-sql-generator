@@ -5,11 +5,11 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Set, '.normalize_operand_headers' do
   subject { object.normalize_operand_headers(relation) }
 
-  let(:object)        { described_class                          }
-  let(:relation)      { left.union(right)                        }
-  let(:relation_name) { 'test'                                   }
-  let(:header)        { [ [ :id, Integer, ], [ :name, String ] ] }
-  let(:body)          { [].each                                  }
+  let(:object)        { described_class                   }
+  let(:relation)      { left.union(right)                 }
+  let(:relation_name) { 'test'                            }
+  let(:header)        { [[:id, Integer], [:name, String]] }
+  let(:body)          { [].each                           }
 
   context 'when the left and right headers are sorted in the same order' do
     let(:left)  { Relation::Base.new(relation_name, header, body) }

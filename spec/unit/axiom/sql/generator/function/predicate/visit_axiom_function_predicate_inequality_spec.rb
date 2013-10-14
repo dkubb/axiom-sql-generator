@@ -9,8 +9,8 @@ describe SQL::Generator::Function::Predicate, '#visit_axiom_function_predicate_i
   let(:object)          { described_class.new                                                                }
 
   context 'and the left attribute is optional' do
-    let(:attribute)  { Attribute::Integer.new(:age, :required => false) }
-    let(:inequality) { attribute.ne(1)                                  }
+    let(:attribute)  { Attribute::Integer.new(:age, required: false) }
+    let(:inequality) { attribute.ne(1)                               }
 
     it_should_behave_like 'a generated SQL expression'
 
@@ -18,7 +18,7 @@ describe SQL::Generator::Function::Predicate, '#visit_axiom_function_predicate_i
   end
 
   context 'and the right attribute is optional' do
-    let(:attribute)  { Attribute::Integer.new(:age, :required => false)  }
+    let(:attribute)  { Attribute::Integer.new(:age, required: false)     }
     let(:inequality) { Function::Predicate::Inequality.new(1, attribute) }
 
     it_should_behave_like 'a generated SQL expression'

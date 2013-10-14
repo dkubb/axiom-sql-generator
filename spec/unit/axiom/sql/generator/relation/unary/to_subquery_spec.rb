@@ -5,13 +5,13 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Unary, '#to_subquery' do
   subject { object.to_subquery }
 
-  let(:id)            { Attribute::Integer.new(:id)                      }
-  let(:name)          { Attribute::String.new(:name)                     }
-  let(:age)           { Attribute::Integer.new(:age, :required => false) }
-  let(:header)        { [ id, name, age ]                                }
-  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { Relation::Base.new('users', header, body)        }
-  let(:object)        { described_class.new                              }
+  let(:id)            { Attribute::Integer.new(:id)                   }
+  let(:name)          { Attribute::String.new(:name)                  }
+  let(:age)           { Attribute::Integer.new(:age, required: false) }
+  let(:header)        { [id, name, age]                               }
+  let(:body)          { [[1, 'Dan Kubb', 35]].each                    }
+  let(:base_relation) { Relation::Base.new('users', header, body)     }
+  let(:object)        { described_class.new                           }
 
   context 'when no object visited' do
     it_should_behave_like 'an idempotent method'
@@ -25,7 +25,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
   context 'when a projection is visited' do
     before do
-      object.visit(base_relation.project([ :id, :name ]))
+      object.visit(base_relation.project([:id, :name]))
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -35,7 +35,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
   context 'when a rename is visited' do
     before do
-      object.visit(base_relation.rename(:id => :user_id))
+      object.visit(base_relation.rename(id: :user_id))
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -55,7 +55,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
   context 'when a limit is visited' do
     before do
-      object.visit(base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1))
+      object.visit(base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1))
     end
 
     it_should_behave_like 'a generated SQL expression'
@@ -65,7 +65,7 @@ describe SQL::Generator::Relation::Unary, '#to_subquery' do
 
   context 'when an offset is visited' do
     before do
-      object.visit(base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1))
+      object.visit(base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1))
     end
 
     it_should_behave_like 'a generated SQL expression'

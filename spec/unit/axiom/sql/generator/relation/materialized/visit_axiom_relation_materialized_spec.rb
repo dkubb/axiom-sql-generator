@@ -5,11 +5,11 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Materialized, '#visit_axiom_relation_materialized' do
   subject { object.visit_axiom_relation_materialized(relation) }
 
-  let(:object) { described_class.new  }
-  let(:header) { [ [ :id, Integer ], [ :name, String ] ] }
+  let(:object) { described_class.new               }
+  let(:header) { [[:id, Integer], [:name, String]] }
 
   context 'with an non-empty relation' do
-    let(:relation) { Relation.new(header, [ [ 1, 'John Doe' ], [ 2, 'Jane Doe' ] ]) }
+    let(:relation) { Relation.new(header, [[1, 'John Doe'], [2, 'Jane Doe']]) }
 
     it_should_behave_like 'a generated SQL expression'
 

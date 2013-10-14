@@ -256,7 +256,7 @@ module Axiom
           #
           # @api private
           def optional?(operand)
-            operand.respond_to?(:required?) && ! operand.required?
+            operand.respond_to?(:required?) && !operand.required?
           end
 
         end # module Predicate

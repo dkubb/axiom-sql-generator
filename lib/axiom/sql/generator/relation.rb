@@ -29,16 +29,17 @@ module Axiom
         #
         # @api private
         def self.visit(relation)
-          klass = case relation
-          when Axiom::Relation::Operation::Insertion then self::Insertion
-          when Axiom::Relation::Operation::Set       then self::Set
-          when Axiom::Relation::Operation::Binary    then self::Binary
-          when Axiom::Relation::Operation::Unary     then self::Unary
-          when Axiom::Relation::Base                 then self::Base
-          when Axiom::Relation::Materialized         then self::Materialized
-          else
-            raise InvalidRelationError, "#{relation.class} is not a visitable relation"
-          end
+          klass =
+            case relation
+            when Axiom::Relation::Operation::Insertion then self::Insertion
+            when Axiom::Relation::Operation::Set       then self::Set
+            when Axiom::Relation::Operation::Binary    then self::Binary
+            when Axiom::Relation::Operation::Unary     then self::Unary
+            when Axiom::Relation::Base                 then self::Base
+            when Axiom::Relation::Materialized         then self::Materialized
+            else
+              fail InvalidRelationError, "#{relation.class} is not a visitable relation"
+            end
           klass.new.visit(relation)
         end
 
@@ -144,7 +145,7 @@ module Axiom
         #
         # @api private
         def implicit_columns
-          sql = [ STAR, column_list_for(@extensions) ]
+          sql = [STAR, column_list_for(@extensions)]
           sql.reject! { |fragment| fragment.empty? }
           sql.join(SEPARATOR)
         end

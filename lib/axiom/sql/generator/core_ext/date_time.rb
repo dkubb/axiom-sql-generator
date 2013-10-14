@@ -33,12 +33,11 @@ private
   def iso8601_timediv(time_scale)
     date_time = frozen? ? dup : self
 
-    fractional_seconds = unless time_scale.zero?
-      '.%0*d' % [
-        time_scale,
-        date_time.sec_fraction * SEC_FRACTION_MULTIPLIER * 10**time_scale
-      ]
-    end
+    fractional_seconds = sprintf(
+      '.%0*d',
+      time_scale,
+      date_time.sec_fraction * SEC_FRACTION_MULTIPLIER * 10**time_scale
+    ) unless time_scale.zero?
 
     date_time.strftime("T%T#{fractional_seconds}%Z")
   end

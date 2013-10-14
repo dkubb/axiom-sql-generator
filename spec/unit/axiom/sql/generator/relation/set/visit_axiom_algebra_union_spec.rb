@@ -5,17 +5,17 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   subject { object.visit_axiom_algebra_union(union) }
 
-  let(:relation_name) { 'users'                                          }
-  let(:id)            { Attribute::Integer.new(:id)                      }
-  let(:name)          { Attribute::String.new(:name)                     }
-  let(:age)           { Attribute::Integer.new(:age, :required => false) }
-  let(:header)        { [ id, name, age ]                                }
-  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { Relation::Base.new(relation_name, header, body)  }
-  let(:left)          { operand                                          }
-  let(:right)         { operand                                          }
-  let(:union)         { left.union(right)                                }
-  let(:object)        { described_class.new                              }
+  let(:relation_name) { 'users'                                         }
+  let(:id)            { Attribute::Integer.new(:id)                     }
+  let(:name)          { Attribute::String.new(:name)                    }
+  let(:age)           { Attribute::Integer.new(:age, required: false)   }
+  let(:header)        { [id, name, age]                                 }
+  let(:body)          { [[1, 'Dan Kubb', 35]].each                      }
+  let(:base_relation) { Relation::Base.new(relation_name, header, body) }
+  let(:left)          { operand                                         }
+  let(:right)         { operand                                         }
+  let(:union)         { left.union(right)                               }
+  let(:object)        { described_class.new                             }
 
   context 'when the operands are base relations' do
     let(:operand) { base_relation }
@@ -27,7 +27,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   end
 
   context 'when the operands are projections' do
-    let(:operand) { base_relation.project([ :id, :name ]) }
+    let(:operand) { base_relation.project([:id, :name]) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -45,7 +45,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   end
 
   context 'when the operands are renames' do
-    let(:operand) { base_relation.rename(:id => :user_id) }
+    let(:operand) { base_relation.rename(id: :user_id) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -84,7 +84,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r.age.count) } }
+      let(:operand) { base_relation.summarize([:id, :name]) { |r| r.add(:count, r.age.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -94,7 +94,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   end
 
   context 'when the operand is ordered' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -103,7 +103,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   end
 
   context 'when the operand is reversed' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -112,7 +112,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -121,7 +121,7 @@ describe SQL::Generator::Relation::Set, '#visit_axiom_algebra_union' do
   end
 
   context 'when the operands are offsets' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

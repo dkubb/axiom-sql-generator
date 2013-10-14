@@ -26,7 +26,7 @@ module Axiom
         #
         # @api private
         def self.handler_for(visitable_class)
-          handlers[visitable_class] or raise UnknownObject, "No handler for #{visitable_class} in #{self}"
+          handlers[visitable_class] or fail UnknownObject, "No handler for #{visitable_class} in #{self}"
         end
 
         # Return the handler cache that maps modules to method names
@@ -84,7 +84,7 @@ module Axiom
         #
         # @api public
         def visit(_visitable)
-          raise NotImplementedError, "#{self.class}#visit must be implemented"
+          fail NotImplementedError, "#{self.class}#visit must be implemented"
         end
 
         # Test if a visitable object has been visited
@@ -96,7 +96,7 @@ module Axiom
         #
         # @api public
         def visited?
-          raise NotImplementedError, "#{self.class}#visited? must be implemented"
+          fail NotImplementedError, "#{self.class}#visited? must be implemented"
         end
 
       private

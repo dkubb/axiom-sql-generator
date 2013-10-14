@@ -99,7 +99,7 @@ module Axiom
           #
           # @api private
           def set_name
-            @name = [ @left.name, @right.name ].uniq.join(UNDERSCORE).freeze
+            @name = [@left.name, @right.name].uniq.join(UNDERSCORE).freeze
           end
 
           # Generates an SQL statement for base relation binary operands

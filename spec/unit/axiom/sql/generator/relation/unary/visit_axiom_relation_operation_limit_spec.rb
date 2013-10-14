@@ -5,18 +5,18 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit' do
   subject { object.visit_axiom_relation_operation_limit(limit) }
 
-  let(:relation_name) { 'users'                                          }
-  let(:id)            { Attribute::Integer.new(:id)                      }
-  let(:name)          { Attribute::String.new(:name)                     }
-  let(:age)           { Attribute::Integer.new(:age, :required => false) }
-  let(:header)        { [ id, name, age ]                                }
-  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                   }
-  let(:base_relation) { Relation::Base.new(relation_name, header, body)  }
-  let(:limit)         { operand.take(1)                                  }
-  let(:object)        { described_class.new                              }
+  let(:relation_name) { 'users'                                         }
+  let(:id)            { Attribute::Integer.new(:id)                     }
+  let(:name)          { Attribute::String.new(:name)                    }
+  let(:age)           { Attribute::Integer.new(:age, required: false)   }
+  let(:header)        { [id, name, age]                                 }
+  let(:body)          { [[1, 'Dan Kubb', 35]].each                      }
+  let(:base_relation) { Relation::Base.new(relation_name, header, body) }
+  let(:limit)         { operand.take(1)                                 }
+  let(:object)        { described_class.new                             }
 
   context 'when the operand is a base relation' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -25,7 +25,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is a projection' do
-    let(:operand) { base_relation.project([ :id, :name ]).sort_by { |r| [ r.id, r.name ] } }
+    let(:operand) { base_relation.project([:id, :name]).sort_by { |r| [r.id, r.name] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -34,7 +34,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is an extension' do
-    let(:operand) { base_relation.extend { |r| r.add(:one, 1) }.sort_by { |r| [ r.id, r.name, r.age, r.one ] } }
+    let(:operand) { base_relation.extend { |r| r.add(:one, 1) }.sort_by { |r| [r.id, r.name, r.age, r.one] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -43,7 +43,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is a rename' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.rename(:id => :user_id) }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.rename(id: :user_id) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -52,7 +52,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is a restriction' do
-    let(:operand) { base_relation.restrict { |r| r.id.eq(1) }.sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.restrict { |r| r.id.eq(1) }.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -82,7 +82,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:operand) { base_relation.summarize([ :id, :name ]) { |r| r.add(:count, r.age.count) }.sort_by { |r| [ r.id, r.name, r.count ] } }
+      let(:operand) { base_relation.summarize([:id, :name]) { |r| r.add(:count, r.age.count) }.sort_by { |r| [r.id, r.name, r.count] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -92,7 +92,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is ordered' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -101,7 +101,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is reversed' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.reverse }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -110,7 +110,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is limited' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.take(1) }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -119,7 +119,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is an offset' do
-    let(:operand) { base_relation.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1) }
+    let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -128,7 +128,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is a difference' do
-    let(:operand) { base_relation.difference(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.difference(base_relation).sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -137,7 +137,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is an intersection' do
-    let(:operand) { base_relation.intersect(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.intersect(base_relation).sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -146,7 +146,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is a union' do
-    let(:operand) { base_relation.union(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.union(base_relation).sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -155,7 +155,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_limit
   end
 
   context 'when the operand is a join' do
-    let(:operand) { base_relation.join(base_relation).sort_by { |r| [ r.id, r.name, r.age ] } }
+    let(:operand) { base_relation.join(base_relation).sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

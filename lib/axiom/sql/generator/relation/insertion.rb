@@ -9,7 +9,7 @@ module Axiom
         class Insertion < Set
           extend Aliasable
 
-          inheritable_alias(:to_subquery => :to_s)
+          inheritable_alias(to_subquery: :to_s)
 
           # Visit an Insertion
           #

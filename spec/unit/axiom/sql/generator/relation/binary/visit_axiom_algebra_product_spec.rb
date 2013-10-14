@@ -5,17 +5,17 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   subject { object.visit_axiom_algebra_product(product) }
 
-  let(:relation_name) { 'users_other'                                                              }
-  let(:id)            { Attribute::Integer.new(:id)                                                }
-  let(:name)          { Attribute::String.new(:name)                                               }
-  let(:age)           { Attribute::Integer.new(:age, :required => false)                           }
-  let(:header)        { [ id, name, age ]                                                          }
-  let(:other_header)  { [ id.rename(:other_id), name.rename(:other_name), age.rename(:other_age) ] }
-  let(:body)          { [ [ 1, 'Dan Kubb', 35 ] ].each                                             }
-  let(:users)         { Relation::Base.new('users', header, body)                                  }
-  let(:other)         { Relation::Base.new('other', other_header, body)                            }
-  let(:product)       { left.product(right)                                                        }
-  let(:object)        { described_class.new                                                        }
+  let(:relation_name) { 'users_other'                                                            }
+  let(:id)            { Attribute::Integer.new(:id)                                              }
+  let(:name)          { Attribute::String.new(:name)                                             }
+  let(:age)           { Attribute::Integer.new(:age, required: false)                            }
+  let(:header)        { [id, name, age]                                                          }
+  let(:other_header)  { [id.rename(:other_id), name.rename(:other_name), age.rename(:other_age)] }
+  let(:body)          { [[1, 'Dan Kubb', 35]].each                                               }
+  let(:users)         { Relation::Base.new('users', header, body)                                }
+  let(:other)         { Relation::Base.new('other', other_header, body)                          }
+  let(:product)       { left.product(right)                                                      }
+  let(:object)        { described_class.new                                                      }
 
   context 'when the operands are base relations' do
     let(:left)  { users }
@@ -28,8 +28,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   end
 
   context 'when the operands are a projection' do
-    let(:left)  { users.project([ :id, :name ])             }
-    let(:right) { other.project([ :other_id, :other_name ]) }
+    let(:left)  { users.project([:id, :name])             }
+    let(:right) { other.project([:other_id, :other_name]) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -48,8 +48,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   end
 
   context 'when the operand is a rename' do
-    let(:left)  { users.rename(:id => :user_id)             }
-    let(:right) { other.rename(:other_id => :other_user_id) }
+    let(:left)  { users.rename(id: :user_id)             }
+    let(:right) { other.rename(other_id: :other_user_id) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -91,8 +91,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
     end
 
     context 'summarize by a subset of the operand header' do
-      let(:left)  { users.summarize([ :id, :name ]) { |r| r.add(:count, r.age.count) }                         }
-      let(:right) { other.summarize([ :other_id, :other_name ]) { |r| r.add(:other_count, r.other_age.count) } }
+      let(:left)  { users.summarize([:id, :name]) { |r| r.add(:count, r.age.count) }                         }
+      let(:right) { other.summarize([:other_id, :other_name]) { |r| r.add(:other_count, r.other_age.count) } }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -102,8 +102,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   end
 
   context 'when the operand is ordered' do
-    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }                   }
-    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] } }
+    let(:left)  { users.sort_by { |r| [r.id, r.name, r.age] }                   }
+    let(:right) { other.sort_by { |r| [r.other_id, r.other_name, r.other_age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -112,8 +112,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   end
 
   context 'when the operand is reversed' do
-    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }.reverse                   }
-    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] }.reverse }
+    let(:left)  { users.sort_by { |r| [r.id, r.name, r.age] }.reverse                   }
+    let(:right) { other.sort_by { |r| [r.other_id, r.other_name, r.other_age] }.reverse }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -122,8 +122,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   end
 
   context 'when the operand is limited' do
-    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }.take(1)                   }
-    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] }.take(1) }
+    let(:left)  { users.sort_by { |r| [r.id, r.name, r.age] }.take(1)                   }
+    let(:right) { other.sort_by { |r| [r.other_id, r.other_name, r.other_age] }.take(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -132,8 +132,8 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
   end
 
   context 'when the operand is an offset' do
-    let(:left)  { users.sort_by { |r| [ r.id, r.name, r.age ] }.drop(1)                   }
-    let(:right) { other.sort_by { |r| [ r.other_id, r.other_name, r.other_age ] }.drop(1) }
+    let(:left)  { users.sort_by { |r| [r.id, r.name, r.age] }.drop(1)                   }
+    let(:right) { other.sort_by { |r| [r.other_id, r.other_name, r.other_age] }.drop(1) }
 
     it_should_behave_like 'a generated SQL SELECT query'
 

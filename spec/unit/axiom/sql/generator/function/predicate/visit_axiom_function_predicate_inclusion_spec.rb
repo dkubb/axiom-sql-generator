@@ -30,7 +30,7 @@ describe SQL::Generator::Function::Predicate, '#visit_axiom_function_predicate_i
   end
 
   context 'when right operand is an Array' do
-    let(:inclusion) { attribute.include([ 1, 2 ]) }
+    let(:inclusion) { attribute.include([1, 2]) }
 
     it_should_behave_like 'a generated SQL expression'
 

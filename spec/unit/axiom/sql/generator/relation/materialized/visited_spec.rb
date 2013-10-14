@@ -5,8 +5,8 @@ require 'spec_helper'
 describe SQL::Generator::Relation::Materialized, '#visited?' do
   subject { object.visited? }
 
-  let(:object)   { described_class.new                        }
-  let(:relation) { Relation.new([ [ :id, Integer ] ], [ [] ]) }
+  let(:object)   { described_class.new                  }
+  let(:relation) { Relation.new([[:id, Integer]], [[]]) }
 
   context 'when the relation is visited' do
     before do
