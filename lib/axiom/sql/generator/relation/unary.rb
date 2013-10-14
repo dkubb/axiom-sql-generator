@@ -52,7 +52,7 @@ module Axiom
           #
           # @api private
           def visit_axiom_relation_base(base_relation)
-            @name    = base_relation.name
+            @name    = base_relation.name.to_s.freeze
             @from    = visit_identifier(@name)
             @header  = base_relation.header
             @columns = columns_for(base_relation)

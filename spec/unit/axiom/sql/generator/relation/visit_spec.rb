@@ -9,7 +9,7 @@ describe SQL::Generator::Relation, '#visit' do
   let(:object)          { described_class.new                 }
 
   context 'with a handled object' do
-    let(:visitable) { mock('Visitable') }
+    let(:visitable) { double('Visitable') }
 
     before do
       described_class.class_eval do
@@ -25,7 +25,7 @@ describe SQL::Generator::Relation, '#visit' do
   end
 
   context 'with a handled object more than once' do
-    let(:visitable) { mock('Visitable') }
+    let(:visitable) { double('Visitable') }
 
     before do
       described_class.class_eval do
@@ -47,7 +47,7 @@ describe SQL::Generator::Relation, '#visit' do
   end
 
   context 'with an unhandled object' do
-    let(:visitable) { mock('Not Handled') }
+    let(:visitable) { double('Not Handled') }
 
     specify { expect { subject }.to raise_error(SQL::Generator::Visitor::UnknownObject, "No handler for #{visitable.class} in #{object.class}") }
   end

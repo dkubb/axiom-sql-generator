@@ -64,7 +64,7 @@ describe SQL::Generator::Relation, '.visit' do
   end
 
   context 'when the relation is invalid' do
-    let(:relation) { mock('Invalid Relation') }
+    let(:relation) { double('Invalid Relation') }
 
     specify { expect { subject }.to raise_error(SQL::Generator::InvalidRelationError, "#{relation.class} is not a visitable relation") }
   end

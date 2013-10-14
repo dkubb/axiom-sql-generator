@@ -8,8 +8,8 @@ describe SQL::Generator::Relation::Insertion, '#to_subquery' do
   let(:object) { described_class.new }
 
   it 'delegates to #to_s' do
-    sql = stub('sql')
-    object.should_receive(:to_s).with(no_args).and_return(sql)
+    sql = double('sql')
+    expect(object).to receive(:to_s).with(no_args).and_return(sql)
     should equal(sql)
   end
 end

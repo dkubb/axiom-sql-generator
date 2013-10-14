@@ -24,7 +24,7 @@ describe SQL::Generator::Relation, '#to_sql' do
   end
 
   context 'when an object is visited' do
-    let(:visitable) { mock('Visitable') }
+    let(:visitable) { double('Visitable') }
 
     before do
       described_class.class_eval do
