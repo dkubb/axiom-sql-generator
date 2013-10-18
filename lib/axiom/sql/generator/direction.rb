@@ -12,23 +12,23 @@ module Axiom
 
         # Visit an Ascending Direction
         #
-        # @param [Relation::Operation::Order::Ascending] direction
+        # @param [Relation::Operation::Sorted::Ascending] direction
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_axiom_relation_operation_order_ascending(direction)
+        def visit_axiom_relation_operation_sorted_ascending(direction)
           dispatch direction.attribute
         end
 
         # Visit an Descending Direction
         #
-        # @param [Relation::Operation::Order::Descending] direction
+        # @param [Relation::Operation::Sorted::Descending] direction
         #
         # @return [#to_s]
         #
         # @api private
-        def visit_axiom_relation_operation_order_descending(direction)
+        def visit_axiom_relation_operation_sorted_descending(direction)
           dispatch(direction.attribute) << DESC
         end
 

@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_reverse' do
-  subject { object.visit_axiom_relation_operation_reverse(order) }
+  subject { object.visit_axiom_relation_operation_reverse(sorted) }
 
   let(:relation_name) { 'users'                                         }
   let(:id)            { Attribute::Integer.new(:id)                     }
@@ -12,7 +12,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_rever
   let(:header)        { [id, name, age]                                 }
   let(:body)          { [[1, 'Dan Kubb', 35]].each                      }
   let(:base_relation) { Relation::Base.new(relation_name, header, body) }
-  let(:order)         { operand.reverse                                 }
+  let(:sorted)        { operand.reverse                                 }
   let(:object)        { described_class.new                             }
 
   context 'when the operand is a base relation' do
@@ -91,7 +91,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_rever
     end
   end
 
-  context 'when the operand is ordered' do
+  context 'when the operand is sorted' do
     let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'

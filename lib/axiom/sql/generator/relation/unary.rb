@@ -17,7 +17,7 @@ module Axiom
                   Function::String,
                   Function::Numeric
 
-          inheritable_alias(visit_axiom_relation_operation_reverse: :visit_axiom_relation_operation_order)
+          inheritable_alias(visit_axiom_relation_operation_reverse: :visit_axiom_relation_operation_sorted)
 
           DISTINCT    = 'DISTINCT '.freeze
           NO_ROWS     = ' HAVING FALSE'.freeze
@@ -25,13 +25,13 @@ module Axiom
           COLLAPSIBLE = {
             Algebra::Summarization              => Set[].freeze,
             Algebra::Projection                 => Set[Algebra::Projection,                                      Algebra::Restriction].freeze,
-            Algebra::Extension                  => Set[Algebra::Projection,                                      Algebra::Restriction,                         Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse, Axiom::Relation::Operation::Offset, Axiom::Relation::Operation::Limit].freeze,
-            Algebra::Rename                     => Set[Algebra::Projection,                                      Algebra::Restriction,                         Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse, Axiom::Relation::Operation::Offset, Axiom::Relation::Operation::Limit].freeze,
-            Algebra::Restriction                => Set[Algebra::Projection,                                                                                    Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse].freeze,
-            Axiom::Relation::Operation::Order   => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse].freeze,
-            Axiom::Relation::Operation::Reverse => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse].freeze,
-            Axiom::Relation::Operation::Offset  => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse].freeze,
-            Axiom::Relation::Operation::Limit   => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Order, Axiom::Relation::Operation::Reverse, Axiom::Relation::Operation::Offset].freeze,
+            Algebra::Extension                  => Set[Algebra::Projection,                                      Algebra::Restriction,                         Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse, Axiom::Relation::Operation::Offset, Axiom::Relation::Operation::Limit].freeze,
+            Algebra::Rename                     => Set[Algebra::Projection,                                      Algebra::Restriction,                         Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse, Axiom::Relation::Operation::Offset, Axiom::Relation::Operation::Limit].freeze,
+            Algebra::Restriction                => Set[Algebra::Projection,                                                                                    Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse].freeze,
+            Axiom::Relation::Operation::Sorted  => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse].freeze,
+            Axiom::Relation::Operation::Reverse => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse].freeze,
+            Axiom::Relation::Operation::Offset  => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse].freeze,
+            Axiom::Relation::Operation::Limit   => Set[Algebra::Projection, Algebra::Extension, Algebra::Rename, Algebra::Restriction, Algebra::Summarization, Axiom::Relation::Operation::Sorted, Axiom::Relation::Operation::Reverse, Axiom::Relation::Operation::Offset].freeze,
           }.freeze
 
           # Initialize a Unary relation SQL generator
@@ -141,19 +141,19 @@ module Axiom
             self
           end
 
-          # Visit an Order
+          # Visit a Sorted
           #
-          # @param [Relation::Operation::Order] order
+          # @param [Relation::Operation::Sorted] sorted
           #
           # @return [self]
           #
           # @api private
-          def visit_axiom_relation_operation_order(order)
-            @from      = subquery_for(order)
-            @order     = " ORDER BY #{order_for(order.directions)}"
-            @header    = order.header
-            @columns ||= columns_for(order)
-            scope_query(order)
+          def visit_axiom_relation_operation_sorted(sorted)
+            @from      = subquery_for(sorted)
+            @order     = " ORDER BY #{order_for(sorted.directions)}"
+            @header    = sorted.header
+            @columns ||= columns_for(sorted)
+            scope_query(sorted)
             self
           end
 

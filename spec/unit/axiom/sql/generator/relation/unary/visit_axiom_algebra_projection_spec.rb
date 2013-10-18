@@ -119,7 +119,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_projection' do
     end
   end
 
-  context 'when the operand is ordered' do
+  context 'when the operand is sorted' do
     let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'

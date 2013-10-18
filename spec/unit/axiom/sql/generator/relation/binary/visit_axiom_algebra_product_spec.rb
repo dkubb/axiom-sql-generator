@@ -101,7 +101,7 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_product' do
     end
   end
 
-  context 'when the operand is ordered' do
+  context 'when the operand is sorted' do
     let(:left)  { users.sort_by { |r| [r.id, r.name, r.age] }                   }
     let(:right) { other.sort_by { |r| [r.other_id, r.other_name, r.other_age] } }
 

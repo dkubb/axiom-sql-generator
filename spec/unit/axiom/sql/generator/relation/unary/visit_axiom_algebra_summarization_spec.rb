@@ -75,7 +75,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
       its(:to_subquery) { should eql('(SELECT COUNT ("count") AS "count" FROM (SELECT "id", COUNT ("age") AS "count" FROM "users" GROUP BY "id" HAVING COUNT (*) > 0) AS "users")') }
     end
 
-    context 'when the operand is ordered' do
+    context 'when the operand is sorted' do
       let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -208,7 +208,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
       its(:to_subquery) { should eql('(SELECT COUNT ("count") AS "count" FROM (SELECT "id", COUNT ("age") AS "count" FROM "users" GROUP BY "id" HAVING COUNT (*) > 0) AS "users" HAVING FALSE)') }
     end
 
-    context 'when the operand is ordered' do
+    context 'when the operand is sorted' do
       let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -331,7 +331,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
       its(:to_subquery) { should eql('(SELECT "id", COUNT ("age") AS "count" FROM (SELECT * FROM "users" WHERE "id" = 1) AS "users" GROUP BY "id" HAVING COUNT (*) > 0)') }
     end
 
-    context 'when the operand is ordered' do
+    context 'when the operand is sorted' do
       let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -454,7 +454,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
       its(:to_subquery) { should eql('(SELECT "id", COUNT ("age") AS "count" FROM "other" AS "other" NATURAL LEFT JOIN (SELECT * FROM "users" WHERE "id" = 1) AS "users" GROUP BY "id")') }
     end
 
-    context 'when the operand is ordered' do
+    context 'when the operand is sorted' do
       let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -577,7 +577,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_algebra_summarization' d
       its(:to_subquery) { should eql('(SELECT "id", COUNT ("age") AS "count" FROM (SELECT DISTINCT "id" FROM "other") AS "other" NATURAL LEFT JOIN (SELECT * FROM "users" WHERE "id" = 1) AS "users" GROUP BY "id")') }
     end
 
-    context 'when the operand is ordered' do
+    context 'when the operand is sorted' do
       let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
       it_should_behave_like 'a generated SQL SELECT query'

@@ -114,7 +114,7 @@ TooManyStatements:
   - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_binary
   - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_limit
   - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_offset
-  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_order
+  - Axiom::SQL::Generator::Relation::Unary#visit_axiom_relation_operation_sorted
   - Axiom::SQL::Generator::Visitor#self.method_for
   - each
   max_statements: 2

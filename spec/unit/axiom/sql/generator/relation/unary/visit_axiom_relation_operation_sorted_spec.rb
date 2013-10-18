@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order' do
-  subject { object.visit_axiom_relation_operation_order(order) }
+describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_sorted' do
+  subject { object.visit_axiom_relation_operation_sorted(sorted) }
 
   let(:relation_name) { 'users'                                         }
   let(:id)            { Attribute::Integer.new(:id)                     }
@@ -12,7 +12,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
   let(:header)        { [id, name, age]                                 }
   let(:body)          { [[1, 'Dan Kubb', 35]].each                      }
   let(:base_relation) { Relation::Base.new(relation_name, header, body) }
-  let(:order)         { operand.sort_by { |r| [r.id, r.name, r.age] }   }
+  let(:sorted)        { operand.sort_by { |r| [r.id, r.name, r.age] }   }
   let(:object)        { described_class.new                             }
 
   context 'when the operand is a base relation' do
@@ -25,7 +25,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
   end
 
   context 'when the operand is a projection' do
-    let(:order)   { operand.sort_by { |r| [r.id, r.name] } }
+    let(:sorted) { operand.sort_by { |r| [r.id, r.name] } }
 
     context 'when the projection contains the base_relation' do
       let(:operand) { base_relation.project([:id, :name]) }
@@ -36,7 +36,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
       its(:to_subquery) { should eql('(SELECT DISTINCT "id", "name" FROM "users" ORDER BY "id", "name")') }
     end
 
-    context 'when the projection contains an order' do
+    context 'when the projection contains a sorted relation' do
       let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] }.project([:id, :name]) }
 
       it_should_behave_like 'a generated SQL SELECT query'
@@ -48,7 +48,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
 
   context 'when the operand is an extension' do
     let(:operand) { base_relation.extend { |r| r.add(:one, 1) }.sort_by { |r| [r.id, r.name, r.age, r.one] } }
-    let(:order)   { operand.sort_by { |r| [r.id, r.name, r.age, r.one] }                                     }
+    let(:sorted)  { operand.sort_by { |r| [r.id, r.name, r.age, r.one] }                                     }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -58,7 +58,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
 
   context 'when the operand is a rename' do
     let(:operand) { base_relation.rename(id: :user_id)                 }
-    let(:order)   { operand.sort_by { |r| [r.user_id, r.name, r.age] } }
+    let(:sorted)  { operand.sort_by { |r| [r.user_id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
 
@@ -76,7 +76,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
   end
 
   context 'when the operand is a summarization' do
-    let(:order) { operand.sort_by { |r| r.count } }
+    let(:sorted) { operand.sort_by { |r| r.count } }
 
     context 'summarize per table dee' do
       let(:summarize_per) { TABLE_DEE                                                                                        }
@@ -100,7 +100,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
 
     context 'summarize by a subset of the operand header' do
       let(:operand) { base_relation.summarize([:id, :name]) { |r| r.add(:count, r.age.count) }.sort_by { |r| [r.id, r.name, r.count] } }
-      let(:order)   { operand.sort_by { |r| [r.id, r.name, r.count] }                                                                  }
+      let(:sorted)  { operand.sort_by { |r| [r.id, r.name, r.count] }                                                                  }
 
       it_should_behave_like 'a generated SQL SELECT query'
 
@@ -109,7 +109,7 @@ describe SQL::Generator::Relation::Unary, '#visit_axiom_relation_operation_order
     end
   end
 
-  context 'when the operand is ordered' do
+  context 'when the operand is sorted' do
     let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
