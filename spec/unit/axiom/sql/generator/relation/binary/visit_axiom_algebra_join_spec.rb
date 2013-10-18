@@ -94,7 +94,7 @@ describe SQL::Generator::Relation::Binary, '#visit_axiom_algebra_join' do
     end
   end
 
-  context 'when the operands are ordered' do
+  context 'when the operands are sorted' do
     let(:operand) { base_relation.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'

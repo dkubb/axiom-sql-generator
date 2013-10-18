@@ -113,7 +113,7 @@ describe SQL::Generator::Relation::Insertion, '#visit_axiom_relation_operation_i
     end
   end
 
-  context 'inserting an order' do
+  context 'inserting a sorted relation' do
     let(:other) { operand.sort_by { |r| [r.id, r.name, r.age] } }
 
     it_should_behave_like 'a generated SQL SELECT query'
