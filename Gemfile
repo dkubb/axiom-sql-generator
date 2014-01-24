@@ -4,8 +4,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'axiom', '~> 0.1.1', git: 'https://github.com/dkubb/axiom.git'
-
 platform :rbx do
   gem 'rubysl-bigdecimal', '~> 2.0.2'
 end
