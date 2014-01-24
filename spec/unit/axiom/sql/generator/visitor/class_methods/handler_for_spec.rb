@@ -24,7 +24,7 @@ describe SQL::Generator::Visitor, '.handler_for' do
     before do
       object.class_eval do
         remove_instance_variable(:@handlers) if instance_variable_defined?(:@handlers)
-        define_method(:visit_my_spec_visitable) { }
+        define_method(:visit_my_spec_visitable) {}
       end
     end
 
@@ -46,7 +46,7 @@ describe SQL::Generator::Visitor, '.handler_for' do
     before do
       object.class_eval do
         remove_instance_variable(:@handlers) if instance_variable_defined?(:@handlers)
-        define_method(:visit_my_spec_visitable) { }
+        define_method(:visit_my_spec_visitable) {}
         private :visit_my_spec_visitable
       end
     end
